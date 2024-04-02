@@ -3,6 +3,9 @@
  *
  */
 
+// *  in comments means its not originally in the code, but added by me to understand the code
+
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -63,14 +66,15 @@ int main(int argc, char **argv) {
   /** A basic method to compute the KNN results using sampling  **/
   const int K = 100;    // To find 100-NN
 
-  for(uint i = 0; i < nq; i++){
+  for(uint i = 0; i < nq; i++){  // for each query
     uint32_t query_type = queries[i][0];
-    int32_t v = queries[i][1];
-    float l = queries[i][2];
-    float r = queries[i][3];
-    vector<float> query_vec;
+    int32_t v = queries[i][1]; // categorical attribute (-1 if not categorical)*
+    float l = queries[i][2]; // range lower bound (-1 if not range)*
+    float r = queries[i][3]; // range upper bound (-1 if not range)*
+    vector<float> query_vec; 
 
     // first push_back 2 zeros for aligning with dataset
+    // (the 2 in 102) *
     query_vec.push_back(0);
     query_vec.push_back(0);
     for(uint j = 4; j < queries[i].size(); j++)

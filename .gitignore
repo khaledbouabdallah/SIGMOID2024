@@ -1,4 +1,10 @@
 .vscode
 venv
 .git
+# playing with jupyter notebooks
 *.ipynb
+# Test files & Reprozib 
+test
+*.rpz
+.reprozip-trace
+output.bin*
