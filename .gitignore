@@ -7,4 +7,4 @@ venv
 test
 *.rpz
 .reprozip-trace
-output.bin*
+output

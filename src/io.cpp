@@ -1,5 +1,5 @@
 /**
- *  Example code for IO, read binary data vectors and save KNNs to path.
+ *  Read binary data of vectors and queries and save results 
  *
  */
 
