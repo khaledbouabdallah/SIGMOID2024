@@ -3,6 +3,7 @@ venv
 .git
 # playing with jupyter notebooks
 *.ipynb
+build
 # Test files & Reprozib 
 test
 *.rpz

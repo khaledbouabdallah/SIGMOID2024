@@ -1,7 +1,11 @@
-#include <vector>
 #include "../include/data.hpp"
+#include <fstream>
 
-using std::vector;
+
+int add(int a, int b) {
+    return a + b;
+}
+
 
 DataPoint::DataPoint(float timestamp, int c, float* data) {
     this->timestamp = timestamp;
@@ -10,15 +14,15 @@ DataPoint::DataPoint(float timestamp, int c, float* data) {
 }
 
 float DataPoint::Get_timestamp() const {
-    return this->timestamp;
+    return timestamp;
 }
 
 int DataPoint::Get_c() const {
-    return this->c;
+    return c;
 }
 
 float* DataPoint::Get_data() const {
-    return this->data;
+    return data;
 }
 
 void DataPoint::Set_timestamp(float timestamp) {
@@ -33,22 +37,35 @@ void DataPoint::Set_data(float* data) {
     this->data = data;
 }
 
-DataBase::DataBase(vector<DataPoint> data_points) {
+DataBase::DataBase(std::vector<DataPoint> data_points) {
     this->data_points = data_points;
 }
 
-DataBase::DataBase() {
-    this->data_points = vector<DataPoint>();
+std::vector<DataPoint> DataBase::Get_data_points() const {
+    return data_points;
 }
 
-vector<DataPoint> DataBase::Get_data_points() const {
-    return this->data_points;
-}
-
-void DataBase::Set_data_points(vector<DataPoint> data_points) {
+void DataBase::Set_data_points(std::vector<DataPoint> data_points) {
     this->data_points = data_points;
 }
 
 void DataBase::Add_data_point(DataPoint data_point) {
-    this->data_points.push_back(data_point);
+    data_points.push_back(data_point);
+}
+
+DataPoint DataBase::Get_data_point(int index) {
+    return data_points[index];
+}
+
+int DataBase::Get_size() {
+    return data_points.size();
+}
+
+void DataBase::Read_data_from_file(const char* filename) {
+  
+}
+
+DataBase::~DataBase() {
+    // Destructor implementation
+
 }
