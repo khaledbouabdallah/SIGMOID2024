@@ -23,6 +23,8 @@ public:
      * @param ifs The inoput stream
      */
     DataPoint(std::ifstream& ifs);
+    
+    DataPoint(const DataPoint& other);
 
     /**
      * @brief Gets the timestamp of the data point.

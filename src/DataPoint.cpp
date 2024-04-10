@@ -3,16 +3,24 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 DataPoint::DataPoint(ifstream& ifs){
-     _data = new float[100];
+     _data = new float[DATA_SIZE];
      ifs.read((char *)&_c, sizeof(uint32_t));
      ifs.read((char *)&_timestamp, sizeof(uint32_t));
-     ifs.read((char *)_data, 100 * sizeof(uint32_t));
+     ifs.read((char *)_data, DATA_SIZE * sizeof(uint32_t));
 }
 
+DataPoint::DataPoint(const DataPoint& other) {
+     _data = new float[DATA_SIZE];
+     memcpy(_data, other._data, DATA_SIZE*sizeof(float));
+     _c = other._c;
+     _timestamp = other._timestamp;
+}
+     
 float DataPoint::GetTS() const {
      return _timestamp;
 }
@@ -26,7 +34,7 @@ float* DataPoint::GetData() const {
 }
 
 DataPoint::~DataPoint(){
-     //delete[] _data;
+     delete[] _data;
 }
 
 
