@@ -37,7 +37,7 @@ int DataBase::GetSize() {
 }
 
 int DataBase::isGreaterByCatAndTS(int i, int j){
-     if (_data_points[i].GetC()>_data_points[j].GetC() || (_data_points[i].GetC()==_data_points[j].GetC() && _data_points[i].GetTS()>_data_points[j].GetTS()))
+     if ((_data_points[i].GetC()>_data_points[j].GetC()) || (_data_points[i].GetC()==_data_points[j].GetC() && _data_points[i].GetTS()>_data_points[j].GetTS()))
           return 1;
      return 0;
 }
@@ -45,9 +45,9 @@ int DataBase::isGreaterByCatAndTS(int i, int j){
 void DataBase::SiftByCatAndTS(int i, int n){
      while (1) {
           int indmax = i;
-          if (2*i+1<=n && isGreaterByCatAndTS(_sortedIndByCatAndTS[2*+1], _sortedIndByCatAndTS[indmax]))
+          if (2*i+1<n && isGreaterByCatAndTS(_sortedIndByCatAndTS[2*i+1], _sortedIndByCatAndTS[indmax]))
                indmax = 2*i+1;
-          if (2*i+2<=n && isGreaterByCatAndTS(_sortedIndByCatAndTS[2*+2], _sortedIndByCatAndTS[indmax]))
+          if (2*i+2<n && isGreaterByCatAndTS(_sortedIndByCatAndTS[2*i+2], _sortedIndByCatAndTS[indmax]))
                indmax = 2*i+2;
           if (indmax == i) break;
           swapIndices(_sortedIndByCatAndTS, indmax, i);
@@ -67,6 +67,17 @@ void DataBase::SortByCatAndTS() {
          swapIndices(_sortedIndByCatAndTS, 0, i);
          SiftByCatAndTS(0,i-1);
      }
+     
+     /*
+     for (int i = 0; i<_countPoints-1; ++i) {
+         DataPoint& dp1 = _data_points[_sortedIndByCatAndTS[i]];
+         DataPoint& dp2 = _data_points[_sortedIndByCatAndTS[i+1]];
+         if (dp1.GetC()>dp2.GetC())
+               cout<<"not sorted by cat"<<endl;
+         else if (dp1.GetC() == dp2.GetC() && dp1.GetTS()>dp2.GetTS())
+                cout<<"not sorted by ts"<<endl;
+     }
+     */
 }
 
 

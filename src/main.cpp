@@ -6,9 +6,8 @@ using namespace std;
 
 
 int main() {
-    cout<<"start"<<endl;
     DataBase db = DataBase("../data/dummy-data.bin");
-    cout<<"end"<<endl;
+    db.SortByCatAndTS();
     
     return 0;
 }
