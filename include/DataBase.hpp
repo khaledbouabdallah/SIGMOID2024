@@ -13,10 +13,10 @@ private:
       std::vector<DataPoint> _data_points;
       
       //indices of points sorted by category then TS
-      int* sortedIndByCatAndTS;
+      int* _sortedIndByCatAndTS;
       
       //indices of point sorted solely by TS
-      int* sortedIndByTS;
+      int* _sortedIndByTS;
       
       int _countPoints;
 
@@ -52,6 +52,8 @@ public:
      int GetSize();
      
      void SortByCatAndTS();
+     
+     int isGreaterByCatAndTS(int i, int j);
 
 private:
      
