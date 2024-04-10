@@ -1,14 +1,16 @@
 #include "DataPoint.hpp"
 #include "globals.hpp"
 #include <fstream>
+#include <string>
+#include <iostream>
 
 using namespace std;
 
 DataPoint::DataPoint(ifstream& ifs){
-     _data = new float[DATA_SIZE];
-     ifs.read((char *)&_c, sizeof(int));
-     ifs.read((char *)&_timestamp, sizeof(float));
-     ifs.read((char *)_data, DATA_SIZE * sizeof(float));
+     _data = new float[100];
+     ifs.read((char *)&_c, sizeof(uint32_t));
+     ifs.read((char *)&_timestamp, sizeof(uint32_t));
+     ifs.read((char *)_data, 100 * sizeof(uint32_t));
 }
 
 float DataPoint::GetTS() const {
@@ -24,7 +26,7 @@ float* DataPoint::GetData() const {
 }
 
 DataPoint::~DataPoint(){
-     delete[] _data;
+     //delete[] _data;
 }
 
 

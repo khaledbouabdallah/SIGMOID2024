@@ -13,7 +13,7 @@ protected:
 public:
      Query(std::ifstream& ifs);
      
-     virtual void run (int& switchquery) = 0;
+     virtual void run (int& switchquery);
      
      ~Query();
 };

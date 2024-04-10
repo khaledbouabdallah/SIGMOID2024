@@ -1,6 +1,7 @@
 #include "DataBase.hpp"
 #include <fstream>
 #include "assert.h"
+#include <iostream>
 
 using namespace std;
 

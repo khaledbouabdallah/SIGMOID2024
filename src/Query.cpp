@@ -14,6 +14,9 @@ Query::Query(ifstream& ifs){
      ifs.read((char *)_data, DATA_SIZE * sizeof(float));
 }
 
+void Query::run(int& s){
+}
+
 Query::~Query(){
      delete[] _data;
 }
