@@ -17,15 +17,7 @@ private:
      /**< The poitn data. */
      float* _data; 
      
-public:
-    /**
-     * @brief Constructs a DataPoint object.
-     * @param timestamp The timestamp of the data point.
-     * @param c The value of c.
-     * @param data The data array.
-     */
-    DataPoint(float timestamp, int c, float* data);
-    
+public:    
     /**
      * @brief Constructs a DataPoint object from a binary input stream
      * @param ifs The inoput stream
@@ -49,6 +41,8 @@ public:
      * @return The data array.
      */
     float* GetData() const;
+    
+    ~DataPoint();
 };
 
 #endif
