@@ -13,7 +13,7 @@ include_directories(include)
 
 
 # Set the source files
-set(SOURCES src/main.cpp src/data.cpp)
+set(SOURCES src/main.cpp src/DataBase.cpp src/DataPoint.cpp)
 
 # Add the executable
 add_executable(TER ${SOURCES})
