@@ -14,15 +14,18 @@ public:
 class Answer {
 
 private:
-     Neighbour nns[DATA_SIZE];
+     Neighbour _nns[DATA_SIZE];
+     int _countPoints;
      
 public:
      Answer();
      ~Answer();
      
-     void InitWithIndices(int* indices, int start);
+     void CheckAndAdd(int indice, float distance);
      
-     void ComputeInitDistances(); 
+private:
+     void SiftUp(int indice);
+     void SiftDown(int indice);
 };
 
 #endif
