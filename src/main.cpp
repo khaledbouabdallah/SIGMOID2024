@@ -9,7 +9,7 @@ using namespace std;
 int main() {
     DataBase db = DataBase("../data/dummy-data.bin");
     db.SortByCatAndTS();
-    //db.SortByTS();
+    db.SortByTS();
     
     QuerySet queries = QuerySet("../data/dummy-queries.bin", db);
     //cout<<queries.GetQueryCount()<<endl;

@@ -19,6 +19,9 @@ DataBase::DataBase(const char* filename) {
           _data_points.push_back(p);
      }
      _countPoints = N;
+     _sortedIndNormal = new int[_countPoints];
+     for (int i = 0; i<N; ++i)
+          _sortedIndNormal[i] = i;
      cout<<_countPoints<<endl;
 }
 
@@ -138,6 +141,10 @@ int* DataBase::GetIndicesSortedByTS() const {
 }
 
 void DataBase::GetCatRange(int cat, int& start, int& end) const {
+     if (cat>=_countCategories) {
+          start = end = 0;
+          return;
+     }
      start = _catstart[cat];
      end = _catend[cat];
 }
@@ -150,6 +157,10 @@ void DataBase::GetTSRange(float lts, float rts, int& start, int& end) const {
      
 void DataBase::GetCatAndTSRange(int cat, float lts, float rts, int& start, int& end) const {
 //TODO
+     if (cat>=_countCategories) {
+          start = end = 0;
+          return;
+     }
      start = _catstart[cat];
      end = _catend[cat];
 }

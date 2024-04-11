@@ -3,6 +3,7 @@
 #include "globals.hpp"
 #include "Utils.hpp"
 #include <fstream>
+#include <iostream>
 #include "DataBase.hpp"
 
 
@@ -43,8 +44,14 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db){
       }
       
       //feed Answer instance with initial data
-      for (int i = 0; i<DATA_SIZE; ++i)
-          _answer.CheckAndAdd(_indices[_startIndice+i], distance(_db.GetPoint(_indices[_startIndice+i]).GetData(), _data));
+      for (int i = 0; i<DATA_SIZE; ++i) {
+          int crti = _startIndice+i;
+          if (crti>_endIndice) 
+               break;
+          const DataPoint& dp = _db.GetPoint(_indices[crti]);
+          float dist = distance(dp.GetData(), _data);
+          _answer.CheckAndAdd(_indices[crti],dist); 
+      }
 
 }
 

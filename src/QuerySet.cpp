@@ -1,5 +1,6 @@
 #include "QuerySet.hpp"
 #include <fstream>
+#include <iostream>
 #include "assert.h"
 #include "Query.hpp"
 
@@ -12,8 +13,11 @@ QuerySet::QuerySet(const char* filename, const DataBase& db): _db(db) {
      
      ifs.read((char *)&_queryCount, sizeof(uint32_t));
      _queries = new Query*[_queryCount];
-     for (int i = 0; i < _queryCount; ++i)
+     for (int i = 0; i < _queryCount; ++i) {
+          //cout<<"query "<<i<<endl;
           _queries[i] = new Query(ifs, db);
+     }
+          
 }
 
 int QuerySet::GetQueryCount(){
