@@ -69,7 +69,7 @@ void DataBase::SortByCatAndTS() {
          SiftByCatAndTS(0,i-1);
      }
      
-     /*
+     
      for (int i = 0; i<_countPoints-1; ++i) {
          DataPoint& dp1 = _data_points[_sortedIndByCatAndTS[i]];
          DataPoint& dp2 = _data_points[_sortedIndByCatAndTS[i+1]];
@@ -78,7 +78,7 @@ void DataBase::SortByCatAndTS() {
          else if (dp1.GetC() == dp2.GetC() && dp1.GetTS()>dp2.GetTS())
                 cout<<"not sorted by ts"<<endl;
      }
-     */
+     
      
      
 }
