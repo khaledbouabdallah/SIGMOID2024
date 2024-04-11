@@ -19,12 +19,27 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db){
      ifs.read((char *)&_tsr, sizeof(uint32_t));
      ifs.read((char *)_data, DATA_SIZE * sizeof(uint32_t));
      
-     //switch(_type):
-     //     case 0:
-     //          _indices = _db.get
-          
-          
-     //     _answer.InitWithIndices(_db.
+     switch(_type)
+     {
+          case 0:
+               _indices = _db.GetNormalIndices();
+               _startIndice = 0;
+               _endIndice = _db.GetSize();
+               break;
+          case 1:
+               _indices = _db.GetIndicesSortedByCatAndTS();
+               _db.GetCatRange(_c, _startIndice, _endIndice);
+               break;
+          case 2:
+               _indices = _db.GetIndicesSortedByTS();
+               _db.GetTSRange(_tsl, _tsr, _startIndice, _endIndice);
+               break;
+          case 3:
+               _indices = _db.GetIndicesSortedByCatAndTS();
+               _db.GetCatAndTSRange(_c, _tsl, _tsr, _startIndice, _endIndice);
+               break; 
+      }
+
 }
 
 void Query::run(int& s){

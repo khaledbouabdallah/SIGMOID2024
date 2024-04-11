@@ -42,7 +42,7 @@ DataPoint& DataBase::GetPoint(int index) {
     return _data_points[index];
 }
 
-int DataBase::GetSize() {
+int DataBase::GetSize() const {
     return _countPoints;
 }
 
@@ -123,32 +123,32 @@ void DataBase::SortByTS() {
 }
 
 
-int* DataBase::GetIndicesSortedByCatAndTS() {
+int* DataBase::GetIndicesSortedByCatAndTS() const {
      return _sortedIndByCatAndTS;
 }
 
    
-int* DataBase::GetNormalIndices(){
+int* DataBase::GetNormalIndices() const {
      return _sortedIndNormal;
 }
      
      
-int* DataBase::GetIndicesSortedByTS() {
+int* DataBase::GetIndicesSortedByTS() const {
      return _sortedIndByTS;
 }
 
-void DataBase::GetCatRange(int cat, int& start, int& end) {
+void DataBase::GetCatRange(int cat, int& start, int& end) const {
      start = _catstart[cat];
      end = _catend[cat];
 }
      
-void DataBase::GetTSRange(int lts, int rts, int& start, int& end) {
+void DataBase::GetTSRange(float lts, float rts, int& start, int& end) const {
 //TODO
      start = 0;
      end = _countPoints;
 }
      
-void DataBase::GetCatAndTSRange(int cat, int rts, int& start, int& end) {
+void DataBase::GetCatAndTSRange(int cat, float lts, float rts, int& start, int& end) const {
 //TODO
      start = _catstart[cat];
      end = _catend[cat];

@@ -62,7 +62,7 @@ public:
      * @brief Gets the size of the database.
      * @return The size of the database.
      */
-     int GetSize();
+     int GetSize() const;
      
      /**
      * @brief Creates indices array by sorting on category and timestamp
@@ -84,17 +84,17 @@ public:
      * @param end Output, the last indice in the range
      */  
      
-     int* GetNormalIndices();
+     int* GetNormalIndices() const;
      
-     int* GetIndicesSortedByCatAndTS();
+     int* GetIndicesSortedByCatAndTS() const;
      
-     int* GetIndicesSortedByTS();
+     int* GetIndicesSortedByTS() const;
      
-     void GetCatRange(int cat, int& start, int& end);
+     void GetCatRange(int cat, int& start, int& end) const;
      
-     void GetTSRange(int lts, int rts, int& start, int& end);
+     void GetTSRange(float lts, float rts, int& start, int& end) const;
      
-     void GetCatAndTSRange(int cat, int rts, int& start, int& end);
+     void GetCatAndTSRange(int cat, float lts, float rts, int& start, int& end) const;
 
      void NormalizeData();
 
