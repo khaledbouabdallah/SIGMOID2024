@@ -10,7 +10,7 @@ int main() {
     DataBase db = DataBase("../data/dummy-data.bin");
     db.SortByCatAndTS();
     
-    QuerySet queries = QuerySet("../data/dummy-queries.bin");
+    QuerySet queries = QuerySet("../data/dummy-queries.bin", db);
     cout<<queries.GetQueryCount()<<endl;
     
     return 0;

@@ -79,8 +79,13 @@ void DataBase::SortByCatAndTS() {
                 cout<<"not sorted by ts"<<endl;
      }
      */
+     
+     
 }
 
+int* DataBase::GetByCatAndTS(int cat, int lts, int rts, int&start, int& end) {
+     return _sortedIndByCatAndTS;
+}
 
 void DataBase::ComputeMeans() {
 

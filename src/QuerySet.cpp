@@ -5,7 +5,7 @@
 
 using namespace std;
 
-QuerySet::QuerySet(const char* filename) {     
+QuerySet::QuerySet(const char* filename, const DataBase& db): _db(db) {     
      ifstream ifs;
      ifs.open(filename, std::ios::binary);
      assert(ifs.is_open());
@@ -13,7 +13,7 @@ QuerySet::QuerySet(const char* filename) {
      ifs.read((char *)&_queryCount, sizeof(uint32_t));
      _queries = new Query*[_queryCount];
      for (int i = 0; i < _queryCount; ++i)
-          _queries[i] = new Query(ifs);
+          _queries[i] = new Query(ifs, db);
 }
 
 int QuerySet::GetQueryCount(){
