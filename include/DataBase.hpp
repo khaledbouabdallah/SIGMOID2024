@@ -2,6 +2,7 @@
 #define _DATABASE_HPP
 
 #include "DataPoint.hpp"
+#include "globals.hpp"
 #include <vector>
 
 /**
@@ -19,6 +20,10 @@ private:
       int* _sortedIndByTS;
       
       int _countPoints;
+
+      float* _means;
+
+      float* _stds;
 
 public:
      /**
@@ -58,6 +63,12 @@ public:
 private:
      
      void SiftByCatAndTS(int i, int n);
+
+     void ComputeMeans();
+
+     void ComputeStds();
+
+     void NormalizeData();
 
 };
 

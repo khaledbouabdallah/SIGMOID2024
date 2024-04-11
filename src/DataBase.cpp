@@ -3,6 +3,7 @@
 #include "assert.h"
 #include <iostream>
 #include "Utils.hpp"
+#include <cmath>
 
 using namespace std;
 
@@ -81,3 +82,43 @@ void DataBase::SortByCatAndTS() {
 }
 
 
+void DataBase::ComputeMeans() {
+
+     _means = new float[DATA_SIZE];
+     
+     // loop over all dimensions
+     for (int i = 0; i<DATA_SIZE; ++i) {
+          float sum = 0;
+          for (int j = 0; j<_countPoints; ++j) {
+               sum += _data_points[j].GetData()[i];
+          }
+          _means[i] = sum/_countPoints;
+     }
+
+}
+
+void DataBase::ComputeStds() {
+
+     _stds = new float[DATA_SIZE];
+     
+     // loop over all dimensions
+     for (int i = 0; i<DATA_SIZE; ++i) {
+          float sum = 0;
+          for (int j = 0; j<_countPoints; ++j) {
+               sum += (_data_points[j].GetData()[i] - _means[i])*(_data_points[j].GetData()[i] - _means[i]);
+          }
+          _stds[i] = sqrt(sum/_countPoints);
+     }
+
+}
+
+void DataBase::NormalizeData() {
+
+     for (int i = 0; i<_countPoints; ++i) {
+          float* data = _data_points[i].GetData();
+          for (int j = 0; j<DATA_SIZE; ++j) {
+               data[j] = (data[j] - _means[j])/_stds[j];
+          }
+     }
+
+}
