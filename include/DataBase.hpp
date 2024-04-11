@@ -60,6 +60,8 @@ public:
      
      int isGreaterByCatAndTS(int i, int j);
 
+     void NormalizeData();
+
 private:
      
      void SiftByCatAndTS(int i, int n);
@@ -68,7 +70,6 @@ private:
 
      void ComputeStds();
 
-     void NormalizeData();
 
 };
 
