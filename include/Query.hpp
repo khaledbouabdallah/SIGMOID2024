@@ -6,6 +6,7 @@
 class Query {
 
 protected:
+     int _type;
      int _c; 
      float _tsr;
      float _tsl;
