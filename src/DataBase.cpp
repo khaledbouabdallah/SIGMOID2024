@@ -119,6 +119,9 @@ void DataBase::ComputeStds() {
 
 void DataBase::NormalizeData() {
 
+     ComputeMeans();
+     ComputeStds();
+
      for (int i = 0; i<_countPoints; ++i) {
           float* data = _data_points[i].GetData();
           for (int j = 0; j<DATA_SIZE; ++j) {

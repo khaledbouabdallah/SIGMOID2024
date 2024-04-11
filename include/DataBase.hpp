@@ -71,6 +71,8 @@ public:
      */  
      int* GetByCatAndTS(int cat, int lts, int rts, int&start, int& end);
 
+     void NormalizeData();
+
 private:
      
      void SiftByCatAndTS(int i, int n);
@@ -81,7 +83,6 @@ private:
 
      void ComputeStds();
 
-     void NormalizeData();
 
 };
 
