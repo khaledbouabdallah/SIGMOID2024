@@ -19,9 +19,18 @@ DataBase::DataBase(const char* filename) {
           _data_points.push_back(p);
      }
      _countPoints = N;
+     cout<<_countPoints<<endl;
 }
 
 DataBase::~DataBase() {
+     //cleanup indices
+     delete[] _sortedIndByCatAndTS;
+     delete[] _sortedIndByTS;
+     delete[] _sortedIndNormal;
+     
+     //cleanup category data
+     delete[] _catstart;
+     delete[] _catend;
 }
 
 std::vector<DataPoint>& DataBase::GetPoints(){
@@ -69,7 +78,7 @@ void DataBase::SortByCatAndTS() {
          SiftByCatAndTS(0,i-1);
      }
      
-     
+     /*
      for (int i = 0; i<_countPoints-1; ++i) {
          DataPoint& dp1 = _data_points[_sortedIndByCatAndTS[i]];
          DataPoint& dp2 = _data_points[_sortedIndByCatAndTS[i+1]];
@@ -79,12 +88,70 @@ void DataBase::SortByCatAndTS() {
                 cout<<"not sorted by ts"<<endl;
      }
      
+     */
      
+     //first count categories, so as to allocate properly the arrays
+     _countCategories = 0;
+     int i=0;
+     while (i<_countPoints) {
+          _countCategories++;
+          i++;
+          while (i<_countPoints && _data_points[_sortedIndByCatAndTS[i]].GetC() == _data_points[_sortedIndByCatAndTS[i-1]].GetC())
+               i++;
+     }
+     cout<<_countCategories<<endl;
      
+     //now set start / end range for each category
+     _catstart = new int[_countCategories];
+     _catend = new int[_countCategories];
+     
+      i=0;
+      while (i<_countPoints) {
+          int crtcat = _data_points[_sortedIndByCatAndTS[i]].GetC();
+          _catstart[crtcat] = i;
+          i++;
+          while (i<_countPoints && _data_points[_sortedIndByCatAndTS[i]].GetC() == _data_points[_sortedIndByCatAndTS[i-1]].GetC())
+               i++;
+          _catend[crtcat] = i-1;
+     }
 }
 
-int* DataBase::GetByCatAndTS(int cat, int lts, int rts, int&start, int& end) {
+void DataBase::SortByTS() {
+     _sortedIndByTS = new int[_countPoints];
+     for (int i = 0; i<_countPoints; ++i)
+          _sortedIndByTS[i] = i;
+}
+
+
+int* DataBase::GetIndicesSortedByCatAndTS() {
      return _sortedIndByCatAndTS;
+}
+
+   
+int* DataBase::GetNormalIndices(){
+     return _sortedIndNormal;
+}
+     
+     
+int* DataBase::GetIndicesSortedByTS() {
+     return _sortedIndByTS;
+}
+
+void DataBase::GetCatRange(int cat, int& start, int& end) {
+     start = _catstart[cat];
+     end = _catend[cat];
+}
+     
+void DataBase::GetTSRange(int lts, int rts, int& start, int& end) {
+//TODO
+     start = 0;
+     end = _countPoints;
+}
+     
+void DataBase::GetCatAndTSRange(int cat, int rts, int& start, int& end) {
+//TODO
+     start = _catstart[cat];
+     end = _catend[cat];
 }
 
 void DataBase::ComputeMeans() {

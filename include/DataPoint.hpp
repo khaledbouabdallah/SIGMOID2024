@@ -13,7 +13,7 @@ private:
      /**< The timestamp of the data point. */
      float _timestamp; 
      /**< The value of category. */
-     int _c; 
+     uint32_t _c; 
      /**< The poitn data. */
      float* _data; 
      

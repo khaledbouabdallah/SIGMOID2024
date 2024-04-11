@@ -13,6 +13,9 @@ private:
       /**< The vector of data points. */
       std::vector<DataPoint> _data_points;
       
+      //indices of points sorted by normal order
+      int* _sortedIndNormal;
+      
       //indices of points sorted by category then TS
       int* _sortedIndByCatAndTS;
       
@@ -25,6 +28,11 @@ private:
       float* _means;
 
       float* _stds;
+      
+      //categories
+      int* _catstart;
+      int* _catend;
+      int _countCategories;
 
 public:
      /**
@@ -61,6 +69,12 @@ public:
      */
      void SortByCatAndTS();
      
+       
+     /**
+     * @brief Creates indices array by sorting on timestamp
+     */
+     void SortByTS();
+     
       /**
      * @brief Provides indices array and range (start and end) for the answers of a query
      * @param cat The query category
@@ -69,7 +83,18 @@ public:
      * @param start Output, the first indice in the range
      * @param end Output, the last indice in the range
      */  
-     int* GetByCatAndTS(int cat, int lts, int rts, int&start, int& end);
+     
+     int* GetNormalIndices();
+     
+     int* GetIndicesSortedByCatAndTS();
+     
+     int* GetIndicesSortedByTS();
+     
+     void GetCatRange(int cat, int& start, int& end);
+     
+     void GetTSRange(int lts, int rts, int& start, int& end);
+     
+     void GetCatAndTSRange(int cat, int rts, int& start, int& end);
 
      void NormalizeData();
 

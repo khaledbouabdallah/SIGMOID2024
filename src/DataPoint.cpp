@@ -9,7 +9,9 @@ using namespace std;
 
 DataPoint::DataPoint(ifstream& ifs){
      _data = new float[DATA_SIZE];
-     ifs.read((char *)&_c, sizeof(uint32_t));
+     float cfloat;
+     ifs.read((char *)&cfloat, sizeof(uint32_t)); //categories are stored as floats !!!
+     _c = int(cfloat);
      ifs.read((char *)&_timestamp, sizeof(uint32_t));
      ifs.read((char *)_data, DATA_SIZE * sizeof(uint32_t));
 }

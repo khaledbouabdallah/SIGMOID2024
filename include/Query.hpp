@@ -15,6 +15,10 @@ protected:
      float _tsl;
      float* _data; 
      
+     int* _indices;
+     int _startIndice;
+     int _endIndice;
+     
      Answer _answer;
      const DataBase& _db;
      
