@@ -1,10 +1,11 @@
 #include "Query.hpp"
 
 #include "globals.hpp"
-
+#include "Utils.hpp"
 #include <fstream>
-
 #include "DataBase.hpp"
+
+
 
 using namespace std;
 
@@ -19,6 +20,7 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db){
      ifs.read((char *)&_tsr, sizeof(uint32_t));
      ifs.read((char *)_data, DATA_SIZE * sizeof(uint32_t));
      
+     //fetch indice and range data
      switch(_type)
      {
           case 0:
@@ -39,6 +41,10 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db){
                _db.GetCatAndTSRange(_c, _tsl, _tsr, _startIndice, _endIndice);
                break; 
       }
+      
+      //feed Answer instance with initial data
+      for (int i = 0; i<DATA_SIZE; ++i)
+          _answer.CheckAndAdd(_indices[_startIndice+i], distance(_db.GetPoint(_indices[_startIndice+i]).GetData(), _data));
 
 }
 

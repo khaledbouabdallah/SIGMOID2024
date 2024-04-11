@@ -57,7 +57,7 @@ public:
      * @param index The index of the data point to get.
      * @return The data point at the specified index. 
      */
-     DataPoint& GetPoint(int index);
+     const DataPoint& GetPoint(int index) const;
      /**
      * @brief Gets the size of the database.
      * @return The size of the database.

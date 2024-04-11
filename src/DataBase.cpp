@@ -38,7 +38,7 @@ std::vector<DataPoint>& DataBase::GetPoints(){
 }
 
 
-DataPoint& DataBase::GetPoint(int index) {
+const DataPoint& DataBase::GetPoint(int index) const{
     return _data_points[index];
 }
 
