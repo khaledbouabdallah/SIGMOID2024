@@ -103,6 +103,10 @@ private:
      void SiftByCatAndTS(int i, int n);
           
      int isGreaterByCatAndTS(int i, int j);
+     
+     int getFirstPositionGE(float ts, int* indices, int start, int end);
+     
+     int getFirstPositionLE(float ts, int* indices, int start, int end);
 
      void ComputeMeans();
 

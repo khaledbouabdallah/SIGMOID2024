@@ -149,8 +149,34 @@ void DataBase::GetCatRange(int cat, int& start, int& end) const {
      end = _catend[cat];
 }
      
+int DataBase::getFirstPositionGE(float ts, int* indices, int start, int end) {
+     // the range from start to end (inc start, exc end) is sorted by ts
+     while (start<end) {
+          int mid = (start+end)/2;
+          if (ts>_data_points[indices[mid]].GetTS()) 
+               start = mid+1;
+          else
+               end = mid-1;
+     }
+     return end+1;
+}
+
+int DataBase::getFirstPositionLE(float ts, int* indices, int start, int end) {
+     // the range from start to end (inc start, exc end) is sorted by ts
+     while (start<end) {
+          int mid = (start+end)/2;
+          if (ts<_data_points[indices[mid]].GetTS()) 
+               end = mid-1;
+          else
+               start = mid+1;
+     }
+     return start-1;
+}
+     
 void DataBase::GetTSRange(float lts, float rts, int& start, int& end) const {
 //TODO
+     //has to bin search through the indices sorted by ts 
+     //to figure out the proper range
      start = 0;
      end = _countPoints;
 }
