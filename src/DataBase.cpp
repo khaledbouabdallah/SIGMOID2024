@@ -49,21 +49,21 @@ int DataBase::GetSize() const {
     return _countPoints;
 }
 
-int DataBase::isGreaterByCatAndTS(int i, int j){
-     if ((_data_points[i].GetC()>_data_points[j].GetC()) || (_data_points[i].GetC()==_data_points[j].GetC() && _data_points[i].GetTS()>_data_points[j].GetTS()))
+int DataBase::CompareByCatAndTS(const DataPoint& p1, const DataPoint& p2){
+     if ((p1.GetC()>p2.GetC()) || (p1.GetC()==p2.GetC() && p1.GetTS()>p2.GetTS()))
           return 1;
      return 0;
 }
 
-void DataBase::SiftByCatAndTS(int i, int n){
+void DataBase::SiftIndices(int* indices, int i, int n, int (*funccomp)(const DataPoint&, const DataPoint&)){
      while (1) {
           int indmax = i;
-          if (2*i+1<n && isGreaterByCatAndTS(_sortedIndByCatAndTS[2*i+1], _sortedIndByCatAndTS[indmax]))
+          if (2*i+1<n && funccomp(_data_points[_sortedIndByCatAndTS[2*i+1]], _data_points[_sortedIndByCatAndTS[indmax]]))
                indmax = 2*i+1;
-          if (2*i+2<n && isGreaterByCatAndTS(_sortedIndByCatAndTS[2*i+2], _sortedIndByCatAndTS[indmax]))
+          if (2*i+2<n && funccomp(_data_points[_sortedIndByCatAndTS[2*i+2]], _data_points[_sortedIndByCatAndTS[indmax]]))
                indmax = 2*i+2;
           if (indmax == i) break;
-          swapIndices(_sortedIndByCatAndTS, indmax, i);
+          swapIndices(indices, indmax, i);
           i = indmax;
      } 
 }
@@ -74,14 +74,14 @@ void DataBase::SortByCatAndTS() {
           _sortedIndByCatAndTS[i] = i;
      
      for (int i =_countPoints/2; i>=0; i--)
-          SiftByCatAndTS(i,_countPoints);
+          SiftIndices(_sortedIndByCatAndTS,i,_countPoints,CompareByCatAndTS);
      
      for (int i = _countPoints-1; i>=1; i--) {
          swapIndices(_sortedIndByCatAndTS, 0, i);
-         SiftByCatAndTS(0,i-1);
+          SiftIndices(_sortedIndByCatAndTS,0,i-1,CompareByCatAndTS);
      }
      
-     /*
+     
      for (int i = 0; i<_countPoints-1; ++i) {
          DataPoint& dp1 = _data_points[_sortedIndByCatAndTS[i]];
          DataPoint& dp2 = _data_points[_sortedIndByCatAndTS[i+1]];
@@ -90,8 +90,6 @@ void DataBase::SortByCatAndTS() {
          else if (dp1.GetC() == dp2.GetC() && dp1.GetTS()>dp2.GetTS())
                 cout<<"not sorted by ts"<<endl;
      }
-     
-     */
      
      //first count categories, so as to allocate properly the arrays
      _countCategories = 0;

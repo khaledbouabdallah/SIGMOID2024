@@ -100,9 +100,9 @@ public:
 
 private:
      
-     void SiftByCatAndTS(int i, int n);
+     void SiftIndices(int*, int i, int n, int (*funccomp)(const DataPoint&, const DataPoint&));
           
-     int isGreaterByCatAndTS(int i, int j);
+     static int CompareByCatAndTS(const DataPoint& p1, const DataPoint& p2);;
      
      int GetFirstPositionGE(float ts, int* indices, int start, int end) const;
      
