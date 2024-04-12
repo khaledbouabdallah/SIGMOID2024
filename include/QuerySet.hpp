@@ -25,15 +25,22 @@ public:
      * @param filename The file name
      */
      QuerySet(const char* filename, const DataBase& db);
+     
      /**
      * @brief Gets the query count of the database.
      * @return The query count of the database.
      */
      int GetQueryCount();
+     
+     /**
+     * @brief Writes query results in the output file.
+     */
+     void WriteOutput(const char* filename);
+     
      /**
      * @brief Destroys the DataBase object.
      */
-    ~QuerySet();
+     ~QuerySet();
 };
 
 #endif 

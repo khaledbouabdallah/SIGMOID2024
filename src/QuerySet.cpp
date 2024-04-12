@@ -29,4 +29,11 @@ QuerySet::~QuerySet(){
           delete _queries[i];
      delete[] _queries;
 }
+
+void QuerySet::WriteOutput(const char* filename){
+     std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+     for (int i = 0; i < _queryCount; ++i)
+          _queries[i]->WriteOutput(ofs);
+     ofs.close();
+}
      

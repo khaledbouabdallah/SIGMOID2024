@@ -6,8 +6,6 @@
 #include <iostream>
 #include "DataBase.hpp"
 
-
-
 using namespace std;
 
 Query::Query(ifstream& ifs, const DataBase& db): _db(db){
@@ -56,6 +54,11 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db){
 }
 
 void Query::run(int& s){
+}
+
+void Query::WriteOutput(ofstream& ofs) {
+     _answer.FillMissing();
+     _answer.WriteOutput(ofs);
 }
 
 Query::~Query(){

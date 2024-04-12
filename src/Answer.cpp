@@ -56,3 +56,15 @@ void Answer::SiftDown(int indice) {
       indice = indmax;
    }
 }
+
+void Answer::FillMissing(){
+     if (_countPoints < DATA_SIZE) 
+          for (int i = _countPoints; i<DATA_SIZE; ++i)
+               _nns[i]._indice = _nns[0]._indice;
+}    
+
+void Answer::WriteOutput(ofstream& ofs){
+     for (int i = 0; i < DATA_SIZE; ++i) 
+          ofs.write(reinterpret_cast<char const *>(&(_nns[i]._indice)), sizeof(uint32_t));
+}
+ 

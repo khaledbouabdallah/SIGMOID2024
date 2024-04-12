@@ -16,7 +16,7 @@ int main() {
     db.SortByTS();
     
     QuerySet queries = QuerySet("../data/dummy-queries.bin", db);
-    //cout<<queries.GetQueryCount()<<endl;
+    queries.WriteOutput("../data/dummy-output.bin");
     
     return 0;
 }

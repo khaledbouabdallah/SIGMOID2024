@@ -2,6 +2,9 @@
 #define _ANSWER_H
 
 #include "globals.hpp"
+#include <fstream>
+
+using namespace std;
 
 class Database;
 
@@ -22,6 +25,10 @@ public:
      ~Answer();
      
      void CheckAndAdd(int indice, float distance);
+     
+     void FillMissing();
+     
+     void WriteOutput(std::ofstream& ofs);
      
 private:
      void SiftUp(int indice);

@@ -25,9 +25,13 @@ protected:
 public:
      Query(std::ifstream& ifs, const DataBase& db);
      
+     ~Query();
+     
+     void WriteOutput(std::ofstream& ofs);
+
      virtual void run (int& switchquery);
      
-     ~Query();
+     
 };
 
 #endif
