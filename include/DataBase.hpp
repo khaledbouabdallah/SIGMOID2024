@@ -104,9 +104,9 @@ private:
           
      int isGreaterByCatAndTS(int i, int j);
      
-     int getFirstPositionGE(float ts, int* indices, int start, int end);
+     int GetFirstPositionGE(float ts, int* indices, int start, int end) const;
      
-     int getFirstPositionLE(float ts, int* indices, int start, int end);
+     int GetLastPositionLE(float ts, int* indices, int start, int end) const;
 
      void ComputeMeans();
 

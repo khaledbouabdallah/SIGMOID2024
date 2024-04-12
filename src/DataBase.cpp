@@ -149,7 +149,7 @@ void DataBase::GetCatRange(int cat, int& start, int& end) const {
      end = _catend[cat];
 }
      
-int DataBase::getFirstPositionGE(float ts, int* indices, int start, int end) {
+int DataBase::GetFirstPositionGE(float ts, int* indices, int start, int end) const {
      // the range from start to end (inc start, exc end) is sorted by ts
      while (start<end) {
           int mid = (start+end)/2;
@@ -161,7 +161,7 @@ int DataBase::getFirstPositionGE(float ts, int* indices, int start, int end) {
      return end+1;
 }
 
-int DataBase::getFirstPositionLE(float ts, int* indices, int start, int end) {
+int DataBase::GetLastPositionLE(float ts, int* indices, int start, int end) const {
      // the range from start to end (inc start, exc end) is sorted by ts
      while (start<end) {
           int mid = (start+end)/2;
@@ -183,12 +183,15 @@ void DataBase::GetTSRange(float lts, float rts, int& start, int& end) const {
      
 void DataBase::GetCatAndTSRange(int cat, float lts, float rts, int& start, int& end) const {
 //TODO
+     /*
      if (cat>=_countCategories) {
           start = end = 0;
           return;
      }
      start = _catstart[cat];
-     end = _catend[cat];
+     end = _catend[cat];*/
+     start = GetFirstPositionGE(lts, _sortedIndByCatAndTS, _catstart[cat], _catend[cat]+1);    
+     end = GetLastPositionLE(lts, _sortedIndByCatAndTS, _catstart[cat], _catend[cat]+1);  
 }
 
 void DataBase::ComputeMeans() {
