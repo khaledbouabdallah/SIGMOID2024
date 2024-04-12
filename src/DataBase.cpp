@@ -7,7 +7,7 @@
 
 using namespace std;
 
-DataBase::DataBase(const char* filename) {     
+DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL)  {     
      ifstream ifs;
      ifs.open(filename, std::ios::binary);
      assert(ifs.is_open());
@@ -18,11 +18,13 @@ DataBase::DataBase(const char* filename) {
           DataPoint p(ifs);
           _data_points.push_back(p);
      }
+     
      _countPoints = N;
      _sortedIndNormal = new int[_countPoints];
-     for (int i = 0; i<N; ++i)
-          _sortedIndNormal[i] = i;
-     cout<<_countPoints<<endl;
+     _sortedIndByCatAndTS = new int[_countPoints];
+     _sortedIndByTS = new int[_countPoints];
+     for (int i = 0; i<_countPoints; ++i)
+          _sortedIndByTS[i] = _sortedIndNormal[i] = _sortedIndByCatAndTS[i] = i;
 }
 
 DataBase::~DataBase() {
@@ -32,8 +34,10 @@ DataBase::~DataBase() {
      delete[] _sortedIndNormal;
      
      //cleanup category data
-     delete[] _catstart;
-     delete[] _catend;
+     if (_catstart)
+          delete[] _catstart;
+     if (_catend)
+          delete[] _catend;
 }
 
 std::vector<DataPoint>& DataBase::GetPoints(){
@@ -41,7 +45,7 @@ std::vector<DataPoint>& DataBase::GetPoints(){
 }
 
 
-const DataPoint& DataBase::GetPoint(int index) const{
+const DataPoint& DataBase::GetPoint(int index) const {
     return _data_points[index];
 }
 
@@ -55,43 +59,73 @@ int DataBase::CompareByCatAndTS(const DataPoint& p1, const DataPoint& p2){
      return 0;
 }
 
+int DataBase::CompareByTS(const DataPoint& p1, const DataPoint& p2){
+     if (p1.GetTS()>p2.GetTS())
+          return 1;
+     return 0;
+}
+
+void DataBase::SwapIndices(int* indicesArray, int ind1, int ind2) {
+     int aux = indicesArray[ind1]; 
+     indicesArray[ind1] = indicesArray[ind2];
+     indicesArray[ind2] = aux;
+}
+
 void DataBase::SiftIndices(int* indices, int i, int n, int (*funccomp)(const DataPoint&, const DataPoint&)){
      while (1) {
           int indmax = i;
-          if (2*i+1<n && funccomp(_data_points[_sortedIndByCatAndTS[2*i+1]], _data_points[_sortedIndByCatAndTS[indmax]]))
+          if (2*i+1<n && funccomp(_data_points[indices[2*i+1]], _data_points[indices[indmax]]))
                indmax = 2*i+1;
-          if (2*i+2<n && funccomp(_data_points[_sortedIndByCatAndTS[2*i+2]], _data_points[_sortedIndByCatAndTS[indmax]]))
+          if (2*i+2<n && funccomp(_data_points[indices[2*i+2]], _data_points[indices[indmax]]))
                indmax = 2*i+2;
           if (indmax == i) break;
-          swapIndices(indices, indmax, i);
+          SwapIndices(indices, indmax, i);
           i = indmax;
      } 
 }
 
-void DataBase::SortByCatAndTS() {
-     _sortedIndByCatAndTS = new int[_countPoints];
-     for (int i = 0; i<_countPoints; ++i)
-          _sortedIndByCatAndTS[i] = i;
-     
+void DataBase::Sort(int* indices, int (*funccomp)(const DataPoint&, const DataPoint&)) {
      for (int i =_countPoints/2; i>=0; i--)
-          SiftIndices(_sortedIndByCatAndTS,i,_countPoints,CompareByCatAndTS);
-     
+          SiftIndices(indices,i,_countPoints,funccomp);
+          
+     //check
+     /*
+     for (int i = 0; i<_countPoints/2; ++i) {
+         DataPoint& dp1 = _data_points[indices[i]];
+         if (2*i+1>=_countPoints) continue; 
+         DataPoint& dp2 = _data_points[indices[2*i+1]];
+         if (funccomp(dp2,dp1)) cout<<"error child left"<<endl;
+         if (2*i+2>=_countPoints) continue; 
+         DataPoint& dp3 = _data_points[indices[2*i+1]];
+         if (funccomp(dp3,dp1)) cout<<"error child right"<<endl;
+     }
+     */
+
      for (int i = _countPoints-1; i>=1; i--) {
-         swapIndices(_sortedIndByCatAndTS, 0, i);
-          SiftIndices(_sortedIndByCatAndTS,0,i-1,CompareByCatAndTS);
+         SwapIndices(indices, 0, i);
+         SiftIndices(indices,0,i,funccomp);
      }
      
-     
+     //check
+     /*
      for (int i = 0; i<_countPoints-1; ++i) {
-         DataPoint& dp1 = _data_points[_sortedIndByCatAndTS[i]];
-         DataPoint& dp2 = _data_points[_sortedIndByCatAndTS[i+1]];
-         if (dp1.GetC()>dp2.GetC())
-               cout<<"not sorted by cat"<<endl;
-         else if (dp1.GetC() == dp2.GetC() && dp1.GetTS()>dp2.GetTS())
-                cout<<"not sorted by ts"<<endl;
+         DataPoint& dp1 = _data_points[indices[i]];
+         DataPoint& dp2 = _data_points[indices[i+1]];
+         if (funccomp(dp1, dp2)) {
+               cout<<"not sorted"<<endl;
+               cout<<dp1.GetTS()<<endl;
+               cout<<dp2.GetTS()<<endl;
+         }
      }
-     
-     //first count categories, so as to allocate properly the arrays
+     */
+}
+
+void DataBase::SortByCatAndTS() {
+     Sort(_sortedIndByCatAndTS, CompareByCatAndTS);
+}
+
+void DataBase::ProcessCategories() {
+     //count categories, so as to allocate properly the arrays
      _countCategories = 0;
      int i=0;
      while (i<_countPoints) {
@@ -118,9 +152,7 @@ void DataBase::SortByCatAndTS() {
 }
 
 void DataBase::SortByTS() {
-     _sortedIndByTS = new int[_countPoints];
-     for (int i = 0; i<_countPoints; ++i)
-          _sortedIndByTS[i] = i;
+     Sort(_sortedIndByTS, CompareByTS);
 }
 
 
@@ -139,10 +171,7 @@ int* DataBase::GetIndicesSortedByTS() const {
 }
 
 void DataBase::GetCatRange(int cat, int& start, int& end) const {
-     if (cat>=_countCategories) {
-          start = end = 0;
-          return;
-     }
+     assert (cat<_countCategories);
      start = _catstart[cat];
      end = _catend[cat];
 }
@@ -172,22 +201,12 @@ int DataBase::GetLastPositionLE(float ts, int* indices, int start, int end) cons
 }
      
 void DataBase::GetTSRange(float lts, float rts, int& start, int& end) const {
-//TODO
-     //has to bin search through the indices sorted by ts 
-     //to figure out the proper range
-     start = 0;
-     end = _countPoints;
+     start = GetFirstPositionGE(lts, _sortedIndByTS, 0, _countPoints);    
+     end = GetLastPositionLE(lts, _sortedIndByTS, 0, _countPoints); 
 }
      
 void DataBase::GetCatAndTSRange(int cat, float lts, float rts, int& start, int& end) const {
-//TODO
-     /*
-     if (cat>=_countCategories) {
-          start = end = 0;
-          return;
-     }
-     start = _catstart[cat];
-     end = _catend[cat];*/
+     assert (cat<_countCategories);
      start = GetFirstPositionGE(lts, _sortedIndByCatAndTS, _catstart[cat], _catend[cat]+1);    
      end = GetLastPositionLE(lts, _sortedIndByCatAndTS, _catstart[cat], _catend[cat]+1);  
 }

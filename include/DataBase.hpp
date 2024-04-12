@@ -40,12 +40,12 @@ public:
      * @param data_points The vector of data points.
      */
      DataBase(const char* filename);
-      /**
+     
+     /**
      * @brief Destroys the DataBase object.
      */
-    ~DataBase();
+     ~DataBase();
     
-  
      /**
      * @brief Gets the vector of data points.
      * @return The vector of data points.
@@ -58,6 +58,7 @@ public:
      * @return The data point at the specified index. 
      */
      const DataPoint& GetPoint(int index) const;
+     
      /**
      * @brief Gets the size of the database.
      * @return The size of the database.
@@ -68,12 +69,16 @@ public:
      * @brief Creates indices array by sorting on category and timestamp
      */
      void SortByCatAndTS();
-     
        
      /**
      * @brief Creates indices array by sorting on timestamp
      */
      void SortByTS();
+     
+      /**
+     * @brief Creates data for categories range
+     */
+     void ProcessCategories();
      
       /**
      * @brief Provides indices array and range (start and end) for the answers of a query
@@ -101,8 +106,14 @@ public:
 private:
      
      void SiftIndices(int*, int i, int n, int (*funccomp)(const DataPoint&, const DataPoint&));
+     
+     void Sort(int*, int (*funccomp)(const DataPoint&, const DataPoint&));
           
-     static int CompareByCatAndTS(const DataPoint& p1, const DataPoint& p2);;
+     static int CompareByCatAndTS(const DataPoint& p1, const DataPoint& p2);
+     
+     static int CompareByTS(const DataPoint& p1, const DataPoint& p2);
+     
+     static void SwapIndices(int* indicesArray, int ind1, int ind2);
      
      int GetFirstPositionGE(float ts, int* indices, int start, int end) const;
      
