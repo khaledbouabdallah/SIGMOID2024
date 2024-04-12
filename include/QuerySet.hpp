@@ -33,6 +33,12 @@ public:
      int GetQueryCount();
      
      /**
+     * @brief Gets the queries
+     * @return The queries
+     */
+     Query** GetQueries() const;
+     
+     /**
      * @brief Writes query results in the output file.
      */
      void WriteOutput(const char* filename);

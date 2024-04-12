@@ -24,8 +24,8 @@ void Answer::SiftUp(int indice) {
    while(1) {
       int indmin = indice;
       // check
-      if(_nns[indice/2]._distance < _nns[indice]._distance)
-         indmin = indice/2;
+      if(_nns[(indice-1)/2]._distance < _nns[indice]._distance)
+         indmin = (indice-1)/2;
       if(indmin == indice)
          break;
       // swap values
@@ -38,7 +38,7 @@ void Answer::SiftUp(int indice) {
 }
 
 void Answer::SiftDown(int indice) {
-   int n = _countPoints + 1;
+   int n = _countPoints ;
    while(1) {
       int indmax = indice;
       // check

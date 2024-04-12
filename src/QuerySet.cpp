@@ -4,6 +4,7 @@
 #include "assert.h"
 #include "Query.hpp"
 #include "QuerySeqScan.hpp"
+#include "QuerySeqScanRange.hpp"
 
 using namespace std;
 
@@ -16,13 +17,17 @@ QuerySet::QuerySet(const char* filename, const DataBase& db): _db(db) {
      _queries = new Query*[_queryCount];
      for (int i = 0; i < _queryCount; ++i) {
           //cout<<"query "<<i<<endl;
-          _queries[i] = new QuerySeqScan(ifs, db);
+          _queries[i] = new QuerySeqScanRange(ifs, db);
      }
           
 }
 
 int QuerySet::GetQueryCount(){
      return _queryCount;
+}
+
+Query** QuerySet::GetQueries() const {
+     return _queries;
 }
 
 QuerySet::~QuerySet(){
