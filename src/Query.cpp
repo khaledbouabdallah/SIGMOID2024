@@ -17,8 +17,11 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db){
      _c=int(dummyfloat);
      ifs.read((char *)&_tsl, sizeof(uint32_t));
      ifs.read((char *)&_tsr, sizeof(uint32_t));
-     ifs.read((char *)_data, DATA_SIZE * sizeof(uint32_t));
-     
+     ifs.read((char *)_data, DATA_SIZE * sizeof(uint32_t));   
+}
+
+void Query::InitIndicesAndRanges(){
+         
      //fetch indice and range data
      switch(_type)
      {
@@ -40,8 +43,11 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db){
                _db.GetCatAndTSRange(_c, _tsl, _tsr, _startIndice, _endIndice);
                break; 
       }
-      
+}
+
+void Query::InitAnswerWithRanges(){
       //feed Answer instance with initial data
+      //it assumes correct ranges
       for (int i = 0; i<DATA_SIZE; ++i) {
           int crti = _startIndice+i;
           if (crti>_endIndice) 
@@ -50,11 +56,8 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db){
           float dist = distance(dp.GetData(), _data);
           _answer.CheckAndAdd(_indices[crti],dist); 
       }
-
 }
 
-void Query::run(int& s){
-}
 
 void Query::WriteOutput(ofstream& ofs) {
      _answer.FillMissing();

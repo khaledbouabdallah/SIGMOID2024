@@ -26,12 +26,16 @@ public:
      Query(std::ifstream& ifs, const DataBase& db);
      
      ~Query();
-     
+        
      void WriteOutput(std::ofstream& ofs);
 
-     virtual void run (int& switchquery);
+     virtual void run (int& switchquery) = 0;     
      
-     
+protected:
+
+     void InitIndicesAndRanges();
+
+     void InitAnswerWithRanges();
 };
 
 #endif
