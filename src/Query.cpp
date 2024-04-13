@@ -64,6 +64,13 @@ void Query::WriteOutput(ofstream& ofs) {
      _answer.WriteOutput(ofs);
 }
 
+int Query::IsValid(const DataPoint& p) const {
+     if ((_type == 1 || _type ==3) && (_c!=p.GetC())) return 0;
+     if ((_type == 2 || _type ==3) && (_tsl>p.GetTS() || _tsr<p.GetTS())) return 0;
+     return 1;
+}
+
+
 Query::~Query(){
      delete[] _data;
 }

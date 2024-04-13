@@ -22,11 +22,11 @@ int main() {
      
      int dummyswitch;
      for (int i = 0; i<nq; ++i) {
-          //cout<<i<<endl;
+          //cout<<"running query "<<i<<endl;
           queries[i]-> run(dummyswitch);
      }
           
-     qset.WriteOutput("../data/dummy-output.bin");
+     qset.WriteOutput("../data/dummy-output-seqscanrange.bin");
      
      return 0;
 }

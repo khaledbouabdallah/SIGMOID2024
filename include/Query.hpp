@@ -5,6 +5,7 @@
 #include "Answer.hpp"
 
 class DataBase;
+class DataPoint;
 
 class Query {
 
@@ -28,6 +29,8 @@ public:
      ~Query();
         
      void WriteOutput(std::ofstream& ofs);
+     
+     int IsValid(const DataPoint& p) const;
 
      virtual void run (int& switchquery) = 0;     
      
