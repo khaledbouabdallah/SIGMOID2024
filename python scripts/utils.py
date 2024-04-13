@@ -110,6 +110,8 @@ def knn(data, query, k):
         
     return res, dist, dist_to_return
 
+
+# function to get the distances for a knn output (has only ids)
 def distances(output, dist):
     
     m = output.shape[0] # number of query points
@@ -120,10 +122,6 @@ def distances(output, dist):
     for i in range(m):      
         dist_output[i] = dist[output[i], i]
     return dist_output
-
-
-
-
 
 # Function to split the normal distribution into n equal parts 
 # n:  SAX alphabet size
@@ -144,3 +142,31 @@ def split_normal_distribution(n):
 
     # Return the z-scores
     return z_scores[1:-1]
+
+
+def _recall(idx1, idx2, dist1, dist2):
+    """
+    idx1, idx2: 2d array of shape (n_queries, k) 
+    dist1, dist2: 2d array of shape (n_queries, k)
+    idx1 treated as true knn
+    """
+    
+    # replace inf with max value and return the index of the max value and max value 
+    idx1[idx1 == np.inf] = np.max(idx1[np.isfinite(idx1)])
+    id_max = dist1.argmax()
+    _max = dist1.max()
+    # remove dublicates from idx2 and keep their indexes to remove the same indexes from dist2
+    idx2_unique, idx2_idx = np.unique(idx2, return_index=True)
+    dist2_unique = dist2[idx2_idx]
+    # remove elemnts that are > _max from idx2 and dist2
+    dist2_unique = dist2_unique[dist2_unique <= _max]
+    # calculate recall: 
+    recall = dist2_unique.shape[0] / (id_max+1)
+    print(dist2_unique.shape[0], "/", id_max+1 )
+    return recall
+
+def recall(output_true, output, dist_true, dist):   
+    recall_ = 0
+    for i in range(output_true.shape[0]):
+        recall_ += _recall(output_true[i], output[i], dist_true[i], dist[i])
+    return recall_/ output_true.shape[0]
