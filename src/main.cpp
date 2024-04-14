@@ -1,18 +1,28 @@
 #include "DataBase.hpp"
 #include "QuerySet.hpp"
 #include "Query.hpp"
+#include "globals.hpp"
+#include <signal.h>
 #include <iostream>
 #include <fstream>
 
 using namespace std;
 
 
-int done = 0;
+volatile int done = 0;
 
-#define NTHREAD
+
+void timesup (int sig){
+     done = 1;
+}
 
 
 int main() {
+     done = 0;
+     signal( SIGALRM, timesup);
+     alarm(MINSTORUN*60);
+     
+
      DataBase db = DataBase("../data/dummy-data.bin");
      cout<<"sorting by cat and ts"<<endl;
      db.SortByCatAndTS();
@@ -32,6 +42,9 @@ int main() {
           queries[i]-> run(dummyswitch);
           //queries[i]->WriteOutput(ofs);
      }
+     
+    // while (!done) {}
+     
           
      qset.WriteOutput("../data/dummy-output-seqscanrange.bin");
      

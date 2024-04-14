@@ -6,8 +6,12 @@
 using std::string;
 
 #define DATA_SIZE 100
+#define NTHREAD 4
+#define MINSTORUN 1
 
-extern int done;
+
+extern volatile 
+int done;
 // Add your constant declarations here
 
 const int VECTOR_SIZE = 102; // The size of the vector
