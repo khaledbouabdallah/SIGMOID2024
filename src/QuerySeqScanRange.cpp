@@ -19,7 +19,7 @@ void QuerySeqScanRange::run (int& switchquery){
      for (int i = _startIndice+DATA_SIZE; i< _endIndice; ++i) {
           //cout<<i<<" "<<_indices[i]<<endl;
           const DataPoint& p = _db.GetPoint(_indices[i]);
-          float dist = distance(p.GetData(), _data);
+          float dist = getDistance(p.GetData(), _data);
           _answer.CheckAndAdd(_indices[i],dist);
      } 
 }

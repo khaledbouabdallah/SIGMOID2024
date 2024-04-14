@@ -1,4 +1,7 @@
 #include "Answer.hpp"
+#include <iostream>
+
+using namespace std;
 
 Answer::Answer(): _countPoints(0) {
 }
@@ -64,6 +67,8 @@ void Answer::FillMissing(){
 }    
 
 void Answer::WriteOutput(ofstream& ofs){
+     //for (int i = 0; i < 100; ++i) 
+     //     cout<<_nns[i]._indice<<" "<<_nns[i]._distance<<endl;
      for (int i = 0; i < DATA_SIZE; ++i) 
           ofs.write(reinterpret_cast<char const *>(&(_nns[i]._indice)), sizeof(uint32_t));
 }

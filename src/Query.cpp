@@ -53,7 +53,7 @@ void Query::InitAnswerWithRanges(){
           if (crti>_endIndice) 
                break;
           const DataPoint& dp = _db.GetPoint(_indices[crti]);
-          float dist = distance(dp.GetData(), _data);
+          float dist = getDistance(dp.GetData(), _data);
           _answer.CheckAndAdd(_indices[crti],dist); 
       }
 }
