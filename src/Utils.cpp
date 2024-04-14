@@ -22,3 +22,29 @@ float getDistance(float* data1, float* data2) {
      
      return sqrt(sum);
 }
+
+float* getBreakPoints(int numSegments) {
+    switch (numSegments)
+    {
+    case 2:
+        return (float*)BREAK_POINTS_2;
+    case 3:
+        return (float*)BREAK_POINTS_3;
+    case 8:
+        return (float*)BREAK_POINTS_8;
+    case 16:
+        return (float*)BREAK_POINTS_16;
+    case 32:
+        return (float*)BREAK_POINTS_32;
+    case 64:
+        return (float*)BREAK_POINTS_64;
+    case 128:
+        return (float*)BREAK_POINTS_128;
+    case 256:
+        return (float*)BREAK_POINTS_256;
+    case 512:
+        return (float*)BREAK_POINTS_512;
+    default:
+        return (float*)BREAK_POINTS_256;
+    }
+}
