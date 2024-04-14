@@ -23,6 +23,8 @@ protected:
      Answer _answer;
      const DataBase& _db;
      
+     int _isFinished;
+     
 public:
      Query(std::ifstream& ifs, const DataBase& db);
      
@@ -32,7 +34,9 @@ public:
      
      int IsValid(const DataPoint& p) const;
 
-     virtual void run (int& switchquery) = 0;     
+     virtual void run (int& switchquery) = 0;   
+     
+     int IsFinished();  
      
 protected:
 

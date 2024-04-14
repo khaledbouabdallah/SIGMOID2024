@@ -15,11 +15,10 @@ QuerySeqScanRange::~QuerySeqScanRange(){
 }
 
 void QuerySeqScanRange::run (int& switchquery){
-     //cout<<_startIndice<<" "<<_endIndice<<endl;
      for (int i = _startIndice+DATA_SIZE; i< _endIndice; ++i) {
-          //cout<<i<<" "<<_indices[i]<<endl;
           const DataPoint& p = _db.GetPoint(_indices[i]);
           float dist = getDistance(p.GetData(), _data);
           _answer.CheckAndAdd(_indices[i],dist);
      } 
+     _isFinished = 1;
 }

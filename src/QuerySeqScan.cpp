@@ -18,5 +18,6 @@ void QuerySeqScan::run (int& switchquery){
           
           _answer.CheckAndAdd(i,dist);
      } 
+     _isFinished = 1;
 }
 

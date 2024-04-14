@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Query::Query(ifstream& ifs, const DataBase& db): _db(db){
+Query::Query(ifstream& ifs, const DataBase& db): _db(db), _isFinished(0){
      _data = new float[DATA_SIZE];
      float dummyfloat;
      ifs.read((char *)&dummyfloat, sizeof(uint32_t));
@@ -70,6 +70,9 @@ int Query::IsValid(const DataPoint& p) const {
      return 1;
 }
 
+int Query::IsFinished() {
+     return _isFinished;
+}
 
 Query::~Query(){
      delete[] _data;
