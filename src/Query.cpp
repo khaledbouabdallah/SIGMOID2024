@@ -42,7 +42,7 @@ void Query::InitIndicesAndRanges(){
                _indices = _db.GetIndicesSortedByCatAndTS();
                _db.GetCatAndTSRange(_c, _tsl, _tsr, _startIndice, _endIndice);
                break; 
-      }
+      }   
 }
 
 void Query::InitAnswerWithRanges(){

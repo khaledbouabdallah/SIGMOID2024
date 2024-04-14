@@ -173,7 +173,7 @@ int* DataBase::GetIndicesSortedByTS() const {
 void DataBase::GetCatRange(int cat, int& start, int& end) const {
      assert (cat<_countCategories);
      start = _catstart[cat];
-     end = _catend[cat];
+     end = _catend[cat]+1;
 }
      
 int DataBase::GetFirstPositionGE(float ts, int* indices, int start, int end) const {
@@ -202,13 +202,13 @@ int DataBase::GetLastPositionLE(float ts, int* indices, int start, int end) cons
      
 void DataBase::GetTSRange(float lts, float rts, int& start, int& end) const {
      start = GetFirstPositionGE(lts, _sortedIndByTS, 0, _countPoints);    
-     end = GetLastPositionLE(lts, _sortedIndByTS, 0, _countPoints); 
+     end = GetLastPositionLE(rts, _sortedIndByTS, 0, _countPoints)+1; 
 }
      
 void DataBase::GetCatAndTSRange(int cat, float lts, float rts, int& start, int& end) const {
      assert (cat<_countCategories);
      start = GetFirstPositionGE(lts, _sortedIndByCatAndTS, _catstart[cat], _catend[cat]+1);    
-     end = GetLastPositionLE(lts, _sortedIndByCatAndTS, _catstart[cat], _catend[cat]+1);  
+     end = GetLastPositionLE(rts, _sortedIndByCatAndTS, _catstart[cat], _catend[cat]+1)+1;  
 }
 
 void DataBase::ComputeMeans() {
