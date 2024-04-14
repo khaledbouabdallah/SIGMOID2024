@@ -2,6 +2,7 @@
 #define _ISAX_HPP
 
 #include "globals.hpp"
+#include "DataBase.hpp"
 #include <vector>
 
 using std::vector;
@@ -16,15 +17,23 @@ class SAX {
 
     public:
     
-        SAX(int wordSize,int alphaSize, float* breakpoints);
+        SAX(int wordSize,int alphaSize);
+        
+        // float vector to be transformed into a PAA representation
+        float* ToPAA(float* vector);
 
-        float* PAA(float* vector, int alphaSize);
+        // float vector to be transformed into a SAX representation (binary)
+        int ToSAX(float* paa);
 
-        float* getBreakpoints(int cardinality);
-
-        void indexToWord(int index, int wordSize, int alphaSize, int* word);
+        // SAX of a whole database
+        int* ToSAX(float* vector, DataBase& db);
 
         ~SAX();
+
+    private:
+        
+        // splits the data into segments for PAA
+        int* splitsX(int wordSize);
 
 
 };

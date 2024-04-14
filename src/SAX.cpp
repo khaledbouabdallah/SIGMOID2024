@@ -1,22 +1,32 @@
 #include <vector>
 #include "SAX.hpp"
+#include "globals.hpp"
 using std::vector;
 
-SAX::SAX(int wordSize,int alphaSize, float* breakpoints) {
+SAX::SAX(int wordSize,int alphaSize) {
     _wordSize = wordSize;
     _alphaSize = alphaSize;
-    _breakpoints = breakpoints;
+    _breakpoints = getBreakPoints(alphaSize);
 
 }
 
-float* SAX::PAA(float* vector, int size) {
 
+float* SAX::ToPAA(float* vector) {
 
 }
 
-float* SAX::getBreakpoints(int cardinality) {
+int SAX::ToSAX(float* paa) {
+
+}
+     
+int* SAX::ToSAX(float* vector, DataBase& db) {
 
 }
 
 SAX::~SAX() {
+
+}
+
+int* SAX::splitsX(int wordSize) {
+
 }

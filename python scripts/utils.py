@@ -126,7 +126,7 @@ def distances(output, dist):
 # Function to split the normal distribution into n equal parts 
 # n:  SAX alphabet size
 # and return the z-scores corresponding to the breakpoints
-def split_normal_distribution(n):
+def split_normal_distribution(n, verbose=False):
     
 
     # Calculate cumulative probabilities for equal intervals
@@ -136,10 +136,11 @@ def split_normal_distribution(n):
     z_scores = norm.ppf(cumulative_probs)
 
     # Print the z-scores
-    print("Breakpoints for {} equal parts:".format(n))
-    for i in range(1, len(z_scores)-1):
-        print("Breakpoint {}: z-score = {:.4f}".format(i, z_scores[i]))
-
+    if verbose:
+        print("Breakpoints for {} equal parts:".format(n))
+        for i in range(1, len(z_scores)-1):
+            print("Breakpoint {}: z-score = {:.4f}".format(i, z_scores[i]))
+    
     # Return the z-scores
     return z_scores[1:-1]
 
