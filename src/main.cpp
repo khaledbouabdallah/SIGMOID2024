@@ -33,7 +33,7 @@ int main() {
           //queries[i]->WriteOutput(ofs);
      }
           
-     qset.WriteOutput("../data/dummy-output-seqscan.bin");
+     qset.WriteOutput("../data/dummy-output-seqscanrange.bin");
      
      return 0;
 }
