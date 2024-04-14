@@ -1,8 +1,9 @@
 .vscode
 venv
 .git
-# playing with jupyter notebooks
-*.ipynb
+# playing with jupyter notebooks and python
+.ipynb_checkpoints
+__pycache__
 build
 # Test files & Reprozib 
 test

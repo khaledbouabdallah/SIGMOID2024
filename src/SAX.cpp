@@ -1,29 +1,22 @@
 #include <vector>
-
-
+#include "SAX.hpp"
 using std::vector;
 
-class SAX {
+SAX::SAX(int wordSize,int alphaSize, float* breakpoints) {
+    _wordSize = wordSize;
+    _alphaSize = alphaSize;
+    _breakpoints = breakpoints;
 
-    public:
-        SAX(int w,int a) { // w: @ of segments, a: alphabet size
-        
-            // Get breakpoints
+}
 
-            // normalize data (x-mean)/std
-
-            // PAA
-
-            // PAA to SAX
+float* SAX::PAA(float* vector, int size) {
 
 
-        }
+}
 
-        ~SAX() { // Destructor code here
-        }
+float* SAX::getBreakpoints(int cardinality) {
 
-        void normalize(const std::vector<float>& data) {
-            // Normalize the data
-        }
-    // Add class members and methods here
-};
+}
+
+SAX::~SAX() {
+}
