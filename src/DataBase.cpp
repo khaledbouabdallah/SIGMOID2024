@@ -177,27 +177,47 @@ void DataBase::GetCatRange(int cat, int& start, int& end) const {
 }
      
 int DataBase::GetFirstPositionGE(float ts, int* indices, int start, int end) const {
+     /*int i = start;
+     while (ts>_data_points[indices[i]].GetTS())
+          i++;
+     */
+
      // the range from start to end (inc start, exc end) is sorted by ts
      while (start<end) {
           int mid = (start+end)/2;
           if (ts>_data_points[indices[mid]].GetTS()) 
                start = mid+1;
           else
-               end = mid-1;
+               end = mid;
      }
-     return end+1;
+     
+   
+     int toreturn = end;
+     /*if (i!=toreturn)
+          cout<<"ERROR"<<" "<<i<<" "<<toreturn<<endl;*/
+     return toreturn;
 }
 
 int DataBase::GetLastPositionLE(float ts, int* indices, int start, int end) const {
      // the range from start to end (inc start, exc end) is sorted by ts
+     
+     /* int i = end-1;
+     while (ts<_data_points[indices[i]].GetTS())
+          i--;
+     */
      while (start<end) {
           int mid = (start+end)/2;
-          if (ts<_data_points[indices[mid]].GetTS()) 
-               end = mid-1;
-          else
+          if (ts>=_data_points[indices[mid]].GetTS()) 
                start = mid+1;
+          else
+               end = mid;
      }
-     return start-1;
+          
+     int toreturn = start-1;
+     /*if (i!=toreturn)
+          cout<<"ERROR"<<" "<<i<<" "<<toreturn<<endl;*/
+     return toreturn;
+     
 }
      
 void DataBase::GetTSRange(float lts, float rts, int& start, int& end) const {
