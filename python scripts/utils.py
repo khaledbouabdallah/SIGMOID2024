@@ -54,7 +54,7 @@ def read_output(output_path, NUM_QUERIES):
     
     with open(output_path, "rb") as file:
         
-        vectors = np.zeros((NUM_QUERIES, K))
+        vectors = np.zeros((NUM_QUERIES, K), dtype=np.int32)
         
         for _ in range(NUM_QUERIES):
             vector_bytes = file.read(4 * K)  # Assuming uint32_t is 4 bytes
@@ -144,7 +144,7 @@ def split_normal_distribution(n):
     return z_scores[1:-1]
 
 
-def _recall(idx1, idx2, dist1, dist2):
+def _recall(idx1, idx2, dist1, dist2, verbose=False):
     """
     idx1, idx2: 2d array of shape (n_queries, k) 
     dist1, dist2: 2d array of shape (n_queries, k)
@@ -162,11 +162,13 @@ def _recall(idx1, idx2, dist1, dist2):
     dist2_unique = dist2_unique[dist2_unique <= _max]
     # calculate recall: 
     recall = dist2_unique.shape[0] / (id_max+1)
-    print(dist2_unique.shape[0], "/", id_max+1 )
+    if verbose:
+        print("Recall: ", dist2_unique.shape[0], "/", id_max+1 )
     return recall
 
-def recall(output_true, output, dist_true, dist):   
+def recall(output_true, output, dist_true, dist, verbose=False):   
     recall_ = 0
+    recalls = []
     for i in range(output_true.shape[0]):
-        recall_ += _recall(output_true[i], output[i], dist_true[i], dist[i])
-    return recall_/ output_true.shape[0]
+        recalls.append(_recall(output_true[i], output[i], dist_true[i], dist[i],verbose=verbose))
+    return np.mean(recalls), recalls
