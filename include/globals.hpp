@@ -7,6 +7,7 @@ using std::string;
 
 #define DATA_SIZE 100
 
+extern int done;
 // Add your constant declarations here
 
 const int VECTOR_SIZE = 102; // The size of the vector

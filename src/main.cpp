@@ -6,6 +6,9 @@
 using namespace std;
 
 
+int done = 0;
+
+#define NTHREADS 3
 
 int main() {
      DataBase db = DataBase("../data/dummy-data.bin");
