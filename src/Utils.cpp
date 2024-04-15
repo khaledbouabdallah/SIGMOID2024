@@ -28,7 +28,6 @@ float getDistance(float* data1, float* data2) {
      float sum = 0;
      for (int i = 0; i < DATA_SIZE; i++) 
           sum += ((data1[i] - data2[i])*(data1[i] - data2[i]));
-     
      return sqrt(sum);
 }
 

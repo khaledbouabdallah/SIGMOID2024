@@ -5,12 +5,11 @@
 #include <signal.h>
 #include <iostream>
 #include <fstream>
+#include "QueryRunManager.hpp"
 
 using namespace std;
 
-
 volatile int done = 0;
-
 
 void timesup (int sig){
      done = 1;
@@ -20,7 +19,7 @@ void timesup (int sig){
 int main() {
      done = 0;
      signal( SIGALRM, timesup);
-     alarm(MINSTORUN*60);
+     alarm(TIMETORUN);
      
 
      DataBase db = DataBase("../data/dummy-data.bin");
@@ -35,18 +34,18 @@ int main() {
      Query** queries = qset.GetQueries();
      int nq = qset.GetQueryCount();
      
-     //ofstream ofs("bla");
-     int dummyswitch;
-     for (int i = 0; i<nq; ++i) {
-          //cout<<"running query "<<i<<endl;
-          queries[i]-> run(dummyswitch);
-          //queries[i]->WriteOutput(ofs);
+     if (0) {
+          int dummyswitch;
+          for (int i = 0; i<nq; ++i)
+               queries[i]->run(dummyswitch);
+          qset.WriteOutput("../data/dummy-output-seqscanrange.bin");
+     }
+     else {
+          QueryRunManager runManager (queries, nq, NTHREADS);
+          runManager.run();
+          qset.WriteOutput("../data/dummy-output-seqscanrangemt.bin");
      }
      
-    // while (!done) {}
-     
-          
-     qset.WriteOutput("../data/dummy-output-seqscanrange.bin");
      
      return 0;
 }

@@ -7,8 +7,8 @@
 using std::string;
 
 #define DATA_SIZE 100
-#define NTHREAD 4
-#define MINSTORUN 1
+#define NTHREADS 1
+#define TIMETORUN 30
 
 
 extern volatile 
