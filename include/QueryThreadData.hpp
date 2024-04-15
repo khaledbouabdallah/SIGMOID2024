@@ -12,8 +12,11 @@ private:
      vector<int> 	_queryIndices;
 	Query** 		_queries;
 	int 		     _crtQuery;	
+	int            _threadIndex;
+
 public:
 	int 		     _switchTask;
+	int            _allDone;
 	
 public:
 	QueryThreadData();

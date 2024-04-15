@@ -43,7 +43,7 @@ int main() {
      else {
           QueryRunManager runManager (queries, nq, NTHREADS);
           runManager.run();
-          qset.WriteOutput("../data/dummy-output-seqscanrangemt.bin");
+          qset.WriteOutput("../data/dummy-output-seqscanrangemt2.bin");
      }
      
      

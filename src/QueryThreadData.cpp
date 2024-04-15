@@ -3,7 +3,7 @@
 #include <iostream>
 
 QueryThreadData::QueryThreadData() :
-	_switchTask(0), _crtQuery(0), _queries(0) {}
+	_switchTask(0), _crtQuery(0), _queries(0), _allDone(0), _threadIndex(-1) {}
 
 QueryThreadData::~QueryThreadData() {}
 
@@ -28,12 +28,16 @@ Query* QueryThreadData::getNextQuery() {
 	          break; //this query needs more running
 	     }
 	}
-	cout<<"next query of indice "<<_queryIndices[_crtQuery]<<" "<<endl;
+	cout<<"thread "<<_threadIndex<<" next query of indice "<<_queryIndices[_crtQuery]<<" "<<endl;
+	if (!retq) 
+	     _allDone = 1;
 	return retq;
 }
 
 void QueryThreadData::feedWithQueries(int threadIndex, Query** queries, int countQueries, int countThreads) {
      _queries = queries;
+     _threadIndex = threadIndex;
+     /*
 	int queriesperthread = countQueries / countThreads;
 	int mod = countQueries % countThreads;
 	int start = queriesperthread * threadIndex;
@@ -45,6 +49,10 @@ void QueryThreadData::feedWithQueries(int threadIndex, Query** queries, int coun
          
      for (int i = start; i<start+length; ++i)
           _queryIndices.push_back(i);
+     */
+     for (int i = threadIndex; i<countQueries; i+=countThreads)
+          _queryIndices.push_back(i);
+     
 }
 	
 	

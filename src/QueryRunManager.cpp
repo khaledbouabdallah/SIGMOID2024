@@ -22,6 +22,8 @@ void *queryThreadTask(void *arg)
 {
 	QueryThreadData* data = (QueryThreadData*) arg;
 	while (!done) {
+	     if (data->_allDone)
+	          return NULL; //all queries are done
 		data->setSwitchTaskOff();
 		Query* crtQuery = data->getNextQuery();
 		if (!crtQuery) break; //no more queries to run for this thread

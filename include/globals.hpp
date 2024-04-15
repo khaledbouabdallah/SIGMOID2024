@@ -7,7 +7,7 @@
 using std::string;
 
 #define DATA_SIZE 100
-#define NTHREADS 1
+#define NTHREADS 8
 #define TIMETORUN 30
 
 
