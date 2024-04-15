@@ -13,17 +13,17 @@ class SAX {
 
     int _wordSize; // the word length (number of segments)
     int _alphaSize; // the alphabet size (number of symbols in the alphabet)
-    float* _breakpoints; // the breakpoints of the alphabet
+    vector<float> _breakpoints; // the breakpoints of the alphabet
 
     public:
     
         SAX(int wordSize,int alphaSize);
         
         // float vector to be transformed into a PAA representation
-        float* ToPAA(float* vector);
+        float* ToPAA(float* vector, int taille);
 
         // float vector to be transformed into a SAX representation (binary)
-        int ToSAX(float* paa);
+        int* ToSAX(float* paa, int taille);
 
         // SAX of a whole database
         int* ToSAX(float* vector, DataBase& db);

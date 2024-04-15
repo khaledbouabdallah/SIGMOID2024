@@ -15,6 +15,15 @@ float calculateMean(float* data, int size) {
      return sum / size;
 }
 
+
+float calculateMean(float* data, int start, int end) {
+     float sum = 0.0;
+     for (int i = start; i <= end; i++) {
+          sum += data[i];
+     }
+     return sum / (end-start+1);
+}
+
 float getDistance(float* data1, float* data2) {
      float sum = 0;
      for (int i = 0; i < DATA_SIZE; i++) 
@@ -23,28 +32,28 @@ float getDistance(float* data1, float* data2) {
      return sqrt(sum);
 }
 
-float* getBreakPoints(int numSegments) {
+std::vector<float> getBreakPoints(int numSegments) {
     switch (numSegments)
     {
     case 2:
-        return (float*)BREAK_POINTS_2;
+        return BREAK_POINTS_2;
     case 3:
-        return (float*)BREAK_POINTS_3;
+        return  BREAK_POINTS_3;
     case 8:
-        return (float*)BREAK_POINTS_8;
+        return  BREAK_POINTS_8;
     case 16:
-        return (float*)BREAK_POINTS_16;
+        return  BREAK_POINTS_16;
     case 32:
-        return (float*)BREAK_POINTS_32;
+        return  BREAK_POINTS_32;
     case 64:
-        return (float*)BREAK_POINTS_64;
+        return  BREAK_POINTS_64;
     case 128:
-        return (float*)BREAK_POINTS_128;
+        return  BREAK_POINTS_128;
     case 256:
-        return (float*)BREAK_POINTS_256;
+        return  BREAK_POINTS_256;
     case 512:
-        return (float*)BREAK_POINTS_512;
+        return  BREAK_POINTS_512;
     default:
-        return (float*)BREAK_POINTS_256;
+        return  BREAK_POINTS_256;
     }
 }
