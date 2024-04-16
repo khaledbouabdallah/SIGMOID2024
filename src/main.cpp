@@ -102,7 +102,7 @@ int main() {
      alarm(TIMETORUN);
      
 
-     //DataBase db = DataBase("../data/dummy-data.bin");
+     //DataBase db = DataBase("../data/contest-data-release-1m.bin");
      DataBase db = DataBase("../data/contest-data-release-10m.bin");
      
      cout<<"sorting by cat and ts"<<endl;
@@ -115,10 +115,11 @@ int main() {
      int runType = 0; //0 = normal, 1 = multi-thread
      int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
      
-     //QuerySet qset = QuerySet("../data/dummy-queries.bin", db, queryType);
+     cout<<"reading queries"<<endl;
+     //QuerySet qset = QuerySet("../data/contest-queries-release-1m.bin", db, queryType);
      QuerySet qset = QuerySet("../data/Public-4M-queries.bin", db, queryType);
      
-     
+     cout<<"after reading queries"<<endl;
 #ifndef RECALL
      Query** queries = qset.GetQueries();
      int nq = qset.GetQueryCount();
@@ -129,14 +130,15 @@ int main() {
                cout<<"running query "<<i<<endl;
                queries[i]->run(dummyswitch);
           }
-          //qset.WriteOutput("../data/dummy-output-normal.bin");
+          qset.WriteOutput("../data/relsmall-normal.bin");
+          //qset.WriteOutput("../data/relbig-normal.bin");
           
-          qset.WriteOutput("../data/relbig-normal.bin");
+          
      } else {
           QueryRunManager runManager (queries, nq, NTHREADS);
           runManager.run();
-          //qset.WriteOutput("../data/dummy-output-mt.bin");
-          qset.WriteOutput("../data/relsmall-mt-seqscan-range-3min.bin");
+          qset.WriteOutput("../data/dummy-output-mt.bin");
+          //qset.WriteOutput("../data/relsmall-mt-seqscan-range-3min.bin");
           
           
           for (int i = 0; i<nq; ++i) 
@@ -150,7 +152,7 @@ int main() {
           
      }
 #else
-     float rec = GetRecall(db, qset, "../data/relsmall-mt-seqscan-range-3min.bin", "../data/relsmall-normal-reference.bin");
+     float rec = GetRecall(db, qset, "../data/relsmall-normal.bin", "../data/relsmall-normal-reference.bin");
      cout<<rec<<endl;
 #endif
      
