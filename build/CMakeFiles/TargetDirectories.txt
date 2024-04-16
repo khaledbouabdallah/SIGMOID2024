@@ -1,0 +1,3 @@
+/home/mohamed/ter/SIGMOID2024/build/CMakeFiles/TER.dir
+/home/mohamed/ter/SIGMOID2024/build/CMakeFiles/edit_cache.dir
+/home/mohamed/ter/SIGMOID2024/build/CMakeFiles/rebuild_cache.dir

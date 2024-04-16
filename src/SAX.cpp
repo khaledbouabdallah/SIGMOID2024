@@ -3,6 +3,7 @@
 #include "globals.hpp"
 #include "Utils.hpp"
 #include <iostream>
+
 using std::vector;
 
 SAX::SAX(int wordSize,int alphaSize) {
@@ -25,7 +26,7 @@ float* SAX::ToPAA(float* vector, int taille) {
      return paa;
 }
 
-int* SAX::ToSAX(float* paa, int taille) {
+/**int* SAX::ToSAX(float* paa, int taille) {
      
      int* sax = new int[taille];
      int middle = _breakpoints.size()/2;
@@ -67,7 +68,50 @@ int* SAX::ToSAX(float* paa, int taille) {
      
 
      return sax;
+}*/
+std::bitset<sizeof(int) >* SAX::ToSAX(float* paa, int taille) {
+    std::bitset<sizeof(int) >* sax = new std::bitset<sizeof(int) >[taille];
+    int breakpointsSize = _breakpoints.size();
+
+    for(int i = 0; i < taille; i++) {
+        int low = 0;
+        int high = breakpointsSize;
+        int mid;
+
+        if (paa[i] < _breakpoints[0]) {
+            sax[i] = std::bitset<sizeof(int) >(0); // Store 0 as binary
+            continue;
+        } else if (paa[i] > _breakpoints[breakpointsSize - 1]) {
+            std::bitset<sizeof(int) > tmp = std::bitset<sizeof(int) >(breakpointsSize);
+            sax[i] = tmp; // Store breakpointsSize as binary
+            continue;
+        }
+
+        while (low <= high) {
+            mid = (low + high) / 2;
+
+            if (paa[i] < _breakpoints[mid]) {
+                high = mid;
+            } else if (paa[i] > _breakpoints[mid]) {
+                low = mid;
+            } else {
+                break;
+            }
+
+            if (high - low <= 1) {
+                mid = high;
+                break;
+            }
+        }
+
+        // Convert mid to a binary string and then to an integer
+        sax[i] = std::bitset<sizeof(int) >(mid);
+    }
+
+    return sax;
 }
+
+
      
 int* SAX::ToSAX(float* vector, DataBase& db) {
      return NULL;

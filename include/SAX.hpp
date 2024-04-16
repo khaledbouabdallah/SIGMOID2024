@@ -4,6 +4,7 @@
 #include "globals.hpp"
 #include "DataBase.hpp"
 #include <vector>
+#include <bitset>
 
 using std::vector;
 
@@ -23,7 +24,7 @@ class SAX {
         float* ToPAA(float* vector, int taille);
 
         // float vector to be transformed into a SAX representation (binary)
-        int* ToSAX(float* paa, int taille);
+        std::bitset<sizeof(int) >* ToSAX(float* paa, int taille);
 
         // SAX of a whole database
         int* ToSAX(float* vector, DataBase& db);
