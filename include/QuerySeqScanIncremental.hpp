@@ -4,13 +4,15 @@
 #include "Query.hpp"
 
 class QuerySeqScanIncremental: public Query {
-private:
+public:
      int _nextPointIndice;
 public:
      QuerySeqScanIncremental(std::ifstream& ifs, const DataBase& db);
      ~QuerySeqScanIncremental();
      
      virtual void run (int& switchquery); 
+     
+     void PrintDelta();
 };
 
 

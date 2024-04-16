@@ -28,7 +28,7 @@ Query* QueryThreadData::getNextQuery() {
 	          break; //this query needs more running
 	     }
 	}
-	cout<<"thread "<<_threadIndex<<" next query of indice "<<_queryIndices[_crtQuery]<<" "<<endl;
+	//cout<<"thread "<<_threadIndex<<" next query of indice "<<_queryIndices[_crtQuery]<<" "<<endl;
 	if (!retq) 
 	     _allDone = 1;
 	return retq;
@@ -37,19 +37,6 @@ Query* QueryThreadData::getNextQuery() {
 void QueryThreadData::feedWithQueries(int threadIndex, Query** queries, int countQueries, int countThreads) {
      _queries = queries;
      _threadIndex = threadIndex;
-     /*
-	int queriesperthread = countQueries / countThreads;
-	int mod = countQueries % countThreads;
-	int start = queriesperthread * threadIndex;
-	if (threadIndex<=mod)
-		start+=threadIndex;
-	int length = queriesperthread;
-	if (threadIndex<mod)
-		length++;	
-         
-     for (int i = start; i<start+length; ++i)
-          _queryIndices.push_back(i);
-     */
      for (int i = threadIndex; i<countQueries; i+=countThreads)
           _queryIndices.push_back(i);
      
