@@ -16,7 +16,7 @@
 
 using namespace std;
 
-#define RECALL
+//#define RECALL
 
 void readIndices(ifstream& ifs, vector<int>&indices){    
      for (int i = 0; i < DATA_SIZE; ++i){
@@ -103,7 +103,7 @@ int main() {
      
 
      //DataBase db = DataBase("../data/dummy-data.bin");
-     DataBase db = DataBase("../data/contest-data-release-1m.bin");
+     DataBase db = DataBase("../data/contest-data-release-10m.bin");
      
      cout<<"sorting by cat and ts"<<endl;
      db.SortByCatAndTS();
@@ -112,11 +112,11 @@ int main() {
      cout<<"sorting by ts"<<endl;
      db.SortByTS();
      
-     int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 2; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
+     int runType = 0; //0 = normal, 1 = multi-thread
+     int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
      
      //QuerySet qset = QuerySet("../data/dummy-queries.bin", db, queryType);
-     QuerySet qset = QuerySet("../data/contest-queries-release-1m.bin", db, queryType);
+     QuerySet qset = QuerySet("../data/Public-4M-queries.bin", db, queryType);
      
      
 #ifndef RECALL
@@ -131,12 +131,12 @@ int main() {
           }
           //qset.WriteOutput("../data/dummy-output-normal.bin");
           
-          qset.WriteOutput("../data/relsmall-normal-range.bin");
+          qset.WriteOutput("../data/relbig-normal.bin");
      } else {
           QueryRunManager runManager (queries, nq, NTHREADS);
           runManager.run();
           //qset.WriteOutput("../data/dummy-output-mt.bin");
-          qset.WriteOutput("../data/relsmall-mt-seqscan-all.bin");
+          qset.WriteOutput("../data/relsmall-mt-seqscan-range-3min.bin");
           
           
           for (int i = 0; i<nq; ++i) 
@@ -150,7 +150,7 @@ int main() {
           
      }
 #else
-     float rec = GetRecall(db, qset, "../data/relsmall-normal-range.bin", "../data/relsmall-normal-reference.bin");
+     float rec = GetRecall(db, qset, "../data/relsmall-mt-seqscan-range-3min.bin", "../data/relsmall-normal-reference.bin");
      cout<<rec<<endl;
 #endif
      
