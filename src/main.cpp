@@ -112,7 +112,7 @@ int main() {
      cout<<"sorting by ts"<<endl;
      db.SortByTS();
      
-     int runType = 0; //0 = normal, 1 = multi-thread
+     int runType = 1; //0 = normal, 1 = multi-thread
      int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
      
      cout<<"reading queries"<<endl;

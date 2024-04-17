@@ -28,7 +28,7 @@ Query* QueryThreadData::getNextQuery() {
 	          break; //this query needs more running
 	     }
 	}
-	//cout<<"thread "<<_threadIndex<<" next query of indice "<<_queryIndices[_crtQuery]<<" "<<endl;
+	cout<<"thread "<<_threadIndex<<" next query of indice "<<_queryIndices[_crtQuery]<<" "<<endl;
 	if (!retq) 
 	     _allDone = 1;
 	return retq;
