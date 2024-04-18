@@ -24,7 +24,7 @@ public:
      * @brief Constructs a QuerySet object by reading from a file
      * @param filename The file name
      */
-     QuerySet(const char* filename, const DataBase& db);
+     QuerySet(const char* filename, const DataBase& db, int queryType);
      
      /**
      * @brief Gets the query count of the database.

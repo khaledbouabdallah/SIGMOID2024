@@ -38,6 +38,8 @@ public:
      
      int IsFinished();  
      
+     inline float* GetData() {return _data;}
+     
 protected:
 
      void InitIndicesAndRanges();

@@ -22,8 +22,9 @@ void *queryThreadTask(void *arg)
 {
 	QueryThreadData* data = (QueryThreadData*) arg;
 	while (!done) {
-	     if (data->_allDone)
+	     if (data->_allDone) {
 	          return NULL; //all queries are done
+	     }
 		data->setSwitchTaskOff();
 		Query* crtQuery = data->getNextQuery();
 		if (!crtQuery) break; //no more queries to run for this thread
@@ -40,8 +41,17 @@ void QueryRunManager::run(){
 		pthread_create(&threads[i], NULL, queryThreadTask, (void*) &_threadData[i]);
 		
      while (!done) {
+          sleep(INCR);
+          int allfinished = 1;
+          for (int  i = 0; i < _countThreads; ++i) {
+               _threadData[i].setSwitchTaskOn();
+               if (!_threadData[i]._allDone)
+                    allfinished = 0;
+          }
+          if (allfinished)
+               break ; //ended before deadline
      }	
-     //join the other threads
+     //join the other threads 
      for (int  i = 0; i < _countThreads; ++i)
 		pthread_join(threads[i], NULL);
 		

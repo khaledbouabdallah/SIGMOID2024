@@ -11,7 +11,6 @@ QuerySeqScanIncremental::~QuerySeqScanIncremental(){
 }
 
 void QuerySeqScanIncremental::run (int& switchquery){
-     switchquery = 0; //my turn now, don't stop me ! : p
      while(1) {
           if (_nextPointIndice>=_db.GetSize()) {
                _isFinished = 1;
@@ -26,8 +25,12 @@ void QuerySeqScanIncremental::run (int& switchquery){
           //save next point indice
           _nextPointIndice++;
           //check that I can run some more
-          if (switchquery)
+          if (switchquery || done)
                break;
      } 
+}
+
+void QuerySeqScanIncremental::PrintDelta(){
+     cout<<"remaining "<<_db.GetSize()-_nextPointIndice<<endl;
 }
 

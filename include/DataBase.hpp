@@ -33,6 +33,7 @@ private:
       int* _catstart;
       int* _catend;
       int _countCategories;
+      int* _categories;
 
 public:
      /**
@@ -122,7 +123,8 @@ private:
      void ComputeMeans();
 
      void ComputeStds();
-
+     
+     int GetIndCat(int cat) const;
 
 };
 

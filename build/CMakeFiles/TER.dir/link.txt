@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/TER.dir/tests/sax.cpp.o CMakeFiles/TER.dir/src/DataBase.cpp.o CMakeFiles/TER.dir/src/DataPoint.cpp.o CMakeFiles/TER.dir/src/Query.cpp.o CMakeFiles/TER.dir/src/QuerySet.cpp.o CMakeFiles/TER.dir/src/Answer.cpp.o CMakeFiles/TER.dir/src/SAX.cpp.o CMakeFiles/TER.dir/src/Utils.cpp.o CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o -o TER
