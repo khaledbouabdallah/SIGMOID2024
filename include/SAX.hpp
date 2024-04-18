@@ -24,10 +24,10 @@ class SAX {
         float* ToPAA(float* vector, int taille);
 
         // float vector to be transformed into a SAX representation (binary)
-        std::bitset<sizeof(int) >* ToSAX(float* paa, int taille);
+        std::bitset<nombres_de_bits >* ToSAX(float* paa, int taille);
 
         // SAX of a whole database
-        int* ToSAX(float* vector, DataBase& db);
+        int* ToSAX(DataBase& db);
 
         ~SAX();
 

@@ -11,7 +11,7 @@ int main() {
     SAX *sax = new SAX(2, 3);
     float* paa = sax->ToPAA(data, 10);
 
-    std::bitset<sizeof(int) >* saxx = sax->ToSAX(paa, 2);
+    std::bitset<nombres_de_bits >* saxx = sax->ToSAX(paa, 2);
 
     for (int i = 0; i < 2; i++) {
         std::cout << paa[i] << " ";

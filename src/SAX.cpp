@@ -69,8 +69,8 @@ float* SAX::ToPAA(float* vector, int taille) {
 
      return sax;
 }*/
-std::bitset<sizeof(int) >* SAX::ToSAX(float* paa, int taille) {
-    std::bitset<sizeof(int) >* sax = new std::bitset<sizeof(int) >[taille];
+std::bitset<nombres_de_bits >* SAX::ToSAX(float* paa, int taille) {
+    std::bitset<nombres_de_bits >* sax = new std::bitset<nombres_de_bits >[taille];
     int breakpointsSize = _breakpoints.size();
 
     for(int i = 0; i < taille; i++) {
@@ -79,10 +79,10 @@ std::bitset<sizeof(int) >* SAX::ToSAX(float* paa, int taille) {
         int mid;
 
         if (paa[i] < _breakpoints[0]) {
-            sax[i] = std::bitset<sizeof(int) >(0); // Store 0 as binary
+            sax[i] = std::bitset< nombres_de_bits >(0); // Store 0 as binary
             continue;
         } else if (paa[i] > _breakpoints[breakpointsSize - 1]) {
-            std::bitset<sizeof(int) > tmp = std::bitset<sizeof(int) >(breakpointsSize);
+            std::bitset<nombres_de_bits> tmp = std::bitset<nombres_de_bits>(breakpointsSize);
             sax[i] = tmp; // Store breakpointsSize as binary
             continue;
         }
@@ -105,7 +105,7 @@ std::bitset<sizeof(int) >* SAX::ToSAX(float* paa, int taille) {
         }
 
         // Convert mid to a binary string and then to an integer
-        sax[i] = std::bitset<sizeof(int) >(mid);
+        sax[i] = std::bitset<nombres_de_bits >(mid);
     }
 
     return sax;
@@ -113,7 +113,19 @@ std::bitset<sizeof(int) >* SAX::ToSAX(float* paa, int taille) {
 
 
      
-int* SAX::ToSAX(float* vector, DataBase& db) {
+int* SAX::ToSAX(DataBase& db) {
+     
+     int taille_data = db.GetSize();
+     
+     
+     
+     for (int i =0 ;i< taille_data;i++)
+     {
+          float *paa = new float[_wordSize];
+
+          std::bitset<nombres_de_bits >* sax = new std::bitset<nombres_de_bits >[taille_data];
+
+     }
      return NULL;
 }
 

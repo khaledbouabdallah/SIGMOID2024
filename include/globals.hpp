@@ -20,6 +20,9 @@ const int VECTOR_SIZE = 102; // The size of the vector
 const int QUERY_SIZE = 104; // The size of the query type
 ; // The size of the data without the timestamp and c
 const int K = 100; // The number of nearest neighbors to find
+const int nombres_de_bits = 8;
+const int taille_alphabet = 256;
+const int taille_segment = 100;
 const string DATA_FILE = "../data/dummy-data.bin"; // The path to the data file
 const string QUERY_FILE = "../data/dummy-query.bin"; // The path to the query file
 const string OUTPUT_FILE = "../output.bin"; // The path to the output file

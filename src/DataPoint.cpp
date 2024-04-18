@@ -21,10 +21,19 @@ DataPoint::DataPoint(const DataPoint& other) {
      memcpy(_data, other._data, DATA_SIZE*sizeof(float));
      _c = other._c;
      _timestamp = other._timestamp;
+     std::bitset<nombres_de_bits >* sax = malloc(sizeof((std::bitset<nombres_de_bits >)nombres_de_bits);
 }
      
 float DataPoint::GetTS() const {
      return _timestamp;
+}
+
+std::bitset<nombres_de_bits >* DataPoint::Getsax() const {
+     return sax;
+}
+
+void DataPoint::Setsax(std::bitset<nombres_de_bits >* Sax) const {
+     sax = Sax;
 }
 
 int DataPoint::GetC() const {
