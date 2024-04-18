@@ -180,10 +180,10 @@ int DataBase::GetIndCat(int cat) const{
      while (start<end) {
           int mid = (start+end)/2;
           if (cat == _categories[mid]) return mid;
-          else if (cat < _categories[mid]) start = mid+1;
-          else end = mid;
+          else if (cat < _categories[mid]) end = mid;
+          else start = mid+1;
      }
-     cout<<"big error"<<endl;
+     cout<<"big error "<<cat<<" "<<_countCategories<<endl;
      return -1;
 }
 

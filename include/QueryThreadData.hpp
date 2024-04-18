@@ -3,20 +3,20 @@
 
 #include <vector>
 class Query;
+class QueryQueue;
 
 using namespace std;
 
 class QueryThreadData
 {
-private:
+public:
      vector<int> 	_queryIndices;
-	Query** 		_queries;
 	int 		     _crtQuery;	
 	int            _threadIndex;
-
-public:
 	int 		     _switchTask;
-	int            _allDone;
+	int            _qassignType;
+	QueryQueue*    _queryQ;
+     Query** 		_queries;
 	
 public:
 	QueryThreadData();
@@ -27,7 +27,7 @@ public:
 	
 	Query* getNextQuery();
 	
-	void feedWithQueries(int threadIndex, Query** queries, int countQueries, int countThreads);
+	void Init(int qassignType, QueryQueue* q, int threadIndex, Query** queries, int countQueries, int countThreads);
 };
 
 #endif

@@ -93,18 +93,26 @@ void timesup (int sig){
 }
 
 
-
-
-
 int main() {
+     const char* pointsInput = "../data/contest-data-release-1m.bin";
+     //const char* pointsInput = "../data/contest-data-release-10m.bin";
+     
+     const char* queriesInput = "../data/contest-queries-release-1m.bin";
+     //const char* queriesInput = "../data/Public-4M-queries.bin";
+     
+     int runType = 1; //0 = normal, 1 = multi-thread
+     int queryType = 1; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
+     
+     //const char* ansoutput = "../data/relsmall-normal.bin";
+     const char* ansoutput = "../data/relsmall-range-mt.bin";
+     
+     
      done = 0;
      signal( SIGALRM, timesup);
      alarm(TIMETORUN);
      
-
-     //DataBase db = DataBase("../data/contest-data-release-1m.bin");
-     DataBase db = DataBase("../data/contest-data-release-10m.bin");
-     
+     cout<<"reading points"<<endl;
+     DataBase db = DataBase(pointsInput);
      cout<<"sorting by cat and ts"<<endl;
      db.SortByCatAndTS();
      cout<<"processing categories"<<endl;
@@ -112,14 +120,9 @@ int main() {
      cout<<"sorting by ts"<<endl;
      db.SortByTS();
      
-     int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
-     
      cout<<"reading queries"<<endl;
-     //QuerySet qset = QuerySet("../data/contest-queries-release-1m.bin", db, queryType);
-     QuerySet qset = QuerySet("../data/Public-4M-queries.bin", db, queryType);
-     
-     cout<<"after reading queries"<<endl;
+     QuerySet qset = QuerySet(queriesInput, db, queryType);
+
 #ifndef RECALL
      Query** queries = qset.GetQueries();
      int nq = qset.GetQueryCount();
@@ -130,26 +133,11 @@ int main() {
                cout<<"running query "<<i<<endl;
                queries[i]->run(dummyswitch);
           }
-          qset.WriteOutput("../data/relsmall-normal.bin");
-          //qset.WriteOutput("../data/relbig-normal.bin");
-          
-          
+          qset.WriteOutput(ansoutput);       
      } else {
-          QueryRunManager runManager (queries, nq, NTHREADS);
+          QueryRunManager runManager (queries, nq, NTHREADS, 0, 1); //no incr, assign with vector queue
           runManager.run();
-          qset.WriteOutput("../data/dummy-output-mt.bin");
-          //qset.WriteOutput("../data/relsmall-mt-seqscan-range-3min.bin");
-          
-          
-          for (int i = 0; i<nq; ++i) 
-               if (!queries[i]-> IsFinished()){
-                    cout<< "QUERY "<<i<<" ";
-                    if (queryType == 2)
-                         ((QuerySeqScanIncremental*)queries[i])->PrintDelta();
-                    else
-                         ((QuerySeqScanRangeIncremental*)queries[i])->PrintDelta();
-               }
-          
+          qset.WriteOutput(ansoutput);   
      }
 #else
      float rec = GetRecall(db, qset, "../data/relsmall-normal.bin", "../data/relsmall-normal-reference.bin");
@@ -158,3 +146,17 @@ int main() {
      
      return 0;
 }
+
+
+
+ /*        
+          for (int i = 0; i<nq; ++i) 
+               if (!queries[i]-> IsFinished()){
+                    cout<< "QUERY "<<i<<" ";
+                    if (queryType == 2)
+                         ((QuerySeqScanIncremental*)queries[i])->PrintDelta();
+                    else
+                         ((QuerySeqScanRangeIncremental*)queries[i])->PrintDelta();
+               }
+*/
+   

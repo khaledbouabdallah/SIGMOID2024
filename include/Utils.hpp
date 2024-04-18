@@ -11,4 +11,5 @@ float getDistance(float* data1, float* data2);
 
 std::vector<float> getBreakPoints(int numSegments);
 
+
 #endif

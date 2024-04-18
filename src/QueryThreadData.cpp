@@ -1,9 +1,10 @@
 #include "QueryThreadData.hpp"
 #include "Query.hpp"
 #include <iostream>
+#
 
 QueryThreadData::QueryThreadData() :
-	_switchTask(0), _crtQuery(0), _queries(0), _allDone(0), _threadIndex(-1) {}
+	_switchTask(0), _crtQuery(0), _queries(0), _threadIndex(-1) {}
 
 QueryThreadData::~QueryThreadData() {}
 
@@ -28,18 +29,20 @@ Query* QueryThreadData::getNextQuery() {
 	          break; //this query needs more running
 	     }
 	}
-	cout<<"thread "<<_threadIndex<<" next query of indice "<<_queryIndices[_crtQuery]<<" "<<endl;
-	if (!retq) 
-	     _allDone = 1;
+	//cout<<"thread "<<_threadIndex<<" next query of indice "<<_queryIndices[_crtQuery]<<" "<<endl;
 	return retq;
 }
 
-void QueryThreadData::feedWithQueries(int threadIndex, Query** queries, int countQueries, int countThreads) {
+void QueryThreadData::Init(int qassignType, QueryQueue* q, int threadIndex, Query** queries, int countQueries, int countThreads) {
+     _qassignType = qassignType;
+     _queryQ = q;
      _queries = queries;
      _threadIndex = threadIndex;
      for (int i = threadIndex; i<countQueries; i+=countThreads)
           _queryIndices.push_back(i);
      
 }
+
+
 	
 	

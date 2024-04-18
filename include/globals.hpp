@@ -12,8 +12,8 @@ using std::string;
 #define INCR 1
 
 
-extern volatile 
-int done;
+extern volatile int done;
+
 // Add your constant declarations here
 
 const int VECTOR_SIZE = 102; // The size of the vector
