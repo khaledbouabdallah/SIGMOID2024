@@ -162,4 +162,6 @@ CMakeFiles/TER.dir/src/QuerySet.cpp.o: \
  /usr/include/c++/11/bits/vector.tcc \
  /home/mohamed/ter/SIGMOID2024/include/QuerySeqScan.hpp \
  /home/mohamed/ter/SIGMOID2024/include/Query.hpp \
- /home/mohamed/ter/SIGMOID2024/include/QuerySeqScanRange.hpp
+ /home/mohamed/ter/SIGMOID2024/include/QuerySeqScanRange.hpp \
+ /home/mohamed/ter/SIGMOID2024/include/QuerySeqScanIncremental.hpp \
+ /home/mohamed/ter/SIGMOID2024/include/QuerySeqScanRangeIncremental.hpp

@@ -181,10 +181,38 @@ CMakeFiles/TER.dir/src/Utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TER.dir/src/Utils.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mohamed/ter/SIGMOID2024/src/Utils.cpp -o CMakeFiles/TER.dir/src/Utils.cpp.s
 
+CMakeFiles/TER.dir/src/QueryRunManager.cpp.o: CMakeFiles/TER.dir/flags.make
+CMakeFiles/TER.dir/src/QueryRunManager.cpp.o: /home/mohamed/ter/SIGMOID2024/src/QueryRunManager.cpp
+CMakeFiles/TER.dir/src/QueryRunManager.cpp.o: CMakeFiles/TER.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/TER.dir/src/QueryRunManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TER.dir/src/QueryRunManager.cpp.o -MF CMakeFiles/TER.dir/src/QueryRunManager.cpp.o.d -o CMakeFiles/TER.dir/src/QueryRunManager.cpp.o -c /home/mohamed/ter/SIGMOID2024/src/QueryRunManager.cpp
+
+CMakeFiles/TER.dir/src/QueryRunManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TER.dir/src/QueryRunManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mohamed/ter/SIGMOID2024/src/QueryRunManager.cpp > CMakeFiles/TER.dir/src/QueryRunManager.cpp.i
+
+CMakeFiles/TER.dir/src/QueryRunManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TER.dir/src/QueryRunManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mohamed/ter/SIGMOID2024/src/QueryRunManager.cpp -o CMakeFiles/TER.dir/src/QueryRunManager.cpp.s
+
+CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o: CMakeFiles/TER.dir/flags.make
+CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o: /home/mohamed/ter/SIGMOID2024/src/QuerySeqScan.cpp
+CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o: CMakeFiles/TER.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o -MF CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o.d -o CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o -c /home/mohamed/ter/SIGMOID2024/src/QuerySeqScan.cpp
+
+CMakeFiles/TER.dir/src/QuerySeqScan.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TER.dir/src/QuerySeqScan.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mohamed/ter/SIGMOID2024/src/QuerySeqScan.cpp > CMakeFiles/TER.dir/src/QuerySeqScan.cpp.i
+
+CMakeFiles/TER.dir/src/QuerySeqScan.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TER.dir/src/QuerySeqScan.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mohamed/ter/SIGMOID2024/src/QuerySeqScan.cpp -o CMakeFiles/TER.dir/src/QuerySeqScan.cpp.s
+
 CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o: CMakeFiles/TER.dir/flags.make
 CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o: /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanRange.cpp
 CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o: CMakeFiles/TER.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o -MF CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o.d -o CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o -c /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanRange.cpp
 
 CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.i: cmake_force
@@ -194,6 +222,48 @@ CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.i: cmake_force
 CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanRange.cpp -o CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.s
+
+CMakeFiles/TER.dir/src/QueryThreadData.cpp.o: CMakeFiles/TER.dir/flags.make
+CMakeFiles/TER.dir/src/QueryThreadData.cpp.o: /home/mohamed/ter/SIGMOID2024/src/QueryThreadData.cpp
+CMakeFiles/TER.dir/src/QueryThreadData.cpp.o: CMakeFiles/TER.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/TER.dir/src/QueryThreadData.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TER.dir/src/QueryThreadData.cpp.o -MF CMakeFiles/TER.dir/src/QueryThreadData.cpp.o.d -o CMakeFiles/TER.dir/src/QueryThreadData.cpp.o -c /home/mohamed/ter/SIGMOID2024/src/QueryThreadData.cpp
+
+CMakeFiles/TER.dir/src/QueryThreadData.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TER.dir/src/QueryThreadData.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mohamed/ter/SIGMOID2024/src/QueryThreadData.cpp > CMakeFiles/TER.dir/src/QueryThreadData.cpp.i
+
+CMakeFiles/TER.dir/src/QueryThreadData.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TER.dir/src/QueryThreadData.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mohamed/ter/SIGMOID2024/src/QueryThreadData.cpp -o CMakeFiles/TER.dir/src/QueryThreadData.cpp.s
+
+CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o: CMakeFiles/TER.dir/flags.make
+CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o: /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanIncremental.cpp
+CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o: CMakeFiles/TER.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o -MF CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o.d -o CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o -c /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanIncremental.cpp
+
+CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanIncremental.cpp > CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.i
+
+CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanIncremental.cpp -o CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.s
+
+CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o: CMakeFiles/TER.dir/flags.make
+CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o: /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanRangeIncremental.cpp
+CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o: CMakeFiles/TER.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o -MF CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o.d -o CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o -c /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanRangeIncremental.cpp
+
+CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanRangeIncremental.cpp > CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.i
+
+CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mohamed/ter/SIGMOID2024/src/QuerySeqScanRangeIncremental.cpp -o CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.s
 
 # Object files for target TER
 TER_OBJECTS = \
@@ -205,7 +275,12 @@ TER_OBJECTS = \
 "CMakeFiles/TER.dir/src/Answer.cpp.o" \
 "CMakeFiles/TER.dir/src/SAX.cpp.o" \
 "CMakeFiles/TER.dir/src/Utils.cpp.o" \
-"CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o"
+"CMakeFiles/TER.dir/src/QueryRunManager.cpp.o" \
+"CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o" \
+"CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o" \
+"CMakeFiles/TER.dir/src/QueryThreadData.cpp.o" \
+"CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o" \
+"CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o"
 
 # External object files for target TER
 TER_EXTERNAL_OBJECTS =
@@ -218,10 +293,15 @@ TER: CMakeFiles/TER.dir/src/QuerySet.cpp.o
 TER: CMakeFiles/TER.dir/src/Answer.cpp.o
 TER: CMakeFiles/TER.dir/src/SAX.cpp.o
 TER: CMakeFiles/TER.dir/src/Utils.cpp.o
+TER: CMakeFiles/TER.dir/src/QueryRunManager.cpp.o
+TER: CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o
 TER: CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.o
+TER: CMakeFiles/TER.dir/src/QueryThreadData.cpp.o
+TER: CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o
+TER: CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o
 TER: CMakeFiles/TER.dir/build.make
 TER: CMakeFiles/TER.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable TER"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/mohamed/ter/SIGMOID2024/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable TER"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TER.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

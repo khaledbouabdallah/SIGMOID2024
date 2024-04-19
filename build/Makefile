@@ -225,6 +225,78 @@ src/Query.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/Query.cpp.s
 .PHONY : src/Query.cpp.s
 
+src/QueryRunManager.o: src/QueryRunManager.cpp.o
+.PHONY : src/QueryRunManager.o
+
+# target to build an object file
+src/QueryRunManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QueryRunManager.cpp.o
+.PHONY : src/QueryRunManager.cpp.o
+
+src/QueryRunManager.i: src/QueryRunManager.cpp.i
+.PHONY : src/QueryRunManager.i
+
+# target to preprocess a source file
+src/QueryRunManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QueryRunManager.cpp.i
+.PHONY : src/QueryRunManager.cpp.i
+
+src/QueryRunManager.s: src/QueryRunManager.cpp.s
+.PHONY : src/QueryRunManager.s
+
+# target to generate assembly for a file
+src/QueryRunManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QueryRunManager.cpp.s
+.PHONY : src/QueryRunManager.cpp.s
+
+src/QuerySeqScan.o: src/QuerySeqScan.cpp.o
+.PHONY : src/QuerySeqScan.o
+
+# target to build an object file
+src/QuerySeqScan.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScan.cpp.o
+.PHONY : src/QuerySeqScan.cpp.o
+
+src/QuerySeqScan.i: src/QuerySeqScan.cpp.i
+.PHONY : src/QuerySeqScan.i
+
+# target to preprocess a source file
+src/QuerySeqScan.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScan.cpp.i
+.PHONY : src/QuerySeqScan.cpp.i
+
+src/QuerySeqScan.s: src/QuerySeqScan.cpp.s
+.PHONY : src/QuerySeqScan.s
+
+# target to generate assembly for a file
+src/QuerySeqScan.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScan.cpp.s
+.PHONY : src/QuerySeqScan.cpp.s
+
+src/QuerySeqScanIncremental.o: src/QuerySeqScanIncremental.cpp.o
+.PHONY : src/QuerySeqScanIncremental.o
+
+# target to build an object file
+src/QuerySeqScanIncremental.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.o
+.PHONY : src/QuerySeqScanIncremental.cpp.o
+
+src/QuerySeqScanIncremental.i: src/QuerySeqScanIncremental.cpp.i
+.PHONY : src/QuerySeqScanIncremental.i
+
+# target to preprocess a source file
+src/QuerySeqScanIncremental.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.i
+.PHONY : src/QuerySeqScanIncremental.cpp.i
+
+src/QuerySeqScanIncremental.s: src/QuerySeqScanIncremental.cpp.s
+.PHONY : src/QuerySeqScanIncremental.s
+
+# target to generate assembly for a file
+src/QuerySeqScanIncremental.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScanIncremental.cpp.s
+.PHONY : src/QuerySeqScanIncremental.cpp.s
+
 src/QuerySeqScanRange.o: src/QuerySeqScanRange.cpp.o
 .PHONY : src/QuerySeqScanRange.o
 
@@ -249,6 +321,30 @@ src/QuerySeqScanRange.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScanRange.cpp.s
 .PHONY : src/QuerySeqScanRange.cpp.s
 
+src/QuerySeqScanRangeIncremental.o: src/QuerySeqScanRangeIncremental.cpp.o
+.PHONY : src/QuerySeqScanRangeIncremental.o
+
+# target to build an object file
+src/QuerySeqScanRangeIncremental.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.o
+.PHONY : src/QuerySeqScanRangeIncremental.cpp.o
+
+src/QuerySeqScanRangeIncremental.i: src/QuerySeqScanRangeIncremental.cpp.i
+.PHONY : src/QuerySeqScanRangeIncremental.i
+
+# target to preprocess a source file
+src/QuerySeqScanRangeIncremental.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.i
+.PHONY : src/QuerySeqScanRangeIncremental.cpp.i
+
+src/QuerySeqScanRangeIncremental.s: src/QuerySeqScanRangeIncremental.cpp.s
+.PHONY : src/QuerySeqScanRangeIncremental.s
+
+# target to generate assembly for a file
+src/QuerySeqScanRangeIncremental.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySeqScanRangeIncremental.cpp.s
+.PHONY : src/QuerySeqScanRangeIncremental.cpp.s
+
 src/QuerySet.o: src/QuerySet.cpp.o
 .PHONY : src/QuerySet.o
 
@@ -272,6 +368,30 @@ src/QuerySet.s: src/QuerySet.cpp.s
 src/QuerySet.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QuerySet.cpp.s
 .PHONY : src/QuerySet.cpp.s
+
+src/QueryThreadData.o: src/QueryThreadData.cpp.o
+.PHONY : src/QueryThreadData.o
+
+# target to build an object file
+src/QueryThreadData.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QueryThreadData.cpp.o
+.PHONY : src/QueryThreadData.cpp.o
+
+src/QueryThreadData.i: src/QueryThreadData.cpp.i
+.PHONY : src/QueryThreadData.i
+
+# target to preprocess a source file
+src/QueryThreadData.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QueryThreadData.cpp.i
+.PHONY : src/QueryThreadData.cpp.i
+
+src/QueryThreadData.s: src/QueryThreadData.cpp.s
+.PHONY : src/QueryThreadData.s
+
+# target to generate assembly for a file
+src/QueryThreadData.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TER.dir/build.make CMakeFiles/TER.dir/src/QueryThreadData.cpp.s
+.PHONY : src/QueryThreadData.cpp.s
 
 src/SAX.o: src/SAX.cpp.o
 .PHONY : src/SAX.o
@@ -366,12 +486,27 @@ help:
 	@echo "... src/Query.o"
 	@echo "... src/Query.i"
 	@echo "... src/Query.s"
+	@echo "... src/QueryRunManager.o"
+	@echo "... src/QueryRunManager.i"
+	@echo "... src/QueryRunManager.s"
+	@echo "... src/QuerySeqScan.o"
+	@echo "... src/QuerySeqScan.i"
+	@echo "... src/QuerySeqScan.s"
+	@echo "... src/QuerySeqScanIncremental.o"
+	@echo "... src/QuerySeqScanIncremental.i"
+	@echo "... src/QuerySeqScanIncremental.s"
 	@echo "... src/QuerySeqScanRange.o"
 	@echo "... src/QuerySeqScanRange.i"
 	@echo "... src/QuerySeqScanRange.s"
+	@echo "... src/QuerySeqScanRangeIncremental.o"
+	@echo "... src/QuerySeqScanRangeIncremental.i"
+	@echo "... src/QuerySeqScanRangeIncremental.s"
 	@echo "... src/QuerySet.o"
 	@echo "... src/QuerySet.i"
 	@echo "... src/QuerySet.s"
+	@echo "... src/QueryThreadData.o"
+	@echo "... src/QueryThreadData.i"
+	@echo "... src/QueryThreadData.s"
 	@echo "... src/SAX.o"
 	@echo "... src/SAX.i"
 	@echo "... src/SAX.s"
