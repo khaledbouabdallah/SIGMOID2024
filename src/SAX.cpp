@@ -25,8 +25,8 @@ float* SAX::ToPAA(float* vector, int taille) {
      
      return paa;
 }
-
-/**int* SAX::ToSAX(float* paa, int taille) {
+/**
+int* SAX::ToSAX(float* paa, int taille) {
      
      int* sax = new int[taille];
      int middle = _breakpoints.size()/2;
@@ -68,49 +68,49 @@ float* SAX::ToPAA(float* vector, int taille) {
      
 
      return sax;
-}*/
-std::bitset<nombres_de_bits >* SAX::ToSAX(float* paa, int taille) {
-    std::bitset<nombres_de_bits >* sax = new std::bitset<nombres_de_bits >[taille];
+}**/
+
+int* SAX::ToSAX(float* paa, int taille) {
+    int* sax = new int[taille];
+
+    // On stocke la taille des breakpoints pour éviter de la recalculer à chaque itération
     int breakpointsSize = _breakpoints.size();
 
-    for(int i = 0; i < taille; i++) {
+    for (int i = 0; i < taille; ++i) {
         int low = 0;
-        int high = breakpointsSize;
+        int high = breakpointsSize - 1;
         int mid;
 
+        // Vérification des cas où la valeur se trouve en dehors des bornes des breakpoints
         if (paa[i] < _breakpoints[0]) {
-            sax[i] = std::bitset< nombres_de_bits >(0); // Store 0 as binary
+            sax[i] = 0;
             continue;
         } else if (paa[i] > _breakpoints[breakpointsSize - 1]) {
-            std::bitset<nombres_de_bits> tmp = std::bitset<nombres_de_bits>(breakpointsSize);
-            sax[i] = tmp; // Store breakpointsSize as binary
+            sax[i] = breakpointsSize;
             continue;
         }
 
+        // Recherche binaire pour trouver l'indice approprié
         while (low <= high) {
             mid = (low + high) / 2;
 
             if (paa[i] < _breakpoints[mid]) {
-                high = mid;
-            } else if (paa[i] > _breakpoints[mid]) {
-                low = mid;
-            } else {
-                break;
-            }
-
-            if (high - low <= 1) {
-                mid = high;
-                break;
-            }
+               high = mid ;
+          } else if (paa[i] > _breakpoints[mid]){
+               low = mid ;
+          } else if ( paa[i]== _breakpoints[mid]) {
+               break;}
+          if (high - low <= 1) {
+               mid = high;
+               break;
+          }
         }
 
-        // Convert mid to a binary string and then to an integer
-        sax[i] = std::bitset<nombres_de_bits >(mid);
+        sax[i] = mid;
     }
 
     return sax;
 }
-
 
      
 int* SAX::ToSAX(DataBase& db) {

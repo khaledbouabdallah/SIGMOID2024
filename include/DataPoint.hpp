@@ -20,7 +20,7 @@ private:
      /**< The poitn data. */
      float* _data;
      /**< SAX representation*/
-     std::bitset<nombres_de_bits >* sax ;
+     int*  sax ;
      
 public:    
     /**
@@ -49,9 +49,9 @@ public:
      */
     float* GetData() const;
     
-    std::bitset<nombres_de_bits >* Getsax() const ;
+    int*  Getsax() const ;
 
-    void Setsax(std::bitset<nombres_de_bits>* Sax)  ;
+    void Setsax(int*  Sax)  ;
     
     ~DataPoint();
 };
