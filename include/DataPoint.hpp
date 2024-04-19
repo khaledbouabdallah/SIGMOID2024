@@ -2,6 +2,8 @@
 #define _DATAPOINT_HPP
 
 #include <fstream>
+#include <vector>
+#include <bitset>
 
 /**
  * @brief Represents a data point.
@@ -15,7 +17,9 @@ private:
      /**< The value of category. */
      uint32_t _c; 
      /**< The poitn data. */
-     float* _data; 
+     float* _data;
+     /**< SAX representation*/
+     std::bitset<nombres_de_bits >* sax ;
      
 public:    
     /**
@@ -43,6 +47,10 @@ public:
      * @return The data array.
      */
     float* GetData() const;
+    
+    std::bitset<nombres_de_bits >* DataPoint::Getsax() const ;
+
+    void DataPoint::Setsax(std::bitset<nombres_de_bits >* Sax) const ;
     
     ~DataPoint();
 };

@@ -42,7 +42,7 @@ public:
      * @brief Writes query results in the output file.
      */
      void WriteOutput(const char* filename);
-     
+          
      /**
      * @brief Destroys the DataBase object.
      */

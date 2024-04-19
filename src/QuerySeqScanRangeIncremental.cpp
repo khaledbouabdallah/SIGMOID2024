@@ -2,6 +2,7 @@
 #include "Utils.hpp"
 #include "DataPoint.hpp"
 #include "DataBase.hpp"
+#include "globals.hpp"
 #include <iostream>
 
 using namespace std;
