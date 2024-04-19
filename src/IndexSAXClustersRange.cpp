@@ -37,9 +37,7 @@ void IndexSAXClustersRange::BuildIndex() {
           clusters[clusterind]._countPoints++;
      }
      
-     //now sort
-     
-               
+     //now sort             
 }
 
 int IndexSAXClustersRange::GetClusterIndice(const SAXCode& code){

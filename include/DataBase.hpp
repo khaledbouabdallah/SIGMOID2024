@@ -105,20 +105,6 @@ public:
      void NormalizeData();
 
 private:
-     
-     void SiftIndices(int*, int i, int n, int (*funccomp)(const DataPoint&, const DataPoint&));
-     
-     void Sort(int*, int (*funccomp)(const DataPoint&, const DataPoint&));
-          
-     static int CompareByCatAndTS(const DataPoint& p1, const DataPoint& p2);
-     
-     static int CompareByTS(const DataPoint& p1, const DataPoint& p2);
-     
-     static void SwapIndices(int* indicesArray, int ind1, int ind2);
-     
-     int GetFirstPositionGE(float ts, int* indices, int start, int end) const;
-     
-     int GetLastPositionLE(float ts, int* indices, int start, int end) const;
 
      void ComputeMeans();
 
