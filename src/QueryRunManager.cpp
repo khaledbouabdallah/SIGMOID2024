@@ -12,8 +12,6 @@ volatile int remainingQueries;
 pthread_mutex_t remQMutex;
 
 
-volatile int done = 0;
-
 QueryRunManager::QueryRunManager(Query** queries, int countQueries, int countThreads, int withIncr, int qassignType):
 	_queries(queries), _countQueries(countQueries), _countThreads(countThreads), _withIncr(withIncr), _qassignType(qassignType)
 {	

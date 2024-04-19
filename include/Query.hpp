@@ -40,6 +40,8 @@ public:
      
      inline float* GetData() {return _data;}
      
+     float GetSAXDistance(const DataPoint& p);
+     
 protected:
 
      void InitIndicesAndRanges();

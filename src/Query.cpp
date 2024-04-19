@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include "DataBase.hpp"
+#include "DataPoint.hpp"
 
 using namespace std;
 
@@ -72,6 +73,11 @@ int Query::IsValid(const DataPoint& p) const {
 
 int Query::IsFinished() {
      return _isFinished;
+}
+
+float Query::GetSAXDistance(const DataPoint& p){
+//TODO
+     return 0;
 }
 
 Query::~Query(){

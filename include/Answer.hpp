@@ -16,6 +16,9 @@ public:
 
 class Answer {
 
+public:
+     float _distMax;
+
 private:
      Neighbour _nns[DATA_SIZE];
      int _countPoints;

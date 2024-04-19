@@ -1,9 +1,10 @@
 #include "Answer.hpp"
 #include <iostream>
+#include "float.h"
 
 using namespace std;
 
-Answer::Answer(): _countPoints(0) {
+Answer::Answer(): _countPoints(0), _distMax(FLT_MAX) {
 }
 
 Answer::~Answer(){
@@ -38,6 +39,7 @@ void Answer::SiftUp(int indice) {
       // update the indice
       indice = indmin;
    }
+   _distMax = _nns[0]._distance;
 }
 
 void Answer::SiftDown(int indice) {
@@ -58,6 +60,7 @@ void Answer::SiftDown(int indice) {
       // update the indice
       indice = indmax;
    }
+   _distMax = _nns[0]._distance;
 }
 
 void Answer::FillMissing(){
