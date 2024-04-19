@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <bitset>
+#include "globals.hpp"
 
 /**
  * @brief Represents a data point.
@@ -48,9 +49,9 @@ public:
      */
     float* GetData() const;
     
-    std::bitset<nombres_de_bits >* DataPoint::Getsax() const ;
+    std::bitset<nombres_de_bits >* Getsax() const ;
 
-    void DataPoint::Setsax(std::bitset<nombres_de_bits >* Sax) const ;
+    void Setsax(std::bitset<nombres_de_bits>* Sax)  ;
     
     ~DataPoint();
 };
