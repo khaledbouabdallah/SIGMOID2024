@@ -5,6 +5,7 @@
 #include "DataBase.hpp"
 #include <vector>
 #include <bitset>
+#include <cstdint>
 
 using std::vector;
 
@@ -24,10 +25,10 @@ class SAX {
         float* ToPAA(float* vector, int taille);
 
         // float vector to be transformed into a SAX representation (binary)
-        std::bitset<nombres_de_bits >* ToSAX(float* paa, int taille);
+        uint64_t* ToSAX(float* paa, int taille);
 
         // SAX of a whole database
-        int* ToSAX(DataBase& db);
+        uint64_t* ToSAX(DataBase& db);
 
         ~SAX();
 
