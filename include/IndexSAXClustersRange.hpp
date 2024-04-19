@@ -2,27 +2,33 @@
 #define _INDEXSAXCLUSTERSRANGE_H
 
 #include "globals.hpp"
+#include <vector>
 class DataBase;
 
-struct SAXCluster {
+using namespace std;
+
+class SAXCluster {
+public:
      SAXCode _code;
      int* _indicesByTS;
      int* _indicesByCatAndTS;
-     int* countPoints;
+     int _countPoints;
 };
 
 class IndexSAXClustersRange {
+private:
+     vector<SAXCluster> clusters;
+     
+     const DataBase& _db; 
 public:
      IndexSAXClustersRange(const DataBase& db);
      ~IndexSAXClustersRange();
      
      void BuildIndex();
-     
 private:
-     SAXCluster* _clusters;
-     int _nclusters;
+     int GetClusterIndice(const SAXCode& code);
      
-     const DataBase& _db;   
+  
 };
 
 #endif
