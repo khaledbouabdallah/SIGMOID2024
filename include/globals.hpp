@@ -11,8 +11,9 @@ using std::string;
 #define TIMETORUN 10000000
 #define INCR 1
 
-
 extern volatile int done;
+
+typedef int SAXCode;
 
 // Add your constant declarations here
 
@@ -23,9 +24,6 @@ const int K = 100; // The number of nearest neighbors to find
 const int nombres_de_bits = 8;
 const int taille_alphabet = 256;
 const int taille_segment = 100;
-const string DATA_FILE = "../data/dummy-data.bin"; // The path to the data file
-const string QUERY_FILE = "../data/dummy-query.bin"; // The path to the query file
-const string OUTPUT_FILE = "../output.bin"; // The path to the output file
 
 const std::vector<float> BREAK_POINTS_2 = {0.0};
 const std::vector<float> BREAK_POINTS_3 = {-0.43072729929545756,0.43072729929545744,};

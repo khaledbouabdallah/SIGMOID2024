@@ -64,6 +64,8 @@ void *queryThreadTask(void *arg)
 	               pthread_mutex_unlock(&remQMutex);   
 	          }
 	          //else push back not done
+	          //needs linked list
+	          //TODO
 	     }	
      }
      
