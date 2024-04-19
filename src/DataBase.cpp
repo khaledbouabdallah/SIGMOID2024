@@ -7,7 +7,7 @@
 
 using namespace std;
 
-DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL)  {     
+DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _categories(NULL)  {     
      ifstream ifs;
      ifs.open(filename, std::ios::binary);
      assert(ifs.is_open());
@@ -134,20 +134,24 @@ void DataBase::ProcessCategories() {
           while (i<_countPoints && _data_points[_sortedIndByCatAndTS[i]].GetC() == _data_points[_sortedIndByCatAndTS[i-1]].GetC())
                i++;
      }
-     cout<<_countCategories<<endl;
      
      //now set start / end range for each category
      _catstart = new int[_countCategories];
      _catend = new int[_countCategories];
      
+     _categories = new int[_countCategories];
+     
       i=0;
+      int indcat=0;
+     
       while (i<_countPoints) {
-          int crtcat = _data_points[_sortedIndByCatAndTS[i]].GetC();
-          _catstart[crtcat] = i;
+           _categories[indcat] = _data_points[_sortedIndByCatAndTS[i]].GetC();
+           _catstart[indcat] = i;
           i++;
           while (i<_countPoints && _data_points[_sortedIndByCatAndTS[i]].GetC() == _data_points[_sortedIndByCatAndTS[i-1]].GetC())
                i++;
-          _catend[crtcat] = i-1;
+          _catend[indcat] = i-1;
+          indcat++;
      }
 }
 
@@ -170,10 +174,24 @@ int* DataBase::GetIndicesSortedByTS() const {
      return _sortedIndByTS;
 }
 
+int DataBase::GetIndCat(int cat) const{
+     int start = 0;
+     int end = _countCategories;
+     while (start<end) {
+          int mid = (start+end)/2;
+          if (cat == _categories[mid]) return mid;
+          else if (cat < _categories[mid]) end = mid;
+          else start = mid+1;
+     }
+     cout<<"big error "<<cat<<" "<<_countCategories<<endl;
+     return -1;
+}
+
 void DataBase::GetCatRange(int cat, int& start, int& end) const {
      assert (cat<_countCategories);
-     start = _catstart[cat];
-     end = _catend[cat]+1;
+     int indcat = GetIndCat(cat);
+     start = _catstart[indcat];
+     end = _catend[indcat]+1;
 }
      
 int DataBase::GetFirstPositionGE(float ts, int* indices, int start, int end) const {

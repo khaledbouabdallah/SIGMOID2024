@@ -8,12 +8,12 @@ using std::string;
 
 #define DATA_SIZE 100
 #define NTHREADS 32
-#define TIMETORUN 600
+#define TIMETORUN 10000000
 #define INCR 1
 
 
-extern volatile 
-int done;
+extern volatile int done;
+
 // Add your constant declarations here
 
 const int VECTOR_SIZE = 102; // The size of the vector

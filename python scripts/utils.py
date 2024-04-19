@@ -69,7 +69,7 @@ def knn(data, query, k):
     d = data.shape[1] - 2 # dimension of data points
     
     res = np.zeros((m, k), dtype=np.int32)
-    dist = np.zeros((n, m), dtype=np.float32)
+    #dist = np.zeros((n, m), dtype=np.float32)
     dist_to_return = np.zeros((m, k), dtype=np.float32)
     
     for i in tqdm(range(m)):
@@ -79,36 +79,37 @@ def knn(data, query, k):
         query_lower, query_higher = query[i, 2], query[i, 3]
         query_point = query[i, 4:]
         
+        dist = np.zeros((n,), dtype=np.float32)        
 
-        if query_type == 0: # normal query
-            for j in range(n):
+        if query_type == 0: # normal query     
+            for j in range(n):      
                 # euclidean distance
-                dist[j, i] = np.linalg.norm(data[j, 2:] - query_point)
+                dist[j] = np.linalg.norm(data[j, 2:] - query_point)
+                
         elif query_type == 1: # class query
             for j in range(n):
                 if data[j, 0] == query_category:
-                    dist[j, i] = np.linalg.norm(data[j, 2:] - query_point)
+                    dist[j] = np.linalg.norm(data[j, 2:] - query_point)
                 else:
-                    dist[j, i] = np.inf
+                    dist[j] = np.inf
         elif query_type == 2: # range query
             for j in range(n):
                 if query_lower <= data[j, 1] <= query_higher:
-                    dist[j, i] = np.linalg.norm(data[j, 2:] - query_point)
+                    dist[j] = np.linalg.norm(data[j, 2:] - query_point)
                 else:
-                    dist[j, i] = np.inf
+                    dist[j] = np.inf
         elif query_type == 3: # class range query
             for j in range(n):
                 if query_lower <= data[j, 1] <= query_higher and data[j, 0] == query_category:
-                    dist[j, i] = np.linalg.norm(data[j, 2:] - query_point)
+                    dist[j] = np.linalg.norm(data[j, 2:] - query_point)
                 else:
-                    dist[j, i] = np.inf
-                    
-        res[i] = np.argsort(dist[:, i])[:k]
-        temp = dist.copy()
-        dist_to_return[i] = np.sort(temp[:, i])[:k] 
+                    dist[j] = np.inf
+                     
+        res[i] = np.argsort(dist)[:k]
+        dist_to_return[i] = np.sort(dist.copy())[:k] 
         
         
-    return res, dist, dist_to_return
+    return res, dist_to_return
 
 
 # function to get the distances for a knn output (has only ids)

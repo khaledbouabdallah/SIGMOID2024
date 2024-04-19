@@ -10,15 +10,15 @@
 
 using namespace std;
 
-QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db(db) {     
+QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db(db), _queryCount(0) {   
      ifstream ifs;
      ifs.open(filename, std::ios::binary);
      assert(ifs.is_open());
-     
+
      ifs.read((char *)&_queryCount, sizeof(uint32_t));
+
      _queries = new Query*[_queryCount];
      for (int i = 0; i < _queryCount; ++i) {
-          //cout<<"query "<<i<<endl;
           switch (queryType){
                case 0: _queries[i] = new QuerySeqScan(ifs, db); break;
                case 1: _queries[i] = new QuerySeqScanRange(ifs, db); break;
