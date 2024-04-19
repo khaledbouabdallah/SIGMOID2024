@@ -20,7 +20,7 @@ private:
      /**< The poitn data. */
      float* _data;
      /**< SAX representation*/
-     int*  sax ;
+     uint64_t*  sax ;
      
 public:    
     /**
@@ -49,9 +49,9 @@ public:
      */
     float* GetData() const;
     
-    int*  Getsax() const ;
+    uint64_t*  Getsax() const ;
 
-    void Setsax(int*  Sax)  ;
+    void Setsax(uint64_t*  Sax)  ;
     
     ~DataPoint();
 };

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/SAX.hpp"
+#include <cstdint>
 
 volatile int done = 0;
 
@@ -13,7 +14,7 @@ int main() {
     SAX *sax = new SAX(2, 3);
     float* paa = sax->ToPAA(data, 10);
 
-    int*  saxx = sax->ToSAX(paa, 2);
+    uint64_t*  saxx = sax->ToSAX(paa, 2);
 
     for (int i = 0; i < 2; i++) {
         std::cout << paa[i] << " ";

@@ -70,8 +70,8 @@ int* SAX::ToSAX(float* paa, int taille) {
      return sax;
 }**/
 
-int* SAX::ToSAX(float* paa, int taille) {
-    int* sax = new int[taille];
+uint64_t* SAX::ToSAX(float* paa, int taille) {
+    uint64_t* sax = new uint64_t[taille];
 
     // On stocke la taille des breakpoints pour éviter de la recalculer à chaque itération
     int breakpointsSize = _breakpoints.size();
@@ -113,7 +113,7 @@ int* SAX::ToSAX(float* paa, int taille) {
 }
 
      
-int* SAX::ToSAX(DataBase& db) {
+uint64_t* SAX::ToSAX(DataBase& db) {
      
      int taille_data = db.GetSize();
      
