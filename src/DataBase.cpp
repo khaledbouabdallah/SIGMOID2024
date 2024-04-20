@@ -5,10 +5,13 @@
 #include "Utils.hpp"
 #include <cmath>
 #include "SortUtils.hpp"
+#include "SAX.hpp"
 
 using namespace std;
 
-DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _categories(NULL)  {     
+DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _categories(NULL)  {  
+     SAX saxmaker(PAA_SEGMENTS, SAX_CARD);
+   
      ifstream ifs;
      ifs.open(filename, std::ios::binary);
      assert(ifs.is_open());
@@ -17,6 +20,7 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      ifs.read((char *)&N, sizeof(uint32_t));
      for (int i = 0; i < N; ++i){
           DataPoint p(ifs);
+          p.Setsax(saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS));
           _data_points.push_back(p);
      }
      
