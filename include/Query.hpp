@@ -15,6 +15,7 @@ protected:
      float _tsr;
      float _tsl;
      float* _data; 
+     uint64_t* _sax; 
      
      int* _indices;
      int _startIndice;
@@ -41,6 +42,9 @@ public:
      inline float* GetData() {return _data;}
      
      float GetSAXDistance(const DataPoint& p);
+     
+     void SetSAX(uint64_t* sax);
+     
      
 protected:
 

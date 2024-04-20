@@ -80,6 +80,10 @@ float Query::GetSAXDistance(const DataPoint& p){
      return 0;
 }
 
+void Query::SetSAX(uint64_t* sax){
+     _sax = sax;
+}
+
 Query::~Query(){
      delete[] _data;
 }

@@ -7,14 +7,18 @@
 #include "QuerySeqScanRange.hpp"
 #include "QuerySeqScanIncremental.hpp"
 #include "QuerySeqScanRangeIncremental.hpp"
+#include "SAX.hpp"
 
 using namespace std;
 
-QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db(db), _queryCount(0) {   
+QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db(db), _queryCount(0) { 
+     SAX saxmaker(PAA_SEGMENTS, SAX_CARD);
+  
      ifstream ifs;
      ifs.open(filename, std::ios::binary);
      assert(ifs.is_open());
 
+     
      ifs.read((char *)&_queryCount, sizeof(uint32_t));
 
      _queries = new Query*[_queryCount];
@@ -25,6 +29,7 @@ QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db
                case 2: _queries[i] = new QuerySeqScanIncremental(ifs, db); break;
                case 3: _queries[i] = new QuerySeqScanRangeIncremental(ifs, db); break;
           }
+          _queries[i]->SetSAX(saxmaker.ToSAX(saxmaker.ToPAA(_queries[i]->GetData(), DATA_SIZE),PAA_SEGMENTS));
      }
           
 }
