@@ -106,7 +106,7 @@ int main() {
      int runType = 0; //0 = normal, 1 = multi-thread
      int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
      
-     const char* ansoutput = "../data/dummy-output-seqscan.bin";
+     const char* ansoutput = "../data/dummy-output-current.bin";
      //const char* ansoutput = "../data/relsmall-normal.bin";
      //const char* ansoutput = "../data/relsmall-range-mt.bin";
      
@@ -144,7 +144,7 @@ int main() {
           qset.WriteOutput(ansoutput);   
      }
 #else
-     float rec = GetRecall(db, qset, "../data/dummy-output-seqscan.bin", "../data/dummy-output-reference.bin");
+     float rec = GetRecall(db, qset, "../data/dummy-output-current.bin", "../data/dummy-output-reference.bin");
      cout<<rec<<endl;
 #endif
      

@@ -24,6 +24,9 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
           _data_points.push_back(p);
      }
      
+     _breakpoints = getBreakPoints(SAX_CARD);
+     _scaleFactor = sqrt((float)N/(float)PAA_SEGMENTS);
+     
      _countPoints = N;
      _sortedIndNormal = new int[_countPoints];
      _sortedIndByCatAndTS = new int[_countPoints];

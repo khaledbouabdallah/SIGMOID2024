@@ -2,6 +2,8 @@
 #include "globals.hpp"
 #include <cmath>
 #include <iostream>
+#include <cstdlib>
+#include <vector>
 
 using namespace std;
 
@@ -29,6 +31,22 @@ float getDistance(float* data1, float* data2) {
      for (int i = 0; i < DATA_SIZE; i++) 
           sum += ((data1[i] - data2[i])*(data1[i] - data2[i]));
      return sqrt(sum);
+}
+
+float getSAXDistance(uint64_t* sax1, uint64_t* sax2, const vector<float>& breakpoints){
+     float sumdist = 0;
+     for (int i = 0; i < PAA_SEGMENTS; ++i) {
+          int max = sax1[i];
+          if (sax2[i] > max) max = sax2[i];
+          int min = sax1[i]+sax2[i]-max;
+          int dist = 0;
+          if (max-min >1) { 
+               dist = breakpoints[max-1]-breakpoints[min];
+               dist = dist*dist;
+          }
+          sumdist+=dist;
+     }
+     return sqrt(sumdist);
 }
 
 std::vector<float> getBreakPoints(int numSegments) {

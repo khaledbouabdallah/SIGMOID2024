@@ -5,6 +5,8 @@
 #include "globals.hpp"
 #include <vector>
 
+using namespace std;
+
 /**
  * @brief Represents a database of data points.
  */
@@ -34,6 +36,12 @@ private:
       int* _catend;
       int _countCategories;
       int* _categories;
+      
+public:
+     //sax
+     vector<float> _breakpoints;
+     
+     float _scaleFactor;
 
 public:
      /**
