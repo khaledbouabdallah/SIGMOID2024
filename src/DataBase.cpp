@@ -20,7 +20,9 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      ifs.read((char *)&N, sizeof(uint32_t));
      for (int i = 0; i < N; ++i){
           DataPoint p(ifs);
-          p.Setsax(saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS));
+          uint64_t* sax = saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS);
+          
+          p.Setsax(sax);
           _data_points.push_back(p);
      }
      

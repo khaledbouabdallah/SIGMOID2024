@@ -17,8 +17,11 @@ QueryRangeSAXFilter::~QueryRangeSAXFilter(){
 void QueryRangeSAXFilter::run (int& switchquery){
      for (int i = _startIndice+DATA_SIZE; i< _endIndice; ++i) {
           const DataPoint& p = _db.GetPoint(_indices[i]);
+           if (GetSAXDistance(p) > getDistance(_data, p.GetData()))
+               cout<<"BIG ERROR SAX"<<endl;
           if (GetSAXDistance(p)>_answer._distMax)
                continue; //filter
+          //cout<<i<<endl;
           float dist = getDistance(p.GetData(), _data);
           _answer.CheckAndAdd(_indices[i],dist);
      } 

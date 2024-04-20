@@ -21,6 +21,7 @@ DataPoint::DataPoint(const DataPoint& other) {
      memcpy(_data, other._data, DATA_SIZE*sizeof(float));
      _c = other._c;
      _timestamp = other._timestamp;
+     sax = other.sax;
      uint64_t*  sax = NULL;
 }
      
