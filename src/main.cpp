@@ -144,7 +144,7 @@ int main() {
           qset.WriteOutput(ansoutput);   
      }
 #else
-     float rec = GetRecall(db, qset, "../data/relsmall-normal.bin", "../data/relsmall-normal-reference.bin");
+     float rec = GetRecall(db, qset, "../data/dummy-output-seqscan.bin", "../data/dummy-output-reference.bin");
      cout<<rec<<endl;
 #endif
      
