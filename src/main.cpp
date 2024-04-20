@@ -95,17 +95,20 @@ void timesup (int sig){
 
 
 int main() {
-     const char* pointsInput = "../data/contest-data-release-1m.bin";
+     const char* pointsInput = "../data/dummy-data.bin";
+     //const char* pointsInput = "../data/contest-data-release-1m.bin";
      //const char* pointsInput = "../data/contest-data-release-10m.bin";
      
-     const char* queriesInput = "../data/contest-queries-release-1m.bin";
+     const char* queriesInput = "../data/dummy-queries.bin";
+     //const char* queriesInput = "../data/contest-queries-release-1m.bin";
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
-     int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 1; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
+     int runType = 0; //0 = normal, 1 = multi-thread
+     int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental
      
+     const char* ansoutput = "../data/dummy-output-seqscan.bin";
      //const char* ansoutput = "../data/relsmall-normal.bin";
-     const char* ansoutput = "../data/relsmall-range-mt.bin";
+     //const char* ansoutput = "../data/relsmall-range-mt.bin";
      
      
      done = 0;
