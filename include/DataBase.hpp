@@ -39,6 +39,9 @@ private:
       int _countCategories;
       int* _categories;
       
+      //bp distances, sqaured, with scale factor !
+      float _saxDistances[256][256];
+      
 public:
      //sax
      vector<float> _breakpoints;
@@ -121,6 +124,8 @@ public:
      inline float GetGlobalMean() const {return _globalMean;}
      
      inline float GetGlobalStd() const {return _globalStd;}
+     
+     float GetSAXDistance(uint64_t* sax1, uint64_t* sax2) const;
 
 private:
 
@@ -134,7 +139,8 @@ private:
      
      int GetIndCat(int cat) const;
      
-
+     void ComputeSaxDistances();
+     
 };
 
 #endif 

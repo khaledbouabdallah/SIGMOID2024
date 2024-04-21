@@ -36,9 +36,13 @@ void QueryRangeSAXFilter::run (int& switchquery){
            }*/
           
           //cout<< GetPAADistance(_paa, p.GetPaa())*_db._scaleFactor) <<" "<<getDistance(_data, p.GetData()<<endl;
+          float saxDistance = _db.GetSAXDistance(p.Getsax(), _sax);
+
+#ifdef FILTERCOUNT
           float realDistance = getDistance(p.GetData(), _data);
           float paaDistance = getPaaDistance(_paa, p.GetPaa())*_db._scaleFactor;
-          float saxDistance = GetSAXDistance(p);
+        
+          
           
           if (realDistance >_answer._distMax) { //should be filtered
                countShouldBeFiltered ++;  
@@ -47,10 +51,14 @@ void QueryRangeSAXFilter::run (int& switchquery){
                if (saxDistance>_answer._distMax) 
                     countFilteredBySAX ++; 
                continue;
-          }          
-          
+          }        
+#endif  
+          if (saxDistance >_answer._distMax) continue;
+          float realDistance = getDistance(p.GetData(), _data);
           _answer.CheckAndAdd(_indices[i],realDistance);
      } 
+#ifdef FILTERCOUNT
      cout<<"filtered by PAA "<<countFilteredByPaa<<" and by SAX "<<countFilteredBySAX<<" out of "<<countShouldBeFiltered<<endl;
+#endif
      _isFinished = 1;
 }

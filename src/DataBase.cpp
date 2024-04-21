@@ -6,6 +6,7 @@
 #include <cmath>
 #include "SortUtils.hpp"
 #include "SAX.hpp"
+#include <cstring>
 
 using namespace std;
 
@@ -55,8 +56,9 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      
      
      _breakpoints = getBreakPoints(SAX_CARD, _globalMean, _globalStd);
-     _scaleFactor = sqrt((float)DATA_SIZE/(float)PAA_SEGMENTS);
-     
+     //_scaleFactor = sqrt((float)DATA_SIZE/(float)PAA_SEGMENTS);
+     _scaleFactor = (float)DATA_SIZE/(float)PAA_SEGMENTS;
+     ComputeSaxDistances();
      
      _sortedIndNormal = new int[_countPoints];
      _sortedIndByCatAndTS = new int[_countPoints];
@@ -177,6 +179,23 @@ void DataBase::GetCatAndTSRange(int cat, float lts, float rts, int& start, int& 
      assert (cat<_countCategories);
      start = GetFirstPositionGETS(lts, _sortedIndByCatAndTS,  _data_points,  _catstart[cat], _catend[cat]+1);    
      end = GetLastPositionLETS(rts, _sortedIndByCatAndTS,  _data_points, _catstart[cat], _catend[cat]+1)+1;  
+}
+
+void DataBase::ComputeSaxDistances(){
+     memset(_saxDistances, 0, 256*256*sizeof(float));
+     for (int i = 0; i< SAX_CARD; ++i)
+          for (int j = i+2; j<SAX_CARD;j++) {
+               _saxDistances[i][j] = _breakpoints[j-1]-_breakpoints[i];
+               _saxDistances[i][j] =  _saxDistances[i][j]*  _saxDistances[i][j];
+               _saxDistances[j][i] =  _saxDistances[i][j];
+          }     
+}
+
+float DataBase::GetSAXDistance(uint64_t* sax1, uint64_t* sax2) const{
+    float sum = 0;
+    for (int i = 0; i< PAA_SEGMENTS; ++i)
+          sum+=_saxDistances[sax1[i]][sax2[i]];
+    return sum;  
 }
 
 void DataBase::ComputeMeans() {

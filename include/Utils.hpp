@@ -17,6 +17,4 @@ float getPaaDistance(float* data1, float* data2);
 
 std::vector<float> getBreakPoints(int numSegments, float mean, float stddev);
 
-float getSAXDistance(uint64_t* sax1, uint64_t* sax2, const std::vector<float>& breakpoints);
-
 #endif

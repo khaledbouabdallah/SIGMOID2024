@@ -79,9 +79,6 @@ int Query::IsFinished() {
      return _isFinished;
 }
 
-float Query::GetSAXDistance(const DataPoint& p){
-     return _db._scaleFactor*getSAXDistance(_sax, p.Getsax(), _db._breakpoints);
-}
 
 void Query::SetSAX(uint64_t* sax){
      _sax = sax;
