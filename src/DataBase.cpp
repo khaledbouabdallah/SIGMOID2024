@@ -202,7 +202,7 @@ void DataBase::ComputeGlobalStd() {
      _globalStd = sqrt(_globalStd / (_countPoints*DATA_SIZE));
 }
 
-void DataBase::NormalizeData() {
+void DataBase::NormalizeData_Axis1() {
 
      ComputeMeans();
      ComputeStds();
@@ -211,6 +211,32 @@ void DataBase::NormalizeData() {
           float* data = _data_points[i].GetData();
           for (int j = 0; j<DATA_SIZE; ++j) {
                data[j] = (data[j] - _means[j])/_stds[j];
+          }
+     }
+
+}
+
+void DataBase::NormalizeData_Axis0() {
+
+     for (int i = 0; i<_countPoints; ++i) {
+          float* data = _data_points[i].GetData();
+          float mean = calculateMean(data, DATA_SIZE);
+          float std = calculateStd(data, DATA_SIZE, mean);
+
+          for (int j = 0; j<DATA_SIZE; ++j) {
+               data[j] = (data[j] - _means[j])/_stds[j];
+          }
+        
+     }
+
+}
+
+void DataBase::NormalizeData_Global() {
+
+     for (int i = 0; i<_countPoints; ++i) {
+          float* data = _data_points[i].GetData();
+          for (int j = 0; j<DATA_SIZE; ++j) {
+               data[j] = (data[j] - _globalMean)/_globalStd;
           }
      }
 

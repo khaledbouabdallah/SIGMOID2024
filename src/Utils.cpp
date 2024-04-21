@@ -8,7 +8,7 @@
 using namespace std;
 
 
-// needed for PAA
+// used for Normalization
 float calculateMean(float* data, int size) {
      float sum = 0.0;
      for (int i = 0; i < size; i++) {
@@ -17,7 +17,16 @@ float calculateMean(float* data, int size) {
      return sum / size;
 }
 
+// used for Normalization
+float calculateStd(float* data, int size, float mean) {
+     float sum = 0.0;
+     for (int i = 0; i < size; i++) {
+          sum += (data[i] - mean)*(data[i] - mean);
+     }
+     return sqrt(sum / size);
+}
 
+// used for PAA
 float calculateMean(float* data, int start, int end) {
      float sum = 0.0;
      for (int i = start; i <= end; i++) {
@@ -60,22 +69,31 @@ std::vector<float> getBreakPoints(int numSegments) {
     {
     case 2:
         return BREAK_POINTS_2;
+        break;
     case 3:
         return  BREAK_POINTS_3;
+        break;
     case 8:
         return  BREAK_POINTS_8;
+        break;
     case 16:
         return  BREAK_POINTS_16;
+        break;
     case 32:
         return  BREAK_POINTS_32;
+        break;
     case 64:
         return  BREAK_POINTS_64;
+        break;
     case 128:
         return  BREAK_POINTS_128;
+        break;
     case 256:
         return  BREAK_POINTS_256;
+        break;
     case 512:
         return  BREAK_POINTS_512;
+        break;
     default:
         return  BREAK_POINTS_256;
     }

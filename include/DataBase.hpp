@@ -112,7 +112,11 @@ public:
      
      void GetCatAndTSRange(int cat, float lts, float rts, int& start, int& end) const;
 
-     void NormalizeData();
+     void NormalizeData_Axis1(); // columns
+
+     void NormalizeData_Axis0(); // rows
+
+     void NormalizeData_Global();
 
 private:
 
