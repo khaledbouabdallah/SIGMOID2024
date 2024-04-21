@@ -29,6 +29,9 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      
      cout<<"database; "<<_globalMean<<" "<<_globalStd<<endl;
      
+     NormalizeData_Global();
+     
+     
      SAX saxmaker(PAA_SEGMENTS, SAX_CARD, _globalMean, _globalStd);
       
      

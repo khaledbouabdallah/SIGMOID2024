@@ -92,9 +92,9 @@ std::vector<float> getBreakPoints(int numSegments, float mean, float stddev) {
     
     //apply transform
     //cout<<stddev<<" "<<mean<<endl;
-    for (int i = 0; i<bp.size(); ++i) {
-          bp[i] = bp[i]*stddev+mean;
+    //for (int i = 0; i<bp.size(); ++i) {
+    //      bp[i] = bp[i]*stddev+mean;
           //cout<<bp[i]<<endl;
-    }
+    //}
     return bp;
 }
