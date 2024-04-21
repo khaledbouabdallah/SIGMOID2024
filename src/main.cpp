@@ -17,7 +17,7 @@
 
 using namespace std;
 
-#define RECALL
+//#define RECALL
 
 void readIndices(ifstream& ifs, vector<int>&indices){    
      for (int i = 0; i < DATA_SIZE; ++i){
@@ -95,19 +95,19 @@ void timesup (int sig){
 
 
 int main() {
-     const char* pointsInput = "../data/dummy-data.bin";
-     //const char* pointsInput = "../data/contest-data-release-1m.bin";
+     //const char* pointsInput = "../data/dummy-data.bin";
+     const char* pointsInput = "../data/contest-data-release-1m.bin";
      //const char* pointsInput = "../data/contest-data-release-10m.bin";
      
-     const char* queriesInput = "../data/dummy-queries.bin";
-     //const char* queriesInput = "../data/contest-queries-release-1m.bin";
+     //const char* queriesInput = "../data/dummy-queries.bin";
+     const char* queriesInput = "../data/contest-queries-release-1m.bin";
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
-     int runType = 0; //0 = normal, 1 = multi-thread
-     int queryType = 4; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
+     int runType = 1; //0 = normal, 1 = multi-thread
+     int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
      
-     const char* ansoutput = "../data/dummy-output-current.bin";
-     //const char* ansoutput = "../data/relsmall-normal.bin";
+     //const char* ansoutput = "../data/dummy-output-current.bin";
+     const char* ansoutput = "../data/relsmall-output-current.bin";
      //const char* ansoutput = "../data/relsmall-range-mt.bin";
      
      
@@ -144,7 +144,7 @@ int main() {
           qset.WriteOutput(ansoutput);   
      }
 #else
-     float rec = GetRecall(db, qset, "../data/dummy-output-current.bin", "../data/dummy-output-reference.bin");
+     float rec = GetRecall(db, qset, "../data/relsmall-output-current.bin", "../data/rellsmall-output-reference.bin");
      cout<<rec<<endl;
 #endif
      
