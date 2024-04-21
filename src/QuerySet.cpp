@@ -13,7 +13,7 @@
 using namespace std;
 
 QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db(db), _queryCount(0) { 
-     SAX saxmaker(PAA_SEGMENTS, SAX_CARD);
+     SAX saxmaker(PAA_SEGMENTS, SAX_CARD, _db.GetGlobalMean(), _db.GetGlobalStd());
   
      ifstream ifs;
      ifs.open(filename, std::ios::binary);

@@ -55,28 +55,37 @@ float getSAXDistance(uint64_t* sax1, uint64_t* sax2, const vector<float>& breakp
      return sqrt(sumdist);
 }
 
-std::vector<float> getBreakPoints(int numSegments) {
+std::vector<float> getBreakPoints(int numSegments, float mean, float stddev) {
+    std::vector<float> bp;
     switch (numSegments)
     {
     case 2:
-        return BREAK_POINTS_2;
+        bp = BREAK_POINTS_2; break;
     case 3:
-        return  BREAK_POINTS_3;
+        bp =   BREAK_POINTS_3; break;
     case 8:
-        return  BREAK_POINTS_8;
+        bp =   BREAK_POINTS_8;break;
     case 16:
-        return  BREAK_POINTS_16;
+        bp =   BREAK_POINTS_16;break;
     case 32:
-        return  BREAK_POINTS_32;
+        bp =   BREAK_POINTS_32;break;
     case 64:
-        return  BREAK_POINTS_64;
+        bp =   BREAK_POINTS_64;break;
     case 128:
-        return  BREAK_POINTS_128;
+        bp =   BREAK_POINTS_128;break;
     case 256:
-        return  BREAK_POINTS_256;
+        bp =   BREAK_POINTS_256;break;
     case 512:
-        return  BREAK_POINTS_512;
+        bp =   BREAK_POINTS_512;break;
     default:
-        return  BREAK_POINTS_256;
+        bp =   BREAK_POINTS_256;break;
     }
+    
+    //apply transform
+    //cout<<stddev<<" "<<mean<<endl;
+    for (int i = 0; i<bp.size(); ++i) {
+          bp[i] = bp[i]*stddev+mean;
+          //cout<<bp[i]<<endl;
+    }
+    return bp;
 }

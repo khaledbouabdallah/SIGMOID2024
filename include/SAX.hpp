@@ -19,7 +19,7 @@ class SAX {
 
     public:
     
-        SAX(int wordSize,int alphaSize);
+        SAX(int wordSize,int alphaSize, float mean, float stdev);
         
         // float vector to be transformed into a PAA representation
         float* ToPAA(float* vector, int taille);

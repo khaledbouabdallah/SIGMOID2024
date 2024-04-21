@@ -114,6 +114,10 @@ public:
 
      void NormalizeData();
 
+     inline float GetGlobalMean() const {return _globalMean;}
+     
+     inline float GetGlobalStd() const {return _globalStd;}
+
 private:
 
      void ComputeMeans();
