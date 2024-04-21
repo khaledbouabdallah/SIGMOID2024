@@ -17,7 +17,7 @@
 
 using namespace std;
 
-//#define RECALL
+#define RECALL
 
 void readIndices(ifstream& ifs, vector<int>&indices){    
      for (int i = 0; i < DATA_SIZE; ++i){

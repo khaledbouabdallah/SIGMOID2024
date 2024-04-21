@@ -23,11 +23,14 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
           uint64_t* sax = saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS);
           
           p.Setsax(sax);
+           //for (int j = 0; j< 10; ++j)
+           //         cout<<p.Getsax()[j]<<" ";
+           //cout<<endl;
           _data_points.push_back(p);
      }
      
      _breakpoints = getBreakPoints(SAX_CARD);
-     _scaleFactor = sqrt((float)N/(float)PAA_SEGMENTS);
+     _scaleFactor = sqrt((float)DATA_SIZE/(float)PAA_SEGMENTS);
      
      _countPoints = N;
      _sortedIndNormal = new int[_countPoints];
