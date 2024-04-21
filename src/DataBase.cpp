@@ -10,7 +10,7 @@
 using namespace std;
 
 DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _categories(NULL)  {  
-     SAX saxmaker(PAA_SEGMENTS, SAX_CARD);
+     
    
      ifstream ifs;
      ifs.open(filename, std::ios::binary);
@@ -20,7 +20,21 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      ifs.read((char *)&N, sizeof(uint32_t));
      for (int i = 0; i < N; ++i){
           DataPoint p(ifs);
-          uint64_t* sax = saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS);
+          _data_points.push_back(p);
+     }
+     _countPoints = N;
+     
+     ComputeGlobalMean();
+     ComputeGlobalStd();
+     
+     cout<<"database; "<<_globalMean<<" "<<_globalStd<<endl;
+     
+     SAX saxmaker(PAA_SEGMENTS, SAX_CARD, _globalMean, _globalStd);
+      
+     
+     for (int i = 0; i < N; ++i){
+          DataPoint& p = _data_points[i];
+          uint64_t* sax = saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS); 
           
           p.Setsax(sax);
            //for (int j = 0; j< 10; ++j)
@@ -29,10 +43,13 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
           _data_points.push_back(p);
      }
      
-     _breakpoints = getBreakPoints(SAX_CARD);
+    
+     
+     
+     _breakpoints = getBreakPoints(SAX_CARD, _globalMean, _globalStd);
      _scaleFactor = sqrt((float)DATA_SIZE/(float)PAA_SEGMENTS);
      
-     _countPoints = N;
+     
      _sortedIndNormal = new int[_countPoints];
      _sortedIndByCatAndTS = new int[_countPoints];
      _sortedIndByTS = new int[_countPoints];

@@ -6,10 +6,10 @@
 
 using std::vector;
 
-SAX::SAX(int wordSize,int alphaSize) {
+SAX::SAX(int wordSize,int alphaSize, float mean, float stdev) {
     _wordSize = wordSize;
     _alphaSize = alphaSize;
-    _breakpoints = getBreakPoints(alphaSize);
+    _breakpoints = getBreakPoints(alphaSize, mean, stdev);
 
 }
 
@@ -77,6 +77,7 @@ uint64_t* SAX::ToSAX(float* paa, int taille) {
     int breakpointsSize = _breakpoints.size();
 
     for (int i = 0; i < taille; ++i) {
+       
         int low = 0;
         int high = breakpointsSize - 1;
         int mid;
@@ -95,9 +96,9 @@ uint64_t* SAX::ToSAX(float* paa, int taille) {
             mid = (low + high) / 2;
 
             if (paa[i] < _breakpoints[mid]) {
-               high = mid ;
+               high = mid;
           } else if (paa[i] > _breakpoints[mid]){
-               low = mid ;
+               low = mid;
           } else if ( paa[i]== _breakpoints[mid]) {
                break;}
           if (high - low <= 1) {
@@ -108,6 +109,7 @@ uint64_t* SAX::ToSAX(float* paa, int taille) {
 
         sax[i] = mid;
     }
+    
 
     return sax;
 }
