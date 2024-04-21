@@ -37,12 +37,17 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      
      for (int i = 0; i < N; ++i){
           DataPoint& p = _data_points[i];
-          uint64_t* sax = saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS); 
           
+          float* paa = saxmaker.ToPAA(p.GetData(), DATA_SIZE);
+          p.SetPaa(paa);
+          
+          uint64_t* sax = saxmaker.ToSAX(paa,PAA_SEGMENTS); 
           p.Setsax(sax);
-           //for (int j = 0; j< 10; ++j)
-           //         cout<<p.Getsax()[j]<<" ";
-           //cout<<endl;
+          
+          
+          //for (int j = 0; j< 10; ++j)
+          //          cout<<p.Getsax()[j]<<" ";
+          //cout<<endl;
           _data_points.push_back(p);
      }
      

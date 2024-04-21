@@ -21,6 +21,7 @@ private:
      float* _data;
      /**< SAX representation*/
      uint64_t*  sax ;
+     float* _paa;
      
 public:    
     /**
@@ -52,6 +53,10 @@ public:
     uint64_t*  Getsax() const ;
 
     void Setsax(uint64_t*  Sax)  ;
+    
+    inline float* GetPaa() const {return _paa;}
+     
+     inline void SetPaa(float* paa) {_paa = paa;}
     
     ~DataPoint();
 };

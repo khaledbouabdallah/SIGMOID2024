@@ -10,8 +10,8 @@ using std::string;
 #define NTHREADS 32
 #define TIMETORUN 10000000
 #define INCR 1
-#define PAA_SEGMENTS 10
-#define SAX_CARD 8
+#define PAA_SEGMENTS 100
+#define SAX_CARD 256
 
 extern volatile int done;
 

@@ -15,10 +15,14 @@ QueryRangeSAXFilter::~QueryRangeSAXFilter(){
 }
 
 void QueryRangeSAXFilter::run (int& switchquery){
-     int countfiltered = 0;
+     int countFilteredBySAX = 0;
+     int countFilteredByPaa = 0;
+     int countShouldBeFiltered = 0;
      for (int i = _startIndice+DATA_SIZE; i< _endIndice; ++i) {
           const DataPoint& p = _db.GetPoint(_indices[i]);
-          cout<<GetSAXDistance(p)<<" "<<getDistance(_data, p.GetData())<<endl; 
+          //cout<<p.GetPaa()[0]<<endl;
+          //cout<<GetSAXDistance(p)<<" "<<getPaaDistance(_paa, p.GetPaa())*_db._scaleFactor<<" "<<getDistance(_data, p.GetData())<<endl; 
+          /*
           if (GetSAXDistance(p) > getDistance(_data, p.GetData())) {
                cout<<"BIG ERROR SAX"<<endl;
                for (int j = 0; j< 10; ++j)
@@ -29,15 +33,24 @@ void QueryRangeSAXFilter::run (int& switchquery){
                     cout<<_sax[j]<<" ";   
                
                exit(1);
-           }
-           
-          if (GetSAXDistance(p)>_answer._distMax) {
-               countfiltered++;
-               continue; //filter
-          }
-          float dist = getDistance(p.GetData(), _data);
-          _answer.CheckAndAdd(_indices[i],dist);
+           }*/
+          
+          //cout<< GetPAADistance(_paa, p.GetPaa())*_db._scaleFactor) <<" "<<getDistance(_data, p.GetData()<<endl;
+          float realDistance = getDistance(p.GetData(), _data);
+          float paaDistance = getPaaDistance(_paa, p.GetPaa())*_db._scaleFactor;
+          float saxDistance = GetSAXDistance(p);
+          
+          if (realDistance >_answer._distMax) { //should be filtered
+               countShouldBeFiltered ++;  
+               if (paaDistance>_answer._distMax) 
+                    countFilteredByPaa ++;
+               if (saxDistance>_answer._distMax) 
+                    countFilteredBySAX ++; 
+               continue;
+          }          
+          
+          _answer.CheckAndAdd(_indices[i],realDistance);
      } 
-     cout<<"filtered "<<countfiltered<<endl;
+     cout<<"filtered by PAA "<<countFilteredByPaa<<" and by SAX "<<countFilteredBySAX<<" out of "<<countShouldBeFiltered<<endl;
      _isFinished = 1;
 }

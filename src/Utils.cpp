@@ -42,6 +42,13 @@ float getDistance(float* data1, float* data2) {
      return sqrt(sum);
 }
 
+float getPaaDistance(float* data1, float* data2) {
+     float sum = 0;
+     for (int i = 0; i < PAA_SEGMENTS; i++) 
+          sum += ((data1[i] - data2[i])*(data1[i] - data2[i]));
+     return sqrt(sum);
+}
+
 float getSAXDistance(uint64_t* sax1, uint64_t* sax2, const vector<float>& breakpoints){
     
      float sumdist = 0;
