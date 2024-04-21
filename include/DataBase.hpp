@@ -27,9 +27,11 @@ private:
       /**< The number of points. */
       int _countPoints;
 
+      //stats
       float* _means;
-
       float* _stds;
+      float _globalMean;
+      float _globalStd;
       
       //categories
       int* _catstart;
@@ -118,7 +120,12 @@ private:
 
      void ComputeStds();
      
+     void ComputeGlobalMean();
+     
+     void ComputeGlobalStd();
+     
      int GetIndCat(int cat) const;
+     
 
 };
 

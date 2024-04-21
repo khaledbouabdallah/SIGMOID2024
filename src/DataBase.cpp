@@ -20,12 +20,17 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      ifs.read((char *)&N, sizeof(uint32_t));
      for (int i = 0; i < N; ++i){
           DataPoint p(ifs);
-          p.Setsax(saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS));
+          uint64_t* sax = saxmaker.ToSAX(saxmaker.ToPAA(p.GetData(), DATA_SIZE),PAA_SEGMENTS);
+          
+          p.Setsax(sax);
+           //for (int j = 0; j< 10; ++j)
+           //         cout<<p.Getsax()[j]<<" ";
+           //cout<<endl;
           _data_points.push_back(p);
      }
      
      _breakpoints = getBreakPoints(SAX_CARD);
-     _scaleFactor = sqrt((float)N/(float)PAA_SEGMENTS);
+     _scaleFactor = sqrt((float)DATA_SIZE/(float)PAA_SEGMENTS);
      
      _countPoints = N;
      _sortedIndNormal = new int[_countPoints];
@@ -177,6 +182,24 @@ void DataBase::ComputeStds() {
           _stds[i] = sqrt(sum/_countPoints);
      }
 
+}
+
+void DataBase::ComputeGlobalMean() {
+     _globalMean = 0;
+     for (int i = 0; i<DATA_SIZE; ++i) 
+          for (int j = 0; j<_countPoints; ++j) 
+               _globalMean += _data_points[j].GetData()[i];
+
+      _globalMean /= (_countPoints*DATA_SIZE);
+
+}
+
+void DataBase::ComputeGlobalStd() {
+     _globalStd = 0;
+     for (int i = 0; i<DATA_SIZE; ++i) 
+          for (int j = 0; j<_countPoints; ++j) 
+               _globalStd += (_data_points[j].GetData()[i] - _globalMean)*(_data_points[j].GetData()[i] - _globalMean);
+     _globalStd = sqrt(_globalStd / (_countPoints*DATA_SIZE));
 }
 
 void DataBase::NormalizeData() {
