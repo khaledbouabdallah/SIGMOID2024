@@ -38,7 +38,8 @@ private:
       int* _catend;
       int _countCategories;
       int* _categories;
-      
+  
+public:    
       //bp distances, sqaured, with scale factor !
       float _saxDistances[256][256];
       

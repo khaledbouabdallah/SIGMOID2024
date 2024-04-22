@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include "Answer.hpp"
+#include <vector>
 
 class DataBase;
 class DataPoint;
@@ -47,6 +48,8 @@ public:
      inline void SetPaa(float* paa) {_paa = paa;}
      
      void SetSAX(uint64_t* sax);
+     
+     void CheckIndices(const std::vector<int>& indices);
      
      
 protected:

@@ -14,10 +14,11 @@
 #include <set>
 #include "assert.h"
 #include <cstdint>
+#include "IndexSAXTrie.hpp"
 
 using namespace std;
 
-#define RECALL
+//#define RECALL
 
 void readIndices(ifstream& ifs, vector<int>&indices){    
      for (int i = 0; i < DATA_SIZE; ++i){
@@ -104,7 +105,7 @@ int main() {
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
      int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
+     int queryType = 4; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
      
      //const char* ansoutput = "../data/dummy-output-current.bin";
      const char* ansoutput = "../data/relsmall-output-current.bin";
@@ -123,6 +124,12 @@ int main() {
      db.ProcessCategories();
      cout<<"sorting by ts"<<endl;
      db.SortByTS();
+     
+     cout<<"building index"<<endl;
+     IndexSAXTrie index(db);
+     index.BuildIndex();
+     
+     exit(1);
      
      cout<<"reading queries"<<endl;
      QuerySet qset = QuerySet(queriesInput, db, queryType);

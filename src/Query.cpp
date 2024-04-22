@@ -6,6 +6,7 @@
 #include <iostream>
 #include "DataBase.hpp"
 #include "DataPoint.hpp"
+#include <vector>
 
 using namespace std;
 
@@ -82,6 +83,15 @@ int Query::IsFinished() {
 
 void Query::SetSAX(uint64_t* sax){
      _sax = sax;
+}
+
+void Query::CheckIndices(const vector<int>&indices) {
+     for (int ind:indices) {
+           const DataPoint& p = _db.GetPoint(ind);
+           if (!IsValid(p)) continue;
+           float realDistance = getDistance(p.GetData(), _data);
+          _answer.CheckAndAdd(ind,realDistance);
+     }
 }
 
 Query::~Query(){
