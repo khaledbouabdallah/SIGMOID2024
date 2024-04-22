@@ -15,6 +15,7 @@
 #include "assert.h"
 #include <cstdint>
 #include "IndexSAXTrie.hpp"
+#include "QuerySAXTrie.hpp"
 
 using namespace std;
 
@@ -96,19 +97,22 @@ void timesup (int sig){
 
 
 int main() {
+     const char* pointsInput = "dummy-data.bin";
      //const char* pointsInput = "../data/dummy-data.bin";
-     const char* pointsInput = "../data/contest-data-release-1m.bin";
+     //const char* pointsInput = "../data/contest-data-release-1m.bin";
      //const char* pointsInput = "../data/contest-data-release-10m.bin";
      
+     const char* queriesInput = "dummy-queries.bin";
      //const char* queriesInput = "../data/dummy-queries.bin";
-     const char* queriesInput = "../data/contest-queries-release-1m.bin";
+     //const char* queriesInput = "../data/contest-queries-release-1m.bin";
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
-     int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 4; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
+     int runType = 0; //0 = normal, 1 = multi-thread
+     int queryType = 0; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
      
+     const char* ansoutput = "output.bin";
      //const char* ansoutput = "../data/dummy-output-current.bin";
-     const char* ansoutput = "../data/relsmall-output-current.bin";
+     //const char* ansoutput = "../data/relsmall-output-current.bin";
      //const char* ansoutput = "../data/relsmall-range-mt.bin";
      
      
@@ -116,22 +120,25 @@ int main() {
      signal( SIGALRM, timesup);
      alarm(TIMETORUN);
      
-     cout<<"reading points"<<endl;
+     //cout<<"reading points"<<endl;
      DataBase db = DataBase(pointsInput);
-     cout<<"sorting by cat and ts"<<endl;
-     db.SortByCatAndTS();
-     cout<<"processing categories"<<endl;
-     db.ProcessCategories();
-     cout<<"sorting by ts"<<endl;
-     db.SortByTS();
+     //cout<<"sorting by cat and ts"<<endl;
+     //db.SortByCatAndTS();
+     //cout<<"processing categories"<<endl;
+     //db.ProcessCategories();
+     //cout<<"sorting by ts"<<endl;
+     //db.SortByTS();
      
-     cout<<"building index"<<endl;
-     IndexSAXTrie index(db);
-     index.BuildIndex();
+     //db.PrintColumnsData();
+
+     //IndexSAXTrie index(db);
+     //if (queryType == 5) {
+     //     cout<<"building index"<<endl;
+     //
+     //     index.BuildIndex();
+     //}
      
-     exit(1);
-     
-     cout<<"reading queries"<<endl;
+     //cout<<"reading queries"<<endl;
      QuerySet qset = QuerySet(queriesInput, db, queryType);
 
 #ifndef RECALL
@@ -141,7 +148,8 @@ int main() {
      if (runType == 0) {
           int dummyswitch;
           for (int i = 0; i<nq; ++i) {
-               cout<<"running query "<<i<<endl;
+               // cout<<"running query "<<i<<endl;
+               //if (queryType== 5) ((QuerySAXTrie*)queries[i])->SetIndex(&index);
                queries[i]->run(dummyswitch);
           }
           qset.WriteOutput(ansoutput);       

@@ -22,8 +22,8 @@ void IndexSAXTrie::BuildIndex() {
           
           Node* crtNode = _root;
           for (int j = 0; j < PAA_SEGMENTS; ++j) {
-               if (crtNode->_childValues.size()>5)
-                    cout<<j<<" "<<crtNode->_childValues.size()<<endl;
+               //if (crtNode->_childValues.size()>5)
+               //     cout<<j<<" "<<crtNode->_childValues.size()<<endl;
                uint64_t crtCode = sax[j];
                Node* nextNode = crtNode->_childNodes[crtCode];
                if (!nextNode) {

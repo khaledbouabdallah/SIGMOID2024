@@ -127,6 +127,8 @@ public:
      inline float GetGlobalStd() const {return _globalStd;}
      
      float GetSAXDistance(uint64_t* sax1, uint64_t* sax2) const;
+     
+     void PrintColumnsData();
 
 private:
 
@@ -141,6 +143,7 @@ private:
      int GetIndCat(int cat) const;
      
      void ComputeSaxDistances();
+     
      
 };
 

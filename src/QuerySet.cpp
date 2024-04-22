@@ -8,6 +8,7 @@
 #include "QuerySeqScanIncremental.hpp"
 #include "QuerySeqScanRangeIncremental.hpp"
 #include "QueryRangeSAXFilter.hpp"
+#include "QuerySAXTrie.hpp"
 #include "SAX.hpp"
 
 using namespace std;
@@ -30,6 +31,7 @@ QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db
                case 2: _queries[i] = new QuerySeqScanIncremental(ifs, db); break;
                case 3: _queries[i] = new QuerySeqScanRangeIncremental(ifs, db); break;
                case 4: _queries[i] = new QueryRangeSAXFilter(ifs, db); break;
+               case 5: _queries[i] = new QuerySAXTrie(ifs, db); break;
           }
           float* paa = saxmaker.ToPAA(_queries[i]->GetData(), DATA_SIZE);
           _queries[i]->SetPaa(paa);

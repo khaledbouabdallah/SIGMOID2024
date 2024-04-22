@@ -37,14 +37,15 @@ void QueryRangeSAXFilter::run (int& switchquery){
           
           //cout<< GetPAADistance(_paa, p.GetPaa())*_db._scaleFactor) <<" "<<getDistance(_data, p.GetData()<<endl;
           float saxDistance = _db.GetSAXDistance(p.Getsax(), _sax);
+#define FILTERCOUNT
 
 #ifdef FILTERCOUNT
-          float realDistance = getDistance(p.GetData(), _data);
+          float realdDistance = getDistance(p.GetData(), _data);
           float paaDistance = getPaaDistance(_paa, p.GetPaa())*_db._scaleFactor;
-        
+          cout<<"distances "<<paaDistance<<" "<<realdDistance<<endl;
           
           
-          if (realDistance >_answer._distMax) { //should be filtered
+          if (realdDistance >_answer._distMax) { //should be filtered
                countShouldBeFiltered ++;  
                if (paaDistance>_answer._distMax) 
                     countFilteredByPaa ++;

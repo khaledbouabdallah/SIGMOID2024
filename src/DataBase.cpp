@@ -25,6 +25,7 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      }
      _countPoints = N;
      
+     /*
      ComputeGlobalMean();
      ComputeGlobalStd();
      
@@ -58,13 +59,13 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      _breakpoints = getBreakPoints(SAX_CARD, _globalMean, _globalStd);
      //_scaleFactor = sqrt((float)DATA_SIZE/(float)PAA_SEGMENTS);
      _scaleFactor = (float)DATA_SIZE/(float)PAA_SEGMENTS;
-     ComputeSaxDistances();
+     ComputeSaxDistances();*/
      
      _sortedIndNormal = new int[_countPoints];
      _sortedIndByCatAndTS = new int[_countPoints];
      _sortedIndByTS = new int[_countPoints];
      for (int i = 0; i<_countPoints; ++i)
-          _sortedIndByTS[i] = _sortedIndNormal[i] = _sortedIndByCatAndTS[i] = i;
+          _sortedIndByTS[i] = _sortedIndNormal[i] = _sortedIndByCatAndTS[i] = i; 
 }
 
 DataBase::~DataBase() {
@@ -284,4 +285,11 @@ void DataBase::NormalizeData_Global() {
           }
      }
 
+}
+
+void DataBase::PrintColumnsData() {
+     ComputeMeans();
+     ComputeStds();
+     for (int i = 0; i<DATA_SIZE; ++i) 
+          cout<<_means[i]<<" "<<_stds[i]<<endl;
 }
