@@ -10,5 +10,10 @@ test
 *.rpz
 .reprozip-trace
 output
+a.out
+output.bin
+dummy-data.bin
+dummy-queries.bin
 # Contest data 
 contest*.bin
+
