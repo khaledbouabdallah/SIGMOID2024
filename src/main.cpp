@@ -123,11 +123,11 @@ int main() {
      //cout<<"reading points"<<endl;
      DataBase db = DataBase(pointsInput);
      //cout<<"sorting by cat and ts"<<endl;
-     //db.SortByCatAndTS();
+     db.SortByCatAndTS();
      //cout<<"processing categories"<<endl;
-     //db.ProcessCategories();
+     db.ProcessCategories();
      //cout<<"sorting by ts"<<endl;
-     //db.SortByTS();
+     db.SortByTS();
      
      //db.PrintColumnsData();
 
@@ -159,7 +159,7 @@ int main() {
           qset.WriteOutput(ansoutput);   
      }
 #else
-     float rec = GetRecall(db, qset, "../data/relsmall-output-current.bin", "../data/rellsmall-output-reference.bin");
+     float rec = GetRecall(db, qset, "output.bin", "../data/dummy-output-reference.bin");
      cout<<rec<<endl;
 #endif
      
