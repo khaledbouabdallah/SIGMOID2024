@@ -37,7 +37,7 @@ void QueryRangeSAXFilter::run (int& switchquery){
           
           //cout<< GetPAADistance(_paa, p.GetPaa())*_db._scaleFactor) <<" "<<getDistance(_data, p.GetData()<<endl;
           float saxDistance = _db.GetSAXDistance(p.Getsax(), _sax);
-#define FILTERCOUNT
+//#define FILTERCOUNT
 
 #ifdef FILTERCOUNT
           float realdDistance = getDistance(p.GetData(), _data);

@@ -25,11 +25,11 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      }
      _countPoints = N;
      
-     /*
+     
      ComputeGlobalMean();
      ComputeGlobalStd();
      
-     cout<<"database; "<<_globalMean<<" "<<_globalStd<<endl;
+     //cout<<"database; "<<_globalMean<<" "<<_globalStd<<endl;
      
      NormalizeData_Global();
      
@@ -59,7 +59,7 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      _breakpoints = getBreakPoints(SAX_CARD, _globalMean, _globalStd);
      //_scaleFactor = sqrt((float)DATA_SIZE/(float)PAA_SEGMENTS);
      _scaleFactor = (float)DATA_SIZE/(float)PAA_SEGMENTS;
-     ComputeSaxDistances();*/
+     ComputeSaxDistances();
      
      _sortedIndNormal = new int[_countPoints];
      _sortedIndByCatAndTS = new int[_countPoints];
