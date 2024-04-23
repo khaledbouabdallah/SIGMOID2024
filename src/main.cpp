@@ -147,7 +147,7 @@ int main() {
      
      if (runType == 0) {
           int dummyswitch;
-          for (int i = 0; i<nq; ++i) {
+          for (int i = 0; i<nq && !done; ++i) {
                // cout<<"running query "<<i<<endl;
                //if (queryType== 5) ((QuerySAXTrie*)queries[i])->SetIndex(&index);
                queries[i]->run(dummyswitch);
