@@ -7,7 +7,7 @@
 using std::string;
 
 #define DATA_SIZE 100
-#define NTHREADS 32
+#define NTHREADS 64
 #define TIMETORUN 1080
 #define INCR 1
 #define PAA_SEGMENTS 50
