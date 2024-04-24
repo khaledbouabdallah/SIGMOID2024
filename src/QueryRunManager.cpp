@@ -103,6 +103,7 @@ void QueryRunManager::run(){
 		pthread_join(threads[i], NULL);
 		
 	cout<<"all joined"<<endl;
+	cout<<remainingQueries<<endl;
 }
 
 void QueryRunManager::stop(){
