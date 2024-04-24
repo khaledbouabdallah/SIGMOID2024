@@ -8,7 +8,7 @@ using std::string;
 
 #define DATA_SIZE 100
 #define NTHREADS 128
-#define TIMETORUN 1140
+#define TIMETORUN 1100
 #define INCR 1
 #define PAA_SEGMENTS 100
 #define SAX_CARD 128
