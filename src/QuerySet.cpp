@@ -33,10 +33,10 @@ QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db
                case 4: _queries[i] = new QueryRangeSAXFilter(ifs, db); break;
                case 5: _queries[i] = new QuerySAXTrie(ifs, db); break;
           }
-          float* paa = saxmaker.ToPAA(_queries[i]->GetData(), DATA_SIZE);
-          _queries[i]->SetPaa(paa);
-          uint64_t* sax = saxmaker.ToSAX(paa,PAA_SEGMENTS);
-          _queries[i]->SetSAX(sax);
+          //float* paa = saxmaker.ToPAA(_queries[i]->GetData(), DATA_SIZE);
+          //_queries[i]->SetPaa(paa);
+          //uint64_t* sax = saxmaker.ToSAX(paa,PAA_SEGMENTS);
+          //_queries[i]->SetSAX(sax);
      }
           
 }

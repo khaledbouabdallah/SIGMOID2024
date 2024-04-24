@@ -26,25 +26,25 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
      _countPoints = N;
      
      
-     ComputeGlobalMean();
-     ComputeGlobalStd();
+     //ComputeGlobalMean();
+     //ComputeGlobalStd();
      
      //cout<<"database; "<<_globalMean<<" "<<_globalStd<<endl;
      
-     NormalizeData_Global();
+     //NormalizeData_Global();
      
      
-     SAX saxmaker(PAA_SEGMENTS, SAX_CARD, _globalMean, _globalStd);
+     //SAX saxmaker(PAA_SEGMENTS, SAX_CARD, _globalMean, _globalStd);
       
      
      for (int i = 0; i < N; ++i){
           DataPoint& p = _data_points[i];
           
-          float* paa = saxmaker.ToPAA(p.GetData(), DATA_SIZE);
-          p.SetPaa(paa);
+          //float* paa = saxmaker.ToPAA(p.GetData(), DATA_SIZE);
+          //p.SetPaa(paa);
           
-          uint64_t* sax = saxmaker.ToSAX(paa,PAA_SEGMENTS); 
-          p.Setsax(sax);
+          //uint64_t* sax = saxmaker.ToSAX(paa,PAA_SEGMENTS); 
+          //p.Setsax(sax);
           
           
           //for (int j = 0; j< 10; ++j)
@@ -56,10 +56,10 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
     
      
      
-     _breakpoints = getBreakPoints(SAX_CARD, _globalMean, _globalStd);
+     //_breakpoints = getBreakPoints(SAX_CARD, _globalMean, _globalStd);
      //_scaleFactor = sqrt((float)DATA_SIZE/(float)PAA_SEGMENTS);
-     _scaleFactor = (float)DATA_SIZE/(float)PAA_SEGMENTS;
-     ComputeSaxDistances();
+     //_scaleFactor = (float)DATA_SIZE/(float)PAA_SEGMENTS;
+     //ComputeSaxDistances();
      
      _sortedIndNormal = new int[_countPoints];
      _sortedIndByCatAndTS = new int[_countPoints];
