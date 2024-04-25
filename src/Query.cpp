@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Query::Query(ifstream& ifs, const DataBase& db): _db(db), _isFinished(0){
+Query::Query(ifstream& ifs, const DataBase& db): _db(db), _isFinished(0), _pointsToExamine(db.GetSize()){
      _data = new float[DATA_SIZE];
      float dummyfloat;
      ifs.read((char *)&dummyfloat, sizeof(uint32_t));
@@ -49,6 +49,7 @@ void Query::InitIndicesAndRanges(){
                _db.GetCatAndTSRange(_c, _tsl, _tsr, _startIndice, _endIndice);
                break; 
       }   
+      _pointsToExamine = _endIndice-_startIndice+1;
 }
 
 void Query::InitAnswerWithRanges(){

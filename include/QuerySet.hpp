@@ -11,6 +11,8 @@ class DataBase;
  * @brief Represents a query set.
  */
 class QuerySet {
+public:
+     int* _queryIndices;
 private:
       /**< The queries*/
       Query** _queries;

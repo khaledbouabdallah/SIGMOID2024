@@ -112,21 +112,21 @@ int main() {
      
      const char* ansoutput = "output.bin";
      //const char* ansoutput = "../data/dummy-output-current.bin";
-     //const char* ansoutput = "../data/relsmall-output-current.bin";
-     //const char* ansoutput = "../data/relsmall-range-mt.bin";
+     //const char* ansoutput = "../data/relsmall-output-current.bin";
+     //const char* ansoutput = ".../data/relbig-output-current.bin";
      
      
      done = 0;
      signal( SIGALRM, timesup);
      alarm(TIMETORUN);
      
-     //cout<<"reading points"<<endl;
+     cout<<"reading points"<<endl;
      DataBase db = DataBase(pointsInput);
-     //cout<<"sorting by cat and ts"<<endl;
+     cout<<"sorting by cat and ts"<<endl;
      db.SortByCatAndTS();
-     //cout<<"processing categories"<<endl;
+     cout<<"processing categories"<<endl;
      db.ProcessCategories();
-     //cout<<"sorting by ts"<<endl;
+     cout<<"sorting by ts"<<endl;
      db.SortByTS();
      
      //db.PrintColumnsData();
@@ -138,7 +138,7 @@ int main() {
      //     index.BuildIndex();
      //}
      
-     //cout<<"reading queries"<<endl;
+     cout<<"reading queries"<<endl;
      QuerySet qset = QuerySet(queriesInput, db, queryType);
 
 #ifndef RECALL
@@ -154,7 +154,7 @@ int main() {
           }
           qset.WriteOutput(ansoutput);       
      } else {
-          QueryRunManager runManager (queries, nq, NTHREADS, 0, 1); //no incr, assign with vector queue
+          QueryRunManager runManager (queries, qset._queryIndices, nq, NTHREADS, 0, 1); //no incr, assign with vector queue
           runManager.run();
           qset.WriteOutput(ansoutput);   
      }

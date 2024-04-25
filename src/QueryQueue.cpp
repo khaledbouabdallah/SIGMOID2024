@@ -3,10 +3,10 @@
 
 pthread_mutex_t qMutex;
 
-QueryQueue::QueryQueue(int type, int countQueries) : _type(type), _countQueries(countQueries) {
+QueryQueue::QueryQueue(int type, int* queryIndices, int countQueries) : _type(type), _countQueries(countQueries) {
      _allQueries = new int[countQueries];
      for (int i = 0; i<_countQueries; ++i)
-          _allQueries[i] = i;
+          _allQueries[i] = queryIndices[i];
      _first = 0; 
 }
  

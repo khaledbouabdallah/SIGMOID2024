@@ -27,7 +27,7 @@ public:
 	
 	Query* getNextQuery();
 	
-	void Init(int qassignType, QueryQueue* q, int threadIndex, Query** queries, int countQueries, int countThreads);
+	void Init(int qassignType, QueryQueue* q, int threadIndex, Query** queries, int* queryIndices, int countQueries, int countThreads);
 };
 
 #endif

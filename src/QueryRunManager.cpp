@@ -7,11 +7,12 @@
 #include "globals.hpp"
 #include <iostream>
 #include "QueryQueue.hpp"
+#include <unistd.h> 
 
 volatile int remainingQueries;
 pthread_mutex_t remQMutex;
 
-QueryRunManager::QueryRunManager(Query** queries, int countQueries, int countThreads, int withIncr, int qassignType):
+QueryRunManager::QueryRunManager(Query** queries, int* queryIndices, int countQueries, int countThreads, int withIncr, int qassignType):
 	_queries(queries), _countQueries(countQueries), _countThreads(countThreads), _withIncr(withIncr), _qassignType(qassignType)
 {	
      //increment is not compatible with query queue by array!!
@@ -20,10 +21,10 @@ QueryRunManager::QueryRunManager(Query** queries, int countQueries, int countThr
 	_threadData = new QueryThreadData[_countThreads];
 	remainingQueries = countQueries;
 	
-	_queryQ = new QueryQueue(qassignType,_countQueries);
+	_queryQ = new QueryQueue(qassignType,queryIndices, _countQueries);
 	
 	for (int i = 0; i < _countThreads; ++i) 
-		_threadData[i].Init(_qassignType, _queryQ, i, _queries, _countQueries, _countThreads);
+		_threadData[i].Init(_qassignType, _queryQ, i, _queries, queryIndices, _countQueries, _countThreads);
 }
 
 QueryRunManager::~QueryRunManager() {}
@@ -74,7 +75,7 @@ void *queryThreadTask(void *arg)
 
 void QueryRunManager::runWithIncr(){
      while (!done) {
-          sleep(INCR);
+          usleep(INCR);
           for (int  i = 0; i < _countThreads; ++i) 
                _threadData[i].setSwitchTaskOn();
      }	

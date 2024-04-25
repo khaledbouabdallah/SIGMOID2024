@@ -10,6 +10,9 @@ class DataPoint;
 
 class Query {
 
+public:
+     int _pointsToExamine;
+
 protected:
      int _type;
      int _c; 
@@ -27,6 +30,7 @@ protected:
      const DataBase& _db;
      
      int _isFinished;
+
      
 public:
      Query(std::ifstream& ifs, const DataBase& db);

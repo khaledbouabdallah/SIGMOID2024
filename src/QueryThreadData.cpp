@@ -33,13 +33,13 @@ Query* QueryThreadData::getNextQuery() {
 	return retq;
 }
 
-void QueryThreadData::Init(int qassignType, QueryQueue* q, int threadIndex, Query** queries, int countQueries, int countThreads) {
+void QueryThreadData::Init(int qassignType, QueryQueue* q, int threadIndex, Query** queries, int* queryIndices, int countQueries, int countThreads) {
      _qassignType = qassignType;
      _queryQ = q;
      _queries = queries;
      _threadIndex = threadIndex;
      for (int i = threadIndex; i<countQueries; i+=countThreads)
-          _queryIndices.push_back(i);
+          _queryIndices.push_back(queryIndices[i]);
      
 }
 

@@ -10,7 +10,7 @@ private:
      int _first;
      int _countQueries;
 public:
-     QueryQueue(int type, int countQueries);
+     QueryQueue(int type, int* queryIndices, int countQueries);
      ~QueryQueue();
      
      int PopFront();

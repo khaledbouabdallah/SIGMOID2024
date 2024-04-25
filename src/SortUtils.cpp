@@ -1,6 +1,7 @@
 #include "SortUtils.hpp"
 #include "DataBase.hpp"
 #include "DataPoint.hpp"
+#include "Query.hpp"
 #include <vector>
 
 using namespace std;
@@ -13,6 +14,12 @@ int CompareByCatAndTS(const DataPoint& p1, const DataPoint& p2){
 
 int CompareByTS(const DataPoint& p1, const DataPoint& p2){
      if (p1.GetTS()>p2.GetTS())
+          return 1;
+     return 0;
+}
+
+int CompareBySelectivity(Query* q1, Query* q2){
+     if (q1->_pointsToExamine>q2->_pointsToExamine)
           return 1;
      return 0;
 }
@@ -116,5 +123,52 @@ int GetLastPositionLETS(float ts, int* indices, const vector<DataPoint>& points,
      
 }
 
+void SiftIndices(int* indices, Query** queries, int i, int n, int (*funccomp)(Query*, Query*)){
+     while (1) {
+          int indmax = i;
+          if (2*i+1<n && funccomp(queries[indices[2*i+1]], queries[indices[indmax]]))
+               indmax = 2*i+1;
+          if (2*i+2<n && funccomp(queries[indices[2*i+2]], queries[indices[indmax]]))
+               indmax = 2*i+2;
+          if (indmax == i) break;
+          SwapIndices(indices, indmax, i);
+          i = indmax;
+     } 
+}
 
+void SortIndices(int* indices, Query** queries, int n, int (*funccomp)(Query*, Query*)) {
+     for (int i =n/2; i>=0; i--)
+          SiftIndices(indices,queries, i,n,funccomp);
+          
+     //check
+     /*
+     for (int i = 0; i<_countPoints/2; ++i) {
+         DataPoint& dp1 = _data_points[indices[i]];
+         if (2*i+1>=_countPoints) continue; 
+         DataPoint& dp2 = _data_points[indices[2*i+1]];
+         if (funccomp(dp2,dp1)) cout<<"error child left"<<endl;
+         if (2*i+2>=_countPoints) continue; 
+         DataPoint& dp3 = _data_points[indices[2*i+1]];
+         if (funccomp(dp3,dp1)) cout<<"error child right"<<endl;
+     }
+     */
+
+     for (int i = n-1; i>=1; i--) {
+         SwapIndices(indices, 0, i);
+         SiftIndices(indices,queries, 0,i,funccomp);
+     }
+     
+     //check
+     /*
+     for (int i = 0; i<_countPoints-1; ++i) {
+         DataPoint& dp1 = _data_points[indices[i]];
+         DataPoint& dp2 = _data_points[indices[i+1]];
+         if (funccomp(dp1, dp2)) {
+               cout<<"not sorted"<<endl;
+               cout<<dp1.GetTS()<<endl;
+               cout<<dp2.GetTS()<<endl;
+         }
+     }
+     */
+}
 
