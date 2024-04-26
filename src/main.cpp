@@ -108,7 +108,7 @@ int main() {
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
      int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 1; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
+     int queryType = 3; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
      
      const char* ansoutput = "output.bin";
      //const char* ansoutput = "../data/dummy-output-current.bin";
@@ -154,7 +154,7 @@ int main() {
           }
           qset.WriteOutput(ansoutput);       
      } else {
-          QueryRunManager runManager (queries, qset._queryIndices, nq, NTHREADS, 0, 1); //no incr, assign with vector queue
+          QueryRunManager runManager (queries, qset._queryIndices, nq, NTHREADS, 1, 0); //incr, assign with tasks per thread
           runManager.run();
           qset.WriteOutput(ansoutput);   
      }

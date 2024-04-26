@@ -13,7 +13,7 @@ volatile int remainingQueries;
 pthread_mutex_t remQMutex;
 
 QueryRunManager::QueryRunManager(Query** queries, int* queryIndices, int countQueries, int countThreads, int withIncr, int qassignType):
-	_queries(queries), _countQueries(countQueries), _countThreads(countThreads), _withIncr(withIncr), _qassignType(qassignType)
+	_queryQ(NULL), _queries(queries), _countQueries(countQueries), _countThreads(countThreads), _withIncr(withIncr), _qassignType(qassignType)
 {	
      //increment is not compatible with query queue by array!!
      //should be checked
@@ -23,7 +23,8 @@ QueryRunManager::QueryRunManager(Query** queries, int* queryIndices, int countQu
 	_threadData = new QueryThreadData[_countThreads];
 	remainingQueries = countQueries;
 	
-	_queryQ = new QueryQueue(qassignType, queryIndices, _countQueries);
+	if (qassignType > 0)
+	     _queryQ = new QueryQueue(qassignType, queryIndices, _countQueries);
 	
 	for (int i = 0; i < _countThreads; ++i) 
 		_threadData[i].Init(_qassignType, _queryQ, i, _queries, queryIndices, _countQueries, _countThreads);
@@ -44,6 +45,7 @@ void *queryThreadTask(void *arg)
 		     if (crtQuery->IsFinished()){
                     pthread_mutex_lock(&remQMutex);
 	               remainingQueries--;
+	               //cout<<remainingQueries<<endl;
 	               if (remainingQueries == 0)
 	                    done = 1;
 	               pthread_mutex_unlock(&remQMutex);   
