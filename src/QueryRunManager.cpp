@@ -17,11 +17,13 @@ QueryRunManager::QueryRunManager(Query** queries, int* queryIndices, int countQu
 {	
      //increment is not compatible with query queue by array!!
      //should be checked
+     	
+	cout<<"assign type: "<<qassignType<<endl;
      
 	_threadData = new QueryThreadData[_countThreads];
 	remainingQueries = countQueries;
 	
-	_queryQ = new QueryQueue(qassignType,queryIndices, _countQueries);
+	_queryQ = new QueryQueue(qassignType, queryIndices, _countQueries);
 	
 	for (int i = 0; i < _countThreads; ++i) 
 		_threadData[i].Init(_qassignType, _queryQ, i, _queries, queryIndices, _countQueries, _countThreads);
