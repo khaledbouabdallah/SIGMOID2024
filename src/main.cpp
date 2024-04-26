@@ -154,7 +154,7 @@ int main() {
           }
           qset.WriteOutput(ansoutput);       
      } else {
-          QueryRunManager runManager (queries, qset._queryIndices, nq, NTHREADS, 1, 0); //incr, assign with tasks per thread
+          QueryRunManager runManager (queries, qset._queryIndices, nq, NTHREADS, 1, 2); //incr, assign with query linked list
           runManager.run();
           qset.WriteOutput(ansoutput);   
      }

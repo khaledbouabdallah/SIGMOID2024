@@ -13,7 +13,10 @@ QueryQueue::QueryQueue(int type, int* queryIndices, int countQueries) : _type(ty
 	}
 	else {
 		_firste = _laste = NULL;
-		for (int i = 0; i<_countQueries; ++i)
+		_allEntries = new LLEntry*[countQueries];
+		for (int i = 0; i<_countQueries; ++i) 
+		     _allEntries[i] = new LLEntry(i, NULL, NULL);
+		for (int i = 0; i<_countQueries; ++i) 
 			PushBack(queryIndices[i]);
 	}
 		
@@ -38,6 +41,8 @@ int QueryQueue::PopFront(){
 		if (_firste != NULL) {
 			res = _firste->_queryIndex;
 			_firste = _firste->_next;
+               if (_firste == NULL)
+                    _laste = NULL;
 		}
 		pthread_mutex_unlock(&qMutex);
 		return res;
@@ -47,10 +52,13 @@ int QueryQueue::PopFront(){
 void QueryQueue::PushBack(int indice){
 	if (_type == 1) return;
 	pthread_mutex_lock(&qMutex);
+	LLEntry* entry = _allEntries[indice];
+	entry->_next = NULL;
+	entry->_prev = _laste;
 	if (_firste == NULL) 
-		_firste = _laste = new LLEntry(indice, NULL, NULL);
-	else
-		_laste->_next = new LLEntry(indice, _laste, NULL);
-
-
+		_firste = entry;
+	else 
+		_laste->_next = entry;
+	_laste = entry;
+	pthread_mutex_unlock(&qMutex);
 }

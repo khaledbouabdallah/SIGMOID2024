@@ -36,7 +36,7 @@ void *queryThreadTask(void *arg)
 {
 	QueryThreadData* data = (QueryThreadData*) arg;
 	
-	if (data->_qassignType == 0) {
+	if (data->_qassignType == 0) { //pack of queries per thread
 	     while (!done) {
 		     data->setSwitchTaskOff();
 		     Query* crtQuery = data->getNextQuery();
@@ -61,16 +61,15 @@ void *queryThreadTask(void *arg)
 		     
 		     Query* crtQuery = data->_queries[indice];
 		     crtQuery->run(data->_switchTask);
+		     //cout<<"done running query "<<indice<<"is finished: "<<crtQuery->IsFinished()<<" remaining: "<<remainingQueries<<endl;
 		     if (crtQuery->IsFinished()){
                     pthread_mutex_lock(&remQMutex);
 	               remainingQueries--;
 	               if (remainingQueries == 0)
 	                    done = 1;
 	               pthread_mutex_unlock(&remQMutex);   
-	          }
-	          //else push back not done
-	          //needs linked list
-	          //TODO
+	          } else 
+	               data->_queryQ->PushBack(indice);
 	     }	
      }
      
