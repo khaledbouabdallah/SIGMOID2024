@@ -43,7 +43,7 @@ QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db
      _queryIndices = new int[_queryCount];
      for (int i = 0; i < _queryCount; ++i)
           _queryIndices[i] = i;
-     //SortIndices(_queryIndices, _queries, _queryCount, CompareBySelectivity);
+     SortIndices(_queryIndices, _queries, _queryCount, CompareBySelectivity);
      //cout<<_queries[_queryIndices[0]]->_pointsToExamine<<endl;
      //cout<<_queries[_queryIndices[_queryCount/2]]->_pointsToExamine<<endl;
      
