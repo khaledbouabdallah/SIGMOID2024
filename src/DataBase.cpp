@@ -50,7 +50,7 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
           //for (int j = 0; j< 10; ++j)
           //          cout<<p.Getsax()[j]<<" ";
           //cout<<endl;
-          _data_points.push_back(p);
+          // _data_points.push_back(p);
      }
      
     
