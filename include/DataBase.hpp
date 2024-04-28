@@ -27,6 +27,7 @@ private:
       /**< The number of points. */
       int _countPoints;
 
+public:
       //stats
       float* _means;
       float* _stds;
@@ -115,22 +116,25 @@ public:
      void GetTSRange(float lts, float rts, int& start, int& end) const;
      
      void GetCatAndTSRange(int cat, float lts, float rts, int& start, int& end) const;
+     
+     void ComputeSAXStuff();
+     
+     
+     inline float GetGlobalMean() const {return _globalMean;}
+     
+     inline float GetGlobalStd() const {return _globalStd;}
+     
+     float GetSAXDistance(uint64_t* sax1, uint64_t* sax2) const;
+    
+     
+
+private:
 
      void NormalizeData_Axis1(); // columns
 
      void NormalizeData_Axis0(); // rows
 
      void NormalizeData_Global();
-
-     inline float GetGlobalMean() const {return _globalMean;}
-     
-     inline float GetGlobalStd() const {return _globalStd;}
-     
-     float GetSAXDistance(uint64_t* sax1, uint64_t* sax2) const;
-     
-     void PrintColumnsData();
-
-private:
 
      void ComputeMeans();
 
@@ -143,6 +147,8 @@ private:
      int GetIndCat(int cat) const;
      
      void ComputeSaxDistances();
+     
+     void PrintColumnsData();
      
      
 };

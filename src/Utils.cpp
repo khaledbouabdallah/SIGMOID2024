@@ -51,7 +51,11 @@ float getPaaDistance(float* data1, float* data2) {
      return sum;
 }
 
-
+void normalizeData(float* data, int size, float mean, float stdev){
+      for (int j = 0; j<size; ++j) {
+          data[j] = (data[j] - mean)/stdev;
+      }
+}
 
 std::vector<float> getBreakPoints(int numSegments, float mean, float stddev) {
     std::vector<float> bp;
@@ -81,9 +85,9 @@ std::vector<float> getBreakPoints(int numSegments, float mean, float stddev) {
     
     //apply transform
     //cout<<stddev<<" "<<mean<<endl;
-    //for (int i = 0; i<bp.size(); ++i) {
-    //      bp[i] = bp[i]*stddev+mean;
+    for (int i = 0; i<bp.size(); ++i) {
+          bp[i] = bp[i]*stddev+mean;
           //cout<<bp[i]<<endl;
-    //}
+    }
     return bp;
 }

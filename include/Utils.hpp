@@ -15,6 +15,8 @@ float getDistance(float* data1, float* data2);
 
 float getPaaDistance(float* data1, float* data2);
 
+void normalizeData(float* data, int size, float mean, float stdev);
+
 std::vector<float> getBreakPoints(int numSegments, float mean, float stddev);
 
 #endif

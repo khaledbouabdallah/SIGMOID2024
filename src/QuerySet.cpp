@@ -11,12 +11,13 @@
 #include "QuerySAXTrie.hpp"
 #include "SAX.hpp"
 #include "SortUtils.hpp"
+#include "Utils.hpp"
+#include "globals.hpp"
 
 using namespace std;
 
 QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db(db), _queryCount(0) { 
-     SAX saxmaker(PAA_SEGMENTS, SAX_CARD, _db.GetGlobalMean(), _db.GetGlobalStd());
-  
+   
      ifstream ifs;
      ifs.open(filename, std::ios::binary);
      assert(ifs.is_open());
@@ -34,19 +35,24 @@ QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db
                case 4: _queries[i] = new QueryRangeSAXFilter(ifs, db); break;
                case 5: _queries[i] = new QuerySAXTrie(ifs, db); break;
           }
-          //float* paa = saxmaker.ToPAA(_queries[i]->GetData(), DATA_SIZE);
-          //_queries[i]->SetPaa(paa);
-          //uint64_t* sax = saxmaker.ToSAX(paa,PAA_SEGMENTS);
-          //_queries[i]->SetSAX(sax);
      }
      
      _queryIndices = new int[_queryCount];
      for (int i = 0; i < _queryCount; ++i)
           _queryIndices[i] = i;
-     //SortIndices(_queryIndices, _queries, _queryCount, CompareBySelectivity);
-     //cout<<_queries[_queryIndices[0]]->_pointsToExamine<<endl;
-     //cout<<_queries[_queryIndices[_queryCount/2]]->_pointsToExamine<<endl;
-     
+     SortIndices(_queryIndices, _queries, _queryCount, CompareBySelectivity);
+}
+
+void QuerySet::ComputeSAXStuff(){
+     //create SAX maker with normalized breakpoints
+     SAX saxmaker(PAA_SEGMENTS, SAX_CARD, _db.GetGlobalMean(), _db.GetGlobalStd());
+  
+     for (int i = 0; i < _queryCount; ++i) {
+          //float* paa = saxmaker.ToPAA(_queries[i]->GetData(), DATA_SIZE);
+          //_queries[i]->SetPaa(paa);
+          uint64_t* sax = saxmaker.ToSAX(_queries[i]->GetData(), DATA_SIZE); //this is whole sax, no paa
+          _queries[i]->SetSAX(sax);
+     }
 }
 
 int QuerySet::GetQueryCount(){
@@ -69,4 +75,6 @@ void QuerySet::WriteOutput(const char* filename){
           _queries[i]->WriteOutput(ofs);
      ofs.close();
 }
+
+
      

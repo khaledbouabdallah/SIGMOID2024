@@ -108,7 +108,7 @@ int main() {
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
      int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 3; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
+     int queryType = 1; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
      
      const char* ansoutput = "output.bin";
      //const char* ansoutput = "../data/dummy-output-current.bin";
@@ -128,18 +128,14 @@ int main() {
      db.ProcessCategories();
      cout<<"sorting by ts"<<endl;
      db.SortByTS();
-     
-     //db.PrintColumnsData();
+     cout<<"computing sax stuff"<<endl;
+     db.ComputeSAXStuff();
 
-     //IndexSAXTrie index(db);
-     //if (queryType == 5) {
-     //     cout<<"building index"<<endl;
-     //
-     //     index.BuildIndex();
-     //}
      
      cout<<"reading queries"<<endl;
      QuerySet qset = QuerySet(queriesInput, db, queryType);
+     cout<<"computing sax stuff"<<endl;
+     qset.ComputeSAXStuff();
 
 #ifndef RECALL
      Query** queries = qset.GetQueries();
@@ -154,7 +150,7 @@ int main() {
           }
           qset.WriteOutput(ansoutput);       
      } else {
-          QueryRunManager runManager (queries, qset._queryIndices, nq, NTHREADS, 1, 2); //incr, assign with query linked list
+          QueryRunManager runManager (queries, qset._queryIndices, nq, NTHREADS, 0, 1); //no incr, assign with query vector queue
           runManager.run();
           qset.WriteOutput(ansoutput);   
      }

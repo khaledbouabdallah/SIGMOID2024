@@ -9,9 +9,9 @@ using std::string;
 #define DATA_SIZE 100
 #define NTHREADS 128
 #define TIMETORUN 1100
-#define INCR 100000 //usleep
+#define INCR 1500000 //usleep
 #define PAA_SEGMENTS 100
-#define SAX_CARD 128
+#define SAX_CARD 256
 
 extern volatile int done;
 

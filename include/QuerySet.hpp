@@ -49,6 +49,12 @@ public:
      * @brief Destroys the DataBase object.
      */
      ~QuerySet();
+     
+     /**
+     * @brief Computes SAX representations for queries
+     */
+     void ComputeSAXStuff();
 };
+
 
 #endif 

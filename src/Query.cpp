@@ -22,8 +22,8 @@ Query::Query(ifstream& ifs, const DataBase& db): _db(db), _isFinished(0), _point
      ifs.read((char *)_data, DATA_SIZE * sizeof(uint32_t));   
      
      //normalize
-     //for (int  i =0; i>DATA_SIZE; ++i)
-     //     _data[i] = (_data[i]-_db.GetGlobalMean()) / _db.GetGlobalStd();
+     for (int  i =0; i>DATA_SIZE; ++i)
+          _data[i] = (_data[i]-_db.GetGlobalMean()) / _db.GetGlobalStd();
 }
 
 void Query::InitIndicesAndRanges(){
