@@ -108,7 +108,7 @@ int main() {
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
      int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 1; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range
+     int queryType = 5; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range, 5 = sax filter only
      
      const char* ansoutput = "output.bin";
      //const char* ansoutput = "../data/dummy-output-current.bin";
