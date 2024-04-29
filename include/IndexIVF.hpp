@@ -10,7 +10,4 @@ public:
     ~IndexIVF();  
 };
 
-
-
-
 #endif
