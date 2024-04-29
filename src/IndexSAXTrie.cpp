@@ -5,7 +5,7 @@
 
 using namespace std;
 
-IndexSAXTrie::IndexSAXTrie(const DataBase& db): _db(db) {  
+IndexSAXTrie::IndexSAXTrie(const DataBase& db): _db(db), _countNodes(0) {  
      _root = new Node(); 
 }
 
@@ -28,6 +28,7 @@ void IndexSAXTrie::BuildIndex() {
                Node* nextNode = crtNode->_childNodes[crtCode];
                if (!nextNode) {
                     nextNode = new Node();
+                    _countNodes++;
                     crtNode->_childNodes[crtCode] = nextNode;
                     crtNode->_childValues.push_back(crtCode);
                }
@@ -35,7 +36,18 @@ void IndexSAXTrie::BuildIndex() {
           }
           crtNode->_childValues.push_back(i); //last we put indices
      }
+     
+     cout<<"node count index: "<<_countNodes<<endl;
             
+}
+
+vector<int>* IndexSAXTrie::getPointIndices(uint64_t* sax){
+     Node* crtnode = _root;
+     for (int i = 0; i< DATA_SIZE-1; ++i) {
+          crtnode = crtnode-> _childNodes[sax[i]];
+          if (crtnode == NULL) return NULL;
+     }
+     return &(crtnode->_childValues);
 }
 
 

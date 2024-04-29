@@ -11,7 +11,7 @@ using std::string;
 #define TIMETORUN 1100
 #define INCR 1500000 //usleep
 #define PAA_SEGMENTS 100
-#define SAX_CARD 256
+#define SAX_CARD 64
 
 extern volatile int done;
 

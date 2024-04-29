@@ -15,7 +15,7 @@
 #include "assert.h"
 #include <cstdint>
 #include "IndexSAXTrie.hpp"
-#include "QuerySAXTrie.hpp"
+#include "QuerySAXLookaround.hpp"
 
 using namespace std;
 
@@ -108,7 +108,8 @@ int main() {
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
      int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 5; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range, 5 = sax filter only
+     int queryType = 1; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range, 5 = sax filter only
+     //6 = range SAX lookaround
      
      const char* ansoutput = "output.bin";
      //const char* ansoutput = "../data/dummy-output-current.bin";
@@ -130,12 +131,29 @@ int main() {
      db.SortByTS();
      cout<<"computing sax stuff"<<endl;
      db.ComputeSAXStuff();
+     
 
+     
+
+    
      
      cout<<"reading queries"<<endl;
      QuerySet qset = QuerySet(queriesInput, db, queryType);
      cout<<"computing sax stuff"<<endl;
      qset.ComputeSAXStuff();
+     
+     IndexSAXTrie index(db);
+      index.BuildIndex();
+     if (queryType == 6) {     
+          index.BuildIndex();
+          int qcount = qset.GetQueryCount();
+          Query** queries = qset.GetQueries();
+          for (int i = 0; i<qcount; ++i)
+               ((QuerySAXLookaround*)queries[i])->SetIndex(&index);
+     }
+          
+     
+    
 
 #ifndef RECALL
      Query** queries = qset.GetQueries();

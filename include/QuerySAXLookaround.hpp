@@ -1,22 +1,25 @@
-#ifndef _QUERYSAXTRIE_H
-#define _QUERYSAXTRIE_H
+#ifndef _QUERYSAXLOOKAROUND_H
+#define _QUERYSAXLOOKAROUND_H
 
 #include "Query.hpp"
 #include "IndexSAXTrie.hpp"
 
 
-class QuerySAXTrie: public Query {
+class QuerySAXLookaround: public Query {
 private:
      IndexSAXTrie* _index;
 public:
-     QuerySAXTrie(std::ifstream& ifs, const DataBase& db);
-     ~QuerySAXTrie();
+     QuerySAXLookaround(std::ifstream& ifs, const DataBase& db);
+     ~QuerySAXLookaround();
      
      virtual void run (int& switchquery); 
      
      inline void SetIndex(IndexSAXTrie* index) {_index = index;}
 private:
      void ScanIndex(Node* node, int level, float crtDist);
+     
+     int _examined;
+     int _found;
 };
 
 

@@ -9,7 +9,7 @@
 #include "QuerySeqScanRangeIncremental.hpp"
 #include "QueryRangeSAXFilter.hpp"
 #include "QueryRangeSAXOnly.hpp"
-#include "QuerySAXTrie.hpp"
+#include "QuerySAXLookaround.hpp"
 #include "SAX.hpp"
 #include "SortUtils.hpp"
 #include "Utils.hpp"
@@ -35,6 +35,7 @@ QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db
                case 3: _queries[i] = new QuerySeqScanRangeIncremental(ifs, db); break;
                case 4: _queries[i] = new QueryRangeSAXFilter(ifs, db); break;
                case 5: _queries[i] = new QueryRangeSAXOnly(ifs, db); break;
+               case 6: _queries[i] = new QuerySAXLookaround(ifs, db); break;
           }
      }
      

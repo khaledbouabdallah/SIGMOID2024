@@ -20,6 +20,7 @@ class IndexSAXTrie {
 public:
      Node* _root;
      const DataBase& _db; 
+     int _countNodes;
 public:
      IndexSAXTrie(const DataBase& db);
      ~IndexSAXTrie();
@@ -27,6 +28,8 @@ public:
      void BuildIndex();  
     
      inline Node* getRoot() {return _root;}
+     
+     vector<int>* getPointIndices(uint64_t* sax);
   
 };
 
