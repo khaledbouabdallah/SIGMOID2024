@@ -56,7 +56,7 @@ public:
     
     inline float* GetPaa() const {return _paa;}
      
-     inline void SetPaa(float* paa) {_paa = paa;}
+    inline void SetPaa(float* paa) {_paa = paa;}
     
     ~DataPoint();
 };

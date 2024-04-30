@@ -65,7 +65,6 @@ void Query::InitAnswerWithRanges(){
       }
 }
 
-
 void Query::WriteOutput(ofstream& ofs) {
      _answer.FillMissing();
      _answer.WriteOutput(ofs);
