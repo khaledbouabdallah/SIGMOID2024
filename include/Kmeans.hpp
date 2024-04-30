@@ -37,9 +37,9 @@ private:
 
 public:
 
-    Kmeans(int k, int maxIter, float tolerance);
+    inline Kmeans(int k, int maxIter, float tolerance) : _k(k), _maxIter(maxIter), _tolerance(tolerance) {}
     void fit(std::vector<DataPoint>& data);
-    std::vector<Cluster> getClusters(DataPoint& point, int nprob);
+    std::vector<Cluster> getClusters(float* point, int nprob);
     ~Kmeans();
 
 };

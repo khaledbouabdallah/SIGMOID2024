@@ -7,11 +7,11 @@
 class QueryIVF: public Query {
      
 private:
-     Kmeans _kmeans;
+     Kmeans& _kmeans;
      int _nprob;
 
 public:
-     QueryIVF(std::ifstream& ifs, const DataBase& db, const Kmeans& kmeans, int nprob);
+     QueryIVF(std::ifstream& ifs, const DataBase& db,  Kmeans& kmeans, int nprob);
      ~QueryIVF();
      
      virtual void run (int& switchquery); 
