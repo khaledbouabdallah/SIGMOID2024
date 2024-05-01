@@ -6,20 +6,37 @@
 #include "../include/DataBase.hpp"
 #include "../include/DataPoint.hpp"
 #include <cassert>
+#include <algorithm>
 //#include <vector>
 //#include "Utils.hpp"
 
-// void print_result_dkm(std::tuple<std::vector<float*>, std::vector<uint32_t>>& result) {
-// 	std::cout << "centers: ";
-// 	for (const auto& c : std::get<>(result)) {
-// 		std::cout << "(";
-// 		for (auto v : c) {
-// 			std::cout << v << ",";
-// 		}
-// 		std::cout << "), ";
-// 	}
-// 	std::cout << std::endl;
-// }
+void print_result_dkm(std::tuple<std::vector<float*>, std::vector<uint32_t>>& result) {
+	std::cout << "centers: ";
+	for (const auto& c : std::get<0>(result)) {
+		std::cout << "(";
+        // for (int i = 0; i < 100 - 1; i++) {
+        //     std::cout << c[i] << ",";
+        // }
+        std::cout << c[0] << "," << c[1];
+		std::cout << "), ";
+        std::cout << std::endl;
+	}
+	
+}
+
+
+void test_distance() {
+    float point1[100];
+    float point2[100];
+
+    std::fill(point1, point1 + 100, 1.0f);
+    std::fill(point2, point2 + 100, 2.5f);
+
+    float distancex = distance(point1, point2);
+    std::cout << distancex << std::endl;
+
+    assert(distancex == 15.0);
+}
 
 void runTests_closest_distance() {
    
@@ -43,12 +60,21 @@ void runTests_closest_distance() {
     float mean2[100] = {0.0};
     float data3[100] = {1.0};
     float data4[100] = {-1.0};
-    std::vector<float*> means3 = {mean1, mean2};
+
+    std::fill(mean2, mean2 + 100, 0.0f);
+    std::fill(data3, data3 + 100, 1.0f);
+    std::fill(data4, data4 + 100, -1.0f);
+
+
+    std::vector<float*> means3 = {mean2};
     std::vector<float*> data3_ = {data3, data4};
+
     std::vector<float> result3 = closest_distance(means3, data3_);
+    std::cout << result3[0] << std::endl;
+    std::cout << result3[1] << std::endl;
     assert(result3.size() == 2);
-    assert(result3[0] - 100.0 <= epsilon ); // Distance between data3 and mean1
-    assert(result3[1] - 100.0 <= epsilon); // Distance between data4 and mean2
+    assert(result3[0] - 100.0 <= epsilon && result3[0] - 100.0 >= 0 ); // Distance between data3 and mean1
+    assert(result3[1] - 100.0 <= epsilon && result3[1] - 100.0 >= 0 ); // Distance between data4 and mean2
 
     // Test case 4: Multiple means and data points
 
@@ -160,7 +186,8 @@ void test_deltas() {
 
 void test_kmeans() {
     
-    const char* pointsInput = "../dummy-data.bin";
+    //const char* pointsInput = "../dummy-data.bin";
+    const char* pointsInput = "../data/contest-data-release-1m.bin";
     DataBase db = DataBase(pointsInput);
     std::vector<DataPoint> data_points = db.GetPoints();
 
@@ -170,42 +197,28 @@ void test_kmeans() {
         data.push_back(data_points[i].GetData());
     } 
 
-     clustering_parameters parameters(100);
-     parameters.set_min_delta(-1.0);
+     clustering_parameters parameters(50);
+     parameters.set_random_seed(42);
+ 
     
      auto cluster_data = kmeans_lloyd(data, parameters);
 
-	// std::cout << "Means:" << std::endl;
-	// for (const auto& mean : std::get<0>(cluster_data)) {
-	// 	std::cout << "\t(" << mean[0] << "," << mean[1] << ")" << std::endl;
-	// }
-	// std::cout << "\nCluster labels:" << std::endl;
-	// std::cout << "\tPoint:";
-	// for (const auto& point : data) {
-	// 	std::stringstream value;
-	// 	value << "(" << point[0] << "," << point[1] << ")";
-	// 	std::cout << std::setw(14) << value.str();
-	// }
-	// std::cout << std::endl;
-	// std::cout << "\tLabel:";
-	// for (const auto& label : std::get<1>(cluster_data)) {
-	// 	std::cout << std::setw(14) << label;
-	// }
-	// std::cout << std::endl;
+     //print_result_dkm(cluster_data);
 
-    std::cout << "Test kmeans done!" << std::endl;
+	
 }
 
 volatile int done = 0;
 
 int main() {
     // Your code here
-    runTests_closest_distance();
-    test_closest_mean();
-    test_calculate_clusters();
-    test_deltas();
-    test_kmeans();
     
-
+    
+    //runTests_closest_distance();
+    //return 0;
+    //test_closest_mean();
+    //test_calculate_clusters();
+    //test_deltas();
+    test_kmeans();
     return 0;
 }

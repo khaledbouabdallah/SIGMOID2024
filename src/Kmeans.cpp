@@ -1,5 +1,6 @@
 //#pragma once
 
+#include <iostream>
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -36,9 +37,12 @@ std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k,
 		means.push_back(data[uniform_generator(rand_engine)]);
 	}
 
+	std::cout << "random_plusplus here1" << std::endl;
+
 	for (uint32_t count = 1; count < k; ++count) {
 		// Calculate the distance to the closest mean for each data point
 		auto distances = closest_distance(means, data);
+		std::cout << "random_plusplus here2 " << count << std::endl;
 		// Pick a random point weighted by the distance from existing means
 		// TODO: This might convert floating point weights to ints, distorting the distribution for small weights
         #if !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -48,7 +52,10 @@ std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k,
         		std::discrete_distribution<input_size_t> generator(distances.size(), 0.0, 0.0, [&distances, &i](double) { return distances[i++]; });
         #endif
         		means.push_back(data[generator(rand_engine)]);
+
+		//distances.clear();
 	}
+	
 	return means;
 }
 
@@ -131,6 +138,14 @@ std::vector<float*> calculate_means(const std::vector<float*>& data,
 	const std::vector<float*>& old_means,
 	uint32_t k) {
 	std::vector<float*> means(k);
+
+	for (size_t i = 0; i < k; ++i) {
+		means[i] = new float[DATA_SIZE];
+		for (size_t j = 0; j < DATA_SIZE; ++j) {
+			means[i][j] = 0;
+		}
+	}
+
 	std::vector<float> count(k, float());
 	for (size_t i = 0; i < std::min(clusters.size(), data.size()); ++i) {
 		auto& mean = means[clusters[i]];
@@ -165,7 +180,13 @@ std::vector<float> deltas(
 	return distances;
 }
 
-
+float sum(const std::vector<float>& deltas) {
+	float sum = 0;
+	for (float d : deltas) {
+		sum += d;
+	}
+	return sum;
+}
 
 bool deltas_below_limit(const std::vector<float>& deltas, float min_delta) {
 	for (float d : deltas) {
@@ -204,22 +225,45 @@ std::tuple<std::vector<float*>, std::vector<uint32_t>> kmeans_lloyd(
 	assert(data.size() >= parameters.get_k()); // there must be at least k data points
 	std::random_device rand_device;
 	uint64_t seed = parameters.has_random_seed() ? parameters.get_random_seed() : rand_device();
+
+	std::cout << "min delta" << parameters.get_min_delta() << std::endl;
+	std::cout << "max iteration" << parameters.get_max_iteration() << std::endl;
+	std::cout << "has min delta" << parameters.has_min_delta() << std::endl;
+	std::cout << "min delta" << parameters.get_min_delta() << std::endl;
+	std::cout << "has random seed" << parameters.has_random_seed() << std::endl;
+	std::cout << "random seed" << parameters.get_random_seed() << std::endl;
+
 	std::vector<float*> means = random_plusplus(data, parameters.get_k(), seed);
+
+	std::cout << "kmeans++ init finished" << means.size() << std::endl;	
 
 	std::vector<float*> old_means;
 	std::vector<float*> old_old_means;
 	std::vector<uint32_t> clusters;
+
+
+
+	float min_delta = parameters.has_min_delta() ? parameters.get_min_delta() : 0.0000001;
+
+	return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
+
 	// Calculate new means until convergence is reached or we hit the maximum iteration count
 	uint64_t count = 0;
 	do {
 		clusters = calculate_clusters(data, means);
 		old_old_means = old_means;
 		old_means = means;
-		means = calculate_means(data, clusters, old_means, parameters.get_k());
+		means = calculate_means(data, clusters, old_means, parameters.get_k());	
 		++count;
-	} while (means != old_means && means != old_old_means
-		&& !(parameters.has_max_iteration() && count == parameters.get_max_iteration())
-		&& !(parameters.has_min_delta() && deltas_below_limit(deltas(old_means, means), parameters.get_min_delta())));
+
+		std::cout << "Iteration " << count << std::endl;
+		std::cout << "delta = " << sum(deltas(old_means, means)) << std::endl;
+		std::cout << "====================" << std::endl;
+
+		
+	} while (sum(deltas(old_means, means)) > min_delta
+		&& !(parameters.has_max_iteration() && count == parameters.get_max_iteration()));
+		
 
 	return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
 }
