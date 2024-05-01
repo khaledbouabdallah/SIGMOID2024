@@ -18,6 +18,7 @@
 
 
 // Todo : Switch from std::array to float*
+template <typename T, size_t N>
 std::vector<std::array<T, N>> random_plusplus(const std::vector<std::array<T, N>>& data, uint32_t k, uint64_t seed) {
 	assert(k > 0);
 	assert(data.size() > 0);
@@ -35,7 +36,7 @@ std::vector<std::array<T, N>> random_plusplus(const std::vector<std::array<T, N>
 
 	for (uint32_t count = 1; count < k; ++count) {
 		// Calculate the distance to the closest mean for each data point
-		auto distances = details::closest_distance(means, data);
+		auto distances = closest_distance(means, data);
 		// Pick a random point weighted by the distance from existing means
 		// TODO: This might convert floating point weights to ints, distorting the distribution for small weights
         #if !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -115,14 +116,14 @@ used for initializing the means.
 */
 template <typename T, size_t N>
 std::tuple<std::vector<std::array<T, N>>, std::vector<uint32_t>> kmeans_lloyd(
-	const std::vector<std::array<T, N>>& data, const clustering_parameters<T>& parameters) {
+	const std::vector<std::array<T, N>>& data, const clustering_parameters& parameters) {
 	static_assert(std::is_arithmetic<T>::value && std::is_signed<T>::value,
 		"kmeans_lloyd requires the template parameter T to be a signed arithmetic type (e.g. float, double, int)");
 	assert(parameters.get_k() > 0); // k must be greater than zero
 	assert(data.size() >= parameters.get_k()); // there must be at least k data points
 	std::random_device rand_device;
 	uint64_t seed = parameters.has_random_seed() ? parameters.get_random_seed() : rand_device();
-	std::vector<std::array<T, N>> means = details::random_plusplus(data, parameters.get_k(), seed);
+	std::vector<std::array<T, N>> means = random_plusplus(data, parameters.get_k(), seed);
 
 	std::vector<std::array<T, N>> old_means;
 	std::vector<std::array<T, N>> old_old_means;
@@ -130,14 +131,14 @@ std::tuple<std::vector<std::array<T, N>>, std::vector<uint32_t>> kmeans_lloyd(
 	// Calculate new means until convergence is reached or we hit the maximum iteration count
 	uint64_t count = 0;
 	do {
-		clusters = details::calculate_clusters(data, means);
+		clusters = calculate_clusters(data, means);
 		old_old_means = old_means;
 		old_means = means;
-		means = details::calculate_means(data, clusters, old_means, parameters.get_k());
+		means = calculate_means(data, clusters, old_means, parameters.get_k());
 		++count;
 	} while (means != old_means && means != old_old_means
 		&& !(parameters.has_max_iteration() && count == parameters.get_max_iteration())
-		&& !(parameters.has_min_delta() && details::deltas_below_limit(details::deltas(old_means, means), parameters.get_min_delta())));
+		&& !(parameters.has_min_delta() && deltas_below_limit(deltas(old_means, means), parameters.get_min_delta())));
 
 	return std::tuple<std::vector<std::array<T, N>>, std::vector<uint32_t>>(means, clusters);
 }
