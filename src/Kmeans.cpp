@@ -86,6 +86,95 @@ std::vector<float> closest_distance(
 }
 
 
+// todo
+template <typename T, size_t N>
+uint32_t closest_mean(const std::array<T, N>& point, const std::vector<std::array<T, N>>& means) {
+	assert(!means.empty());
+	T smallest_distance = distance_squared(point, means[0]);
+	typename std::array<T, N>::size_type index = 0;
+	T distance;
+	for (size_t i = 1; i < means.size(); ++i) {
+		distance = distance_squared(point, means[i]);
+		if (distance < smallest_distance) {
+			smallest_distance = distance;
+			index = i;
+		}
+	}
+	return index;
+}
+
+
+// todo
+/*
+Calculate the index of the mean each data point is closest to (euclidean distance).
+*/
+template <typename T, size_t N>
+std::vector<uint32_t> calculate_clusters(
+	const std::vector<std::array<T, N>>& data, const std::vector<std::array<T, N>>& means) {
+	std::vector<uint32_t> clusters;
+	for (auto& point : data) {
+		clusters.push_back(closest_mean(point, means));
+	}
+	return clusters;
+}
+
+
+// todo
+/*
+Calculate means based on data points and their cluster assignments.
+*/
+template <typename T, size_t N>
+std::vector<std::array<T, N>> calculate_means(const std::vector<std::array<T, N>>& data,
+	const std::vector<uint32_t>& clusters,
+	const std::vector<std::array<T, N>>& old_means,
+	uint32_t k) {
+	std::vector<std::array<T, N>> means(k);
+	std::vector<T> count(k, T());
+	for (size_t i = 0; i < std::min(clusters.size(), data.size()); ++i) {
+		auto& mean = means[clusters[i]];
+		count[clusters[i]] += 1;
+		for (size_t j = 0; j < std::min(data[i].size(), mean.size()); ++j) {
+			mean[j] += data[i][j];
+		}
+	}
+	for (size_t i = 0; i < k; ++i) {
+		if (count[i] == 0) {
+			means[i] = old_means[i];
+		} else {
+			for (size_t j = 0; j < means[i].size(); ++j) {
+				means[i][j] /= count[i];
+			}
+		}
+	}
+	return means;
+}
+
+
+// todo
+template <typename T, size_t N>
+std::vector<T> deltas(
+	const std::vector<std::array<T, N>>& old_means, const std::vector<std::array<T, N>>& means)
+{
+	std::vector<T> distances;
+	distances.reserve(means.size());
+	assert(old_means.size() == means.size());
+	for (size_t i = 0; i < means.size(); ++i) {
+		distances.push_back(distance(means[i], old_means[i]));
+	}
+	return distances;
+}
+
+
+
+bool deltas_below_limit(const std::vector<float>& deltas, float min_delta) {
+	for (float d : deltas) {
+		if (d > min_delta) {
+			return false;
+		}
+	}
+	return true;
+}
+
 /*
 Implementation of k-means generic across the data type and the dimension of each data item. Expects
 the data to be a vector of fixed-size arrays. Generic parameters are the type of the base data (T)
