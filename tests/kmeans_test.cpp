@@ -1,10 +1,25 @@
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <array>
 #include "../include/Kmeans.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/DataPoint.hpp"
 #include <cassert>
 //#include <vector>
 //#include "Utils.hpp"
 
+// void print_result_dkm(std::tuple<std::vector<float*>, std::vector<uint32_t>>& result) {
+// 	std::cout << "centers: ";
+// 	for (const auto& c : std::get<>(result)) {
+// 		std::cout << "(";
+// 		for (auto v : c) {
+// 			std::cout << v << ",";
+// 		}
+// 		std::cout << "), ";
+// 	}
+// 	std::cout << std::endl;
+// }
 
 void runTests_closest_distance() {
    
@@ -51,7 +66,7 @@ void runTests_closest_distance() {
     assert(result4[0] - 6.324555320336759 * 6.324555320336759  <= epsilon); // Distance between data5 and mean3
     assert(result4[1] - 39.242833740697165 * 39.242833740697165 <= epsilon); // Distance between data6 and mean4
 
-    std::cout << "All tests passed successfully!" << std::endl;
+    std::cout << "distance mean done!" << std::endl;
 
 
 }
@@ -75,7 +90,7 @@ void test_closest_mean() {
 
     // Ajoutez plus de cas de test selon vos besoins...
 
-    std::cout << "Tous les tests sont passés avec succès!" << std::endl;
+    std::cout << "Test closest mean done!" << std::endl;
 }
 
 void test_calculate_clusters() {
@@ -107,7 +122,7 @@ void test_calculate_clusters() {
     assert(result3[1] == 1); // Le deuxième point de données devrait appartenir à la deuxième moyenne (index 1)
 
     // Ajoutez plus de cas de test selon vos besoins...
-    std::cout << "Tous les tests sont 123passés avec succès!" << std::endl;
+    std::cout << "Test calculate cluster done!" << std::endl;
 }
 
 void test_deltas() {
@@ -124,7 +139,7 @@ void test_deltas() {
     std::vector<float*> means2 = {mean1};
     std::vector<float> result2 = deltas(old_means2, means2);
     assert(result2.size() == 1);
-    assert(result2[0] == distance(mean1, old_mean1, DATA_SIZE));
+    assert(result2[0] == distance(mean1, old_mean1));
 
     // Cas de test 3: Plusieurs anciens moyens, plusieurs nouveaux moyens
     float old_mean2[DATA_SIZE] = {}; // Initialisation avec zéros pour DATA_SIZE éléments
@@ -135,13 +150,52 @@ void test_deltas() {
     std::vector<float*> means3 = {mean2, mean3};
     std::vector<float> result3 = deltas(old_means3, means3);
     assert(result3.size() == 2);
-    assert(result3[0] == distance(mean2, old_mean2, DATA_SIZE));
-    assert(result3[1] == distance(mean3, old_mean3, DATA_SIZE));
+    assert(result3[0] == distance(mean2, old_mean2));
+    assert(result3[1] == distance(mean3, old_mean3 ));
 
     // Ajoutez plus de cas de test selon vos besoins...
 
-    std::cout << "Tous les tests sont passés avec succès!" << std::endl;
+    std::cout << "Test deltas done!" << std::endl;
 }
+
+void test_kmeans() {
+    
+    const char* pointsInput = "dummy-data.bin";
+    DataBase db = DataBase(pointsInput);
+    std::vector<DataPoint> data_points = db.GetPoints();
+
+    std::vector<float *> data;
+
+    for (int i = 0; i < db.GetSize(); i++) {
+        data.push_back(data_points[i].GetData());
+    } 
+
+    // clustering_parameters parameters(100);
+    // parameters.set_min_delta(-1.0);
+    
+    // auto cluster_data = kmeans_lloyd(data, parameters);
+
+	// std::cout << "Means:" << std::endl;
+	// for (const auto& mean : std::get<0>(cluster_data)) {
+	// 	std::cout << "\t(" << mean[0] << "," << mean[1] << ")" << std::endl;
+	// }
+	// std::cout << "\nCluster labels:" << std::endl;
+	// std::cout << "\tPoint:";
+	// for (const auto& point : data) {
+	// 	std::stringstream value;
+	// 	value << "(" << point[0] << "," << point[1] << ")";
+	// 	std::cout << std::setw(14) << value.str();
+	// }
+	// std::cout << std::endl;
+	// std::cout << "\tLabel:";
+	// for (const auto& label : std::get<1>(cluster_data)) {
+	// 	std::cout << std::setw(14) << label;
+	// }
+	// std::cout << std::endl;
+
+    std::cout << "Test kmeans done!" << std::endl;
+}
+
 volatile int done = 0;
 
 int main() {
@@ -150,6 +204,7 @@ int main() {
     test_closest_mean();
     test_calculate_clusters();
     test_deltas();
+    test_kmeans();
     
 
     return 0;
