@@ -11,7 +11,8 @@
 
 float distance_squared(float* point_a, float* point_b);
 
-float distance(const float* point_a, const float* point_b);
+std::vector<float> closest_distance(const std::vector<float*>& means, const std::vector<float*>& data);
+	
 
 //
 
