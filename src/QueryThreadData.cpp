@@ -1,5 +1,5 @@
-#include "QueryThreadData.hpp"
-#include "Query.hpp"
+#include "../include/QueryThreadData.hpp"
+#include "../include/Query.hpp"
 #include <iostream>
 #
 

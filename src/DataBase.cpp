@@ -1,11 +1,11 @@
-#include "DataBase.hpp"
+#include "../include/DataBase.hpp"
 #include <fstream>
 #include "assert.h"
 #include <iostream>
-#include "Utils.hpp"
+#include "../include/Utils.hpp"
 #include <cmath>
-#include "SortUtils.hpp"
-#include "SAX.hpp"
+#include "../include/SortUtils.hpp"
+#include "../include/SAX.hpp"
 #include <cstring>
 
 using namespace std;

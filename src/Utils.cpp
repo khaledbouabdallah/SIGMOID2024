@@ -1,5 +1,5 @@
-#include "Utils.hpp"
-#include "globals.hpp"
+#include "../include/Utils.hpp"
+#include "../include/globals.hpp"
 #include <cmath>
 #include <iostream>
 #include <cstdlib>

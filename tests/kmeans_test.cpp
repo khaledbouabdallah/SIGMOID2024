@@ -201,7 +201,7 @@ void test_kmeans() {
      parameters.set_random_seed(42);
  
     
-     auto cluster_data = kmeans_lloyd(data, parameters);
+    auto cluster_data = kmeans_lloyd(data, parameters);
 
      //print_result_dkm(cluster_data);
 

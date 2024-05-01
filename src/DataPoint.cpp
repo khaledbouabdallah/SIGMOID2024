@@ -1,5 +1,5 @@
-#include "DataPoint.hpp"
-#include "globals.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/globals.hpp"
 #include <fstream>
 #include <string>
 #include <iostream>

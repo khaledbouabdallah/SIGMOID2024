@@ -1,7 +1,7 @@
-#include "SortUtils.hpp"
-#include "DataBase.hpp"
-#include "DataPoint.hpp"
-#include "Query.hpp"
+#include "../include/SortUtils.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/Query.hpp"
 #include <vector>
 
 using namespace std;
