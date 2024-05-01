@@ -11,10 +11,26 @@
 
 float distance_squared(float* point_a, float* point_b);
 
+float distance(float* point_a, float* point_b);
+
 std::vector<float> closest_distance(const std::vector<float*>& means, const std::vector<float*>& data);
+
+ uint32_t closest_mean( float* point, std::vector<float*> means);
+
+ std::vector<uint32_t> calculate_clusters(
+ 	const std::vector<float*>& data, const std::vector<float*>& means);
 	
 
-//
+std::vector<float*> calculate_means(const std::vector<float*>& data,
+const std::vector<uint32_t>& clusters,
+const std::vector<float*>& old_means,
+uint32_t k);
+
+std::vector<float> deltas(
+const std::vector<float*>& old_means, const std::vector<float*>& means);
+
+//bool deltas_below_limit(const std::vector<float>& deltas, float min_delta)
+// //
 
 class Cluster: public DataBase {
 
@@ -100,4 +116,8 @@ private:
 	bool _has_rand_seed;
 	uint64_t _rand_seed;
 };
+
+
+
+
 #endif

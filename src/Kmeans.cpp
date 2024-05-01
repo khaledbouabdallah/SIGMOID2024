@@ -58,11 +58,16 @@ Calculate the square of the distance between two points.
 */
 float distance_squared(float* point_a, float* point_b) {
 	float d_squared = 0;
-	// todo change to 100 = DATA_SIZE
-	for (int i = 0; i < 10; ++i) {
+
+	for (int i = 0; i < DATA_SIZE; ++i) {
 		d_squared += (point_a[i] - point_b[i]) * (point_a[i] - point_b[i]);
 	}
-	return std::sqrt(d_squared);
+	 return d_squared;
+}
+
+
+float distance(float* point_a, float* point_b) {
+	return std::sqrt(distance_squared(point_a, point_b));
 }
 
 
@@ -86,14 +91,13 @@ std::vector<float> closest_distance(
 }
 
 
-// todo
-template <typename T, size_t N>
-uint32_t closest_mean(const std::array<T, N>& point, const std::vector<std::array<T, N>>& means) {
+
+uint32_t closest_mean( float* point, std::vector<float*> means) {
 	assert(!means.empty());
-	T smallest_distance = distance_squared(point, means[0]);
-	typename std::array<T, N>::size_type index = 0;
-	T distance;
-	for (size_t i = 1; i < means.size(); ++i) {
+	float smallest_distance = distance_squared(point, means[0]);
+	uint32_t index = 0;
+	float distance;
+	for (uint32_t i = 1; i < means.size(); ++i) {
 		distance = distance_squared(point, means[i]);
 		if (distance < smallest_distance) {
 			smallest_distance = distance;
@@ -108,9 +112,8 @@ uint32_t closest_mean(const std::array<T, N>& point, const std::vector<std::arra
 /*
 Calculate the index of the mean each data point is closest to (euclidean distance).
 */
-template <typename T, size_t N>
 std::vector<uint32_t> calculate_clusters(
-	const std::vector<std::array<T, N>>& data, const std::vector<std::array<T, N>>& means) {
+	const std::vector<float*>& data, const std::vector<float*>& means) {
 	std::vector<uint32_t> clusters;
 	for (auto& point : data) {
 		clusters.push_back(closest_mean(point, means));
@@ -123,17 +126,16 @@ std::vector<uint32_t> calculate_clusters(
 /*
 Calculate means based on data points and their cluster assignments.
 */
-template <typename T, size_t N>
-std::vector<std::array<T, N>> calculate_means(const std::vector<std::array<T, N>>& data,
+std::vector<float*> calculate_means(const std::vector<float*>& data,
 	const std::vector<uint32_t>& clusters,
-	const std::vector<std::array<T, N>>& old_means,
+	const std::vector<float*>& old_means,
 	uint32_t k) {
-	std::vector<std::array<T, N>> means(k);
-	std::vector<T> count(k, T());
+	std::vector<float*> means(k);
+	std::vector<float> count(k, float());
 	for (size_t i = 0; i < std::min(clusters.size(), data.size()); ++i) {
 		auto& mean = means[clusters[i]];
 		count[clusters[i]] += 1;
-		for (size_t j = 0; j < std::min(data[i].size(), mean.size()); ++j) {
+		for (size_t j = 0; j < DATA_SIZE; ++j) {
 			mean[j] += data[i][j];
 		}
 	}
@@ -141,7 +143,7 @@ std::vector<std::array<T, N>> calculate_means(const std::vector<std::array<T, N>
 		if (count[i] == 0) {
 			means[i] = old_means[i];
 		} else {
-			for (size_t j = 0; j < means[i].size(); ++j) {
+			for (size_t j = 0; j < DATA_SIZE; ++j) {
 				means[i][j] /= count[i];
 			}
 		}
@@ -151,11 +153,10 @@ std::vector<std::array<T, N>> calculate_means(const std::vector<std::array<T, N>
 
 
 // todo
-template <typename T, size_t N>
-std::vector<T> deltas(
-	const std::vector<std::array<T, N>>& old_means, const std::vector<std::array<T, N>>& means)
+std::vector<float> deltas(
+	const std::vector<float*>& old_means, const std::vector<float*>& means)
 {
-	std::vector<T> distances;
+	std::vector<float> distances;
 	distances.reserve(means.size());
 	assert(old_means.size() == means.size());
 	for (size_t i = 0; i < means.size(); ++i) {
