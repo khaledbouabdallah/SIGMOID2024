@@ -9,6 +9,7 @@
 #include <tuple>
 #include <type_traits>
 #include <vector>
+#include <Kmeans.hpp>
 
 // Todo std::array to float*
 // Todo handle Datapoint class
@@ -54,19 +55,17 @@ std::vector<std::array<T, N>> random_plusplus(const std::vector<std::array<T, N>
 /*
 Calculate the square of the distance between two points.
 */
-// Todo : Switch from std::array to float*
-template <typename T, size_t N>
-T distance_squared(const std::array<T, N>& point_a, const std::array<T, N>& point_b) {
-	T d_squared = T();
-	for (typename std::array<T, N>::size_type i = 0; i < N; ++i) {
+float distance_squared(float* point_a, float* point_b) {
+	float d_squared = 0;
+	for (int i = 0; i < 100; ++i) {
 		auto delta = point_a[i] - point_b[i];
 		d_squared += delta * delta;
 	}
 	return d_squared;
 }
 
-template <typename T, size_t N>
-T distance(const std::array<T, N>& point_a, const std::array<T, N>& point_b) {
+
+float distance(const float* point_a, const float* point_b) {
 	return std::sqrt(distance_squared(point_a, point_b));
 }
 

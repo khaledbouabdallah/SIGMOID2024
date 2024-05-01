@@ -7,7 +7,13 @@
 #include "DataPoint.hpp"
 #include "DataBase.hpp"
 
+// for testing 
 
+float distance_squared(float* point_a, float* point_b);
+
+float distance(const float* point_a, const float* point_b);
+
+//
 
 class Cluster: public DataBase {
 
