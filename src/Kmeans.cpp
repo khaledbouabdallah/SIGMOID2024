@@ -198,19 +198,16 @@ with the [kmeans++](https://en.wikipedia.org/wiki/K-means%2B%2B)
 used for initializing the means.
 
 */
-template <typename T, size_t N>
-std::tuple<std::vector<std::array<T, N>>, std::vector<uint32_t>> kmeans_lloyd(
-	const std::vector<std::array<T, N>>& data, const clustering_parameters<T>& parameters) {
-	static_assert(std::is_arithmetic<T>::value && std::is_signed<T>::value,
-		"kmeans_lloyd requires the template parameter T to be a signed arithmetic type (e.g. float, double, int)");
+std::tuple<std::vector<float*>, std::vector<uint32_t>> kmeans_lloyd(
+	const std::vector<float*>& data, const clustering_parameters& parameters) {
 	assert(parameters.get_k() > 0); // k must be greater than zero
 	assert(data.size() >= parameters.get_k()); // there must be at least k data points
 	std::random_device rand_device;
 	uint64_t seed = parameters.has_random_seed() ? parameters.get_random_seed() : rand_device();
-	std::vector<std::array<T, N>> means = random_plusplus(data, parameters.get_k(), seed);
+	std::vector<float*> means = random_plusplus(data, parameters.get_k(), seed);
 
-	std::vector<std::array<T, N>> old_means;
-	std::vector<std::array<T, N>> old_old_means;
+	std::vector<float*> old_means;
+	std::vector<float*> old_old_means;
 	std::vector<uint32_t> clusters;
 	// Calculate new means until convergence is reached or we hit the maximum iteration count
 	uint64_t count = 0;
@@ -224,5 +221,5 @@ std::tuple<std::vector<std::array<T, N>>, std::vector<uint32_t>> kmeans_lloyd(
 		&& !(parameters.has_max_iteration() && count == parameters.get_max_iteration())
 		&& !(parameters.has_min_delta() && deltas_below_limit(deltas(old_means, means), parameters.get_min_delta())));
 
-	return std::tuple<std::vector<std::array<T, N>>, std::vector<uint32_t>>(means, clusters);
+	return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
 }
