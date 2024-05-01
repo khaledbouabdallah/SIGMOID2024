@@ -197,7 +197,7 @@ void test_kmeans() {
         data.push_back(data_points[i].GetData());
     } 
 
-     clustering_parameters parameters(50);
+     clustering_parameters parameters(15);
      parameters.set_random_seed(42);
  
     

@@ -12,6 +12,7 @@
 #include <vector>
 #include <Kmeans.hpp>
 #include <globals.hpp>
+#include <chrono>
 
 // Todo std::array to float*
 // Todo handle Datapoint class
@@ -39,10 +40,18 @@ std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k,
 
 	std::cout << "random_plusplus here1" << std::endl;
 
+	std::vector<float> distances;
+	distances.reserve(data.size());
+	
 	for (uint32_t count = 1; count < k; ++count) {
 		// Calculate the distance to the closest mean for each data point
-		auto distances = closest_distance(means, data);
-		std::cout << "random_plusplus here2 " << count << std::endl;
+		auto start = std::chrono::high_resolution_clock::now();
+		distances = closest_distance(means, data);
+		auto end = std::chrono::high_resolution_clock::now();
+		// Calculate the duration
+    	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    	std::cout << count  <<" closest_distance Execution time: " << duration.count() / 1000 << " ms" << std::endl;
+		start = std::chrono::high_resolution_clock::now();
 		// Pick a random point weighted by the distance from existing means
 		// TODO: This might convert floating point weights to ints, distorting the distribution for small weights
         #if !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -53,7 +62,12 @@ std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k,
         #endif
         		means.push_back(data[generator(rand_engine)]);
 
-		//distances.clear();
+		end = std::chrono::high_resolution_clock::now();
+		duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    	std::cout << count  <<" the rest Execution time: " << duration.count() / 1000 << " ms " << std::endl;
+		std::cout << "====================" << std::endl;	
+
+		
 	}
 	
 	return means;
@@ -65,7 +79,6 @@ Calculate the square of the distance between two points.
 */
 float distance_squared(float* point_a, float* point_b) {
 	float d_squared = 0;
-
 	for (int i = 0; i < DATA_SIZE; ++i) {
 		d_squared += (point_a[i] - point_b[i]) * (point_a[i] - point_b[i]);
 	}
