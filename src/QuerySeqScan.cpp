@@ -1,7 +1,7 @@
-#include "QuerySeqScan.hpp"
-#include "DataPoint.hpp"
-#include "DataBase.hpp"
-#include "Utils.hpp"
+#include "../include/QuerySeqScan.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/Utils.hpp"
 #include <iostream>
 
 QuerySeqScan::QuerySeqScan(std::ifstream& ifs, const DataBase& db) : Query(ifs,db){

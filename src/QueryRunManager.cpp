@@ -1,12 +1,12 @@
-#include "QueryRunManager.hpp"
+#include "../include/QueryRunManager.hpp"
 
 #include <unistd.h>
 #include <pthread.h>
-#include "QueryThreadData.hpp"
-#include "Query.hpp"
-#include "globals.hpp"
+#include "../include/QueryThreadData.hpp"
+#include "../include/Query.hpp"
+#include "../include/globals.hpp"
 #include <iostream>
-#include "QueryQueue.hpp"
+#include "../include/QueryQueue.hpp"
 #include <unistd.h> 
 
 volatile int remainingQueries;

@@ -1,4 +1,4 @@
-#include "QueryQueue.hpp"
+#include "../include/QueryQueue.hpp"
 #include "pthread.h"
 
 pthread_mutex_t qMutex;

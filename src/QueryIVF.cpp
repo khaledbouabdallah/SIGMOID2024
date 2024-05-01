@@ -1,7 +1,7 @@
-#include "QueryIVF.hpp"
-#include "DataPoint.hpp"
-#include "DataBase.hpp"
-#include "Utils.hpp"
+#include "../include/QueryIVF.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/Utils.hpp"
 #include <iostream>
 
 
