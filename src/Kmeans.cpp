@@ -1,4 +1,4 @@
-#pragma once
+//#pragma once
 
 #include <algorithm>
 #include <array>
@@ -21,36 +21,36 @@
 
 // Todo : Switch from std::array to float*
 
-// std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k, uint64_t seed) {
-// 	assert(k > 0);
-// 	assert(data.size() > 0);
-// 	using input_size_t = typename std::array<T, N>::size_type;
-// 	std::vector<float*> means;
-// 	// Using a very simple PRBS generator, parameters selected according to
-// 	// https://en.wikipedia.org/wiki/Linear_congruential_generator#Parameters_in_common_use
-// 	std::linear_congruential_engine<uint64_t, 6364136223846793005, 1442695040888963407, UINT64_MAX> rand_engine(seed);
+std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k, uint64_t seed) {
+	assert(k > 0);
+	assert(data.size() > 0);
+	using input_size_t = typename std::array<float, 100>::size_type;
+	std::vector<float*> means;
+	// Using a very simple PRBS generator, parameters selected according to
+	// https://en.wikipedia.org/wiki/Linear_congruential_generator#Parameters_in_common_use
+	std::linear_congruential_engine<uint64_t, 6364136223846793005, 1442695040888963407, UINT64_MAX> rand_engine(seed);
 
-// 	// Select first mean at random from the set
-// 	{
-// 		std::uniform_int_distribution<input_size_t> uniform_generator(0, data.size() - 1);
-// 		means.push_back(data[uniform_generator(rand_engine)]);
-// 	}
+	// Select first mean at random from the set
+	{
+		std::uniform_int_distribution<input_size_t> uniform_generator(0, data.size() - 1);
+		means.push_back(data[uniform_generator(rand_engine)]);
+	}
 
-// 	for (uint32_t count = 1; count < k; ++count) {
-// 		// Calculate the distance to the closest mean for each data point
-// 		auto distances = closest_distance(means, data);
-// 		// Pick a random point weighted by the distance from existing means
-// 		// TODO: This might convert floating point weights to ints, distorting the distribution for small weights
-//         #if !defined(_MSC_VER) || _MSC_VER >= 1900
-//         		std::discrete_distribution<input_size_t> generator(distances.begin(), distances.end());
-//         #else  // MSVC++ older than 14.0
-//         		input_size_t i = 0;
-//         		std::discrete_distribution<input_size_t> generator(distances.size(), 0.0, 0.0, [&distances, &i](double) { return distances[i++]; });
-//         #endif
-//         		means.push_back(data[generator(rand_engine)]);
-// 	}
-// 	return means;
-// }
+	for (uint32_t count = 1; count < k; ++count) {
+		// Calculate the distance to the closest mean for each data point
+		auto distances = closest_distance(means, data);
+		// Pick a random point weighted by the distance from existing means
+		// TODO: This might convert floating point weights to ints, distorting the distribution for small weights
+        #if !defined(_MSC_VER) || _MSC_VER >= 1900
+        		std::discrete_distribution<input_size_t> generator(distances.begin(), distances.end());
+        #else  // MSVC++ older than 14.0
+        		input_size_t i = 0;
+        		std::discrete_distribution<input_size_t> generator(distances.size(), 0.0, 0.0, [&distances, &i](double) { return distances[i++]; });
+        #endif
+        		means.push_back(data[generator(rand_engine)]);
+	}
+	return means;
+}
 
 
 /*
@@ -62,7 +62,7 @@ float distance_squared(float* point_a, float* point_b) {
 	for (int i = 0; i < 10; ++i) {
 		d_squared += (point_a[i] - point_b[i]) * (point_a[i] - point_b[i]);
 	}
-	return d_squared;
+	return std::sqrt(d_squared);
 }
 
 
@@ -110,7 +110,7 @@ used for initializing the means.
 */
 template <typename T, size_t N>
 std::tuple<std::vector<std::array<T, N>>, std::vector<uint32_t>> kmeans_lloyd(
-	const std::vector<std::array<T, N>>& data, const clustering_parameters& parameters) {
+	const std::vector<std::array<T, N>>& data, const clustering_parameters<T>& parameters) {
 	static_assert(std::is_arithmetic<T>::value && std::is_signed<T>::value,
 		"kmeans_lloyd requires the template parameter T to be a signed arithmetic type (e.g. float, double, int)");
 	assert(parameters.get_k() > 0); // k must be greater than zero
