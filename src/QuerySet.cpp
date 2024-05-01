@@ -1,19 +1,19 @@
-#include "QuerySet.hpp"
+#include "../include/QuerySet.hpp"
 #include <fstream>
 #include <iostream>
 #include "assert.h"
-#include "Query.hpp"
-#include "QuerySeqScan.hpp"
-#include "QuerySeqScanRange.hpp"
-#include "QuerySeqScanIncremental.hpp"
-#include "QuerySeqScanRangeIncremental.hpp"
-#include "QueryRangeSAXFilter.hpp"
-#include "QueryRangeSAXOnly.hpp"
-#include "QuerySAXLookaround.hpp"
-#include "SAX.hpp"
-#include "SortUtils.hpp"
-#include "Utils.hpp"
-#include "globals.hpp"
+#include "../include/Query.hpp"
+#include "../include/QuerySeqScan.hpp"
+#include "../include/QuerySeqScanRange.hpp"
+#include "../include/QuerySeqScanIncremental.hpp"
+#include "../include/QuerySeqScanRangeIncremental.hpp"
+#include "../include/QueryRangeSAXFilter.hpp"
+#include "../include/QueryRangeSAXOnly.hpp"
+#include "../include/QuerySAXLookaround.hpp"
+#include "../include/SAX.hpp"
+#include "../include/SortUtils.hpp"
+#include "../include/Utils.hpp"
+#include "../include/globals.hpp"
 
 using namespace std;
 

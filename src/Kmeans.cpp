@@ -9,8 +9,8 @@
 #include <tuple>
 #include <type_traits>
 #include <vector>
-#include <Kmeans.hpp>
-#include <globals.hpp>
+#include "../include/Kmeans.hpp"
+#include "../include/globals.hpp"
 
 // Todo std::array to float*
 // Todo handle Datapoint class

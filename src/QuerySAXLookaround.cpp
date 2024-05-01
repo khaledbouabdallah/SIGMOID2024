@@ -1,8 +1,8 @@
-#include "QuerySAXLookaround.hpp"
-#include "IndexSAXTrie.hpp"
-#include "DataPoint.hpp"
-#include "DataBase.hpp"
-#include "Utils.hpp"
+#include "../include/QuerySAXLookaround.hpp"
+#include "../include/IndexSAXTrie.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/Utils.hpp"
 #include <iostream>
 
 QuerySAXLookaround::QuerySAXLookaround(std::ifstream& ifs, const DataBase& db) : Query(ifs,db), _examined(0), _found(0){

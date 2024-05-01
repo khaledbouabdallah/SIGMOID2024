@@ -1,7 +1,7 @@
-#include "QuerySeqScanRange.hpp"
-#include "Utils.hpp"
-#include "DataPoint.hpp"
-#include "DataBase.hpp"
+#include "../include/QuerySeqScanRange.hpp"
+#include "../include/Utils.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/DataBase.hpp"
 #include <iostream>
 
 using namespace std;

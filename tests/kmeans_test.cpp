@@ -160,7 +160,7 @@ void test_deltas() {
 
 void test_kmeans() {
     
-    const char* pointsInput = "../dummy-data.bin";
+    const char* pointsInput = "../data/dummy-data.bin";
     DataBase db = DataBase(pointsInput);
     std::vector<DataPoint> data_points = db.GetPoints();
 
@@ -173,7 +173,7 @@ void test_kmeans() {
      clustering_parameters parameters(100);
      parameters.set_min_delta(-1.0);
     
-     auto cluster_data = kmeans_lloyd(data, parameters);
+    auto cluster_data = kmeans_lloyd(data, parameters);
 
 	// std::cout << "Means:" << std::endl;
 	// for (const auto& mean : std::get<0>(cluster_data)) {
