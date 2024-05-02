@@ -12,6 +12,7 @@
 #include <vector>
 #include <Kmeans.hpp>
 #include <globals.hpp>
+#include <pthread.h>
 #include <chrono>
 
 // Todo std::array to float*
@@ -90,6 +91,67 @@ float distance(float* point_a, float* point_b) {
 /*
 Calculate the smallest distance between each of the data points and any of the input means.
 */
+/**
+ * 
+ * 
+ * Threading
+ * 
+ * 
+*/
+
+struct ThreadArgs {
+    const std::vector<DataPoint>* data;
+    const std::vector<float*>* means;
+    std::vector<uint32_t>* clusters;
+    size_t start_index;
+    size_t end_index;
+};
+
+void* thread_function(void* arg) {
+    ThreadArgs* args = static_cast<ThreadArgs*>(arg);
+    for (size_t i = args->start_index; i < args->end_index; ++i) {
+        (*args->clusters)[i] = closest_mean((*args->data)[i].GetData(), *args->means);
+    }
+    return nullptr;
+}
+std::vector<uint32_t> calculate_clusters(
+    const std::vector<DataPoint>& data, const std::vector<float*>& means) {
+    std::vector<uint32_t> clusters(data.size());
+
+    // Define the number of threads (adjust this as needed)
+    const int num_threads = 16;
+    pthread_t threads[num_threads];
+    ThreadArgs thread_args[num_threads];
+
+    // Calculate the number of data points per thread
+    size_t points_per_thread = data.size() / num_threads;
+    
+    // Create and start the threads
+    for (int i = 0; i < num_threads; ++i) {
+        thread_args[i].data = &data;
+        thread_args[i].means = &means;
+        thread_args[i].clusters = &clusters;
+        thread_args[i].start_index = i * points_per_thread;
+        thread_args[i].end_index = (i == num_threads - 1) ? data.size() : (i + 1) * points_per_thread;
+
+        pthread_create(&threads[i], nullptr, thread_function, &thread_args[i]);
+    }
+
+    // Wait for all threads to finish
+    for (int i = 0; i < num_threads; ++i) {
+        pthread_join(threads[i], nullptr);
+    }
+
+    return clusters;
+}
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
 std::vector<float> closest_distance(
 	const std::vector<float*>& means, const std::vector<DataPoint>& data) {
 	std::vector<float> distances;
@@ -106,8 +168,79 @@ std::vector<float> closest_distance(
 	}
 	return distances;
 }
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
 
 
+// struct ThreadData {
+//     const std::vector<float*>* means;
+//     const std::vector<DataPoint>* data;
+//     std::vector<float>* distances;
+//     size_t start;
+//     size_t end;
+
+//     ThreadData() = default; // Default constructor
+
+//     // Constructor with arguments
+//     ThreadData(const std::vector<float*>& means, const std::vector<DataPoint>& data, std::vector<float>& distances, size_t start, size_t end) 
+//         : means(&means), data(&data), distances(&distances), start(start), end(end) {}
+// };
+
+// void* compute_closest_distances(void* arg) {
+//     ThreadData* threadData = reinterpret_cast<ThreadData*>(arg);
+//     for (size_t i = threadData->start; i < threadData->end; ++i) {
+//         float closest = distance_squared((*threadData->data)[i].GetData(), (*threadData->means)[0]);
+//         for (auto& m : *threadData->means) {
+//             float distance = distance_squared((*threadData->data)[i].GetData(), m);
+//             if (distance < closest)
+//                 closest = distance;
+//         }
+//         (*threadData->distances)[i] = closest;
+//     }
+//     return nullptr;
+// }
+
+// std::vector<float> closest_distance(const std::vector<float*>& means, const std::vector<DataPoint>& data) {
+//     std::vector<float> distances(data.size());
+
+//     const int numThreads = 4; // Adjust the number of threads as needed
+//     pthread_t threads[numThreads];
+//     ThreadData threadData[numThreads];
+
+//     size_t batchSize = data.size() / numThreads;
+//     size_t remainder = data.size() % numThreads;
+
+//     size_t start = 0;
+//     for (int i = 0; i < numThreads; ++i) {
+//         size_t end = start + batchSize + (i < remainder ? 1 : 0);
+//         threadData[i] = ThreadData(means, data, distances, start, end);
+//         pthread_create(&threads[i], nullptr, compute_closest_distances, &threadData[i]);
+//         start = end;
+//     }
+
+//     for (int i = 0; i < numThreads; ++i) {
+//         pthread_join(threads[i], nullptr);
+//     }
+
+//     return distances;
+// }
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
 
 uint32_t closest_mean( float* point, std::vector<float*> means) {
 	assert(!means.empty());
@@ -116,6 +249,7 @@ uint32_t closest_mean( float* point, std::vector<float*> means) {
 	float distance;
 	for (uint32_t i = 1; i < means.size(); ++i) {
 		distance = distance_squared(point, means[i]);
+		
 		if (distance < smallest_distance) {
 			smallest_distance = distance;
 			index = i;
@@ -129,18 +263,105 @@ uint32_t closest_mean( float* point, std::vector<float*> means) {
 /*
 Calculate the index of the mean each data point is closest to (euclidean distance).
 */
-std::vector<uint32_t> calculate_clusters(
-	const std::vector<DataPoint>& data, const std::vector<float*>& means) {
-	std::vector<uint32_t> clusters;
-	#pragma omp parallel for
-	for (auto& point : data) {
-		clusters.push_back(closest_mean(point.GetData(), means));
-	}
-	return clusters;
+// std::vector<uint32_t> calculate_clusters(
+// 	const std::vector<DataPoint>& data, const std::vector<float*>& means) {
+// 	std::vector<uint32_t> clusters;
+// 	#pragma omp parallel for
+// 	for (auto& point : data) {
+// 		clusters.push_back(closest_mean(point.GetData(), means));
+// 	}
+// 	return clusters;
+// }
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
+
+/**
+struct ThreadData {
+    const std::vector<DataPoint>* data;
+    const std::vector<uint32_t>* clusters;
+    std::vector<float*>* means;
+    std::vector<float>* count;
+    const std::vector<float*>* old_means;
+    size_t start;
+    size_t end;
+};
+
+void* compute_means(void* arg) {
+    ThreadData* threadData = reinterpret_cast<ThreadData*>(arg);
+    for (size_t i = threadData->start; i < threadData->end; ++i) {
+        auto& mean = (*threadData->means)[(*threadData->clusters)[i]];
+        (*threadData->count)[(*threadData->clusters)[i]] += 1;
+        for (size_t j = 0; j < DATA_SIZE; ++j) {
+            mean[j] += (*threadData->data)[i].GetData()[j];
+        }
+    }
+    return nullptr;
 }
 
+std::vector<float*> calculate_means(const std::vector<DataPoint>& data,
+    const std::vector<uint32_t>& clusters,
+    const std::vector<float*>& old_means,
+    uint32_t k) {
+    std::vector<float*> means(k);
+    for (size_t i = 0; i < k; ++i) {
+        means[i] = new float[DATA_SIZE];
+        for (size_t j = 0; j < DATA_SIZE; ++j) {
+            means[i][j] = 0;
+        }
+    }
 
-// todo
+    std::vector<float> count(k, float());
+    const int numThreads = 4; // Adjust the number of threads as needed
+    pthread_t threads[numThreads];
+    ThreadData threadData[numThreads];
+
+    size_t batchSize = data.size() / numThreads;
+    size_t remainder = data.size() % numThreads;
+
+    size_t start = 0;
+    for (int i = 0; i < numThreads; ++i) {
+        size_t end = start + batchSize + (i < remainder ? 1 : 0);
+        threadData[i] = {&data, &clusters, &means, &count, &old_means, start, end};
+        pthread_create(&threads[i], nullptr, compute_means, &threadData[i]);
+        start = end;
+    }
+
+    for (int i = 0; i < numThreads; ++i) {
+        pthread_join(threads[i], nullptr);
+    }
+
+    for (size_t i = 0; i < k; ++i) {
+        if (count[i] == 0) {
+            delete[] means[i];
+            means[i] = old_means[i];
+        } else {
+            for (size_t j = 0; j < DATA_SIZE; ++j) {
+                means[i][j] /= count[i];
+            }
+        }
+    }
+    return means;
+}*/
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
 /*
 Calculate means based on data points and their cluster assignments.
 */
