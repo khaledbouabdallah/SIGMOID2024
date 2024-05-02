@@ -185,12 +185,12 @@ void test_distance() {
 
 void test_kmeans() {
     
-    const char* pointsInput = "../dummy-data.bin";
-    //const char* pointsInput = "../data/contest-data-release-1m.bin";
+    //const char* pointsInput = "../dummy-data.bin";
+    const char* pointsInput = "../data/contest-data-release-1m.bin";
     DataBase db = DataBase(pointsInput);
     std::vector<DataPoint> data = db.GetPoints();
     
-    Kmeans kmeans = Kmeans(100); // k 
+    Kmeans kmeans = Kmeans(30); // k 
     kmeans.set_max_iteration(100);
     kmeans.set_min_delta(0.5);
     kmeans.set_random_seed(42);
@@ -220,8 +220,7 @@ void test_kmeans() {
 
     int x = 583;
 
-    for (int i = 0; i < 1; i++) {
-        i = x;
+    for (int i = 0; i < 10000; i++) {
         DataPoint point = db.GetPoint(i);
         float *data_point = point.GetData();
         // std:cout << "*******************" << std::endl;
@@ -233,15 +232,12 @@ void test_kmeans() {
         // }
         int cluster_id = cluster_data[0]->GetId();
         // std::cout << "Data point " << i << "in cluster"<< cluster_id << std::endl;
-        if (inVector(cluster_data[0]->GetPoints() ,i) == false) {
-            std::cout << "Data point " << i << "not in cluster"<< cluster_id << std::endl;
-        }
+        // if (inVector(cluster_data[0]->GetPoints() ,i) == false) {
+        //     std::cout << "Data point " << i << "not in cluster"<< cluster_id << std::endl;
+        // }
+        assert(inVector(cluster_data[0]->GetPoints() ,i) == true);
 
-        for (int j = 0 ; j < 100; j++) {
-            if (inVector(kmeans.getCluster(j)->GetPoints() ,i) == true) {
-                std::cout << "zaeaze " << j << std::endl; 
-            }
-        }
+    
     }
 
      //print_result_dkm(cluster_data);

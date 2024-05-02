@@ -292,6 +292,10 @@ used for initializing the means.
 
 
 
+	clusters = calculate_clusters(data, means);
+
+
+	
 	std::cout << "Kmeans finished with k= " << _k << " and count= " << count << std::endl;
 
 
@@ -311,8 +315,7 @@ used for initializing the means.
 			}
 		}
 	}
-	
-		
+
 	// // free memory of old means, means and clusters
 	// for (auto& m : old_means) {
 	// 	delete[] m;
@@ -321,8 +324,6 @@ used for initializing the means.
 	// 	delete[] m;
 	// }
 
-	
-	//return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
 
 }
 
@@ -337,13 +338,9 @@ std::vector<Cluster*> Kmeans::getClusters(float* point, int k) {
 
 
 	for (int i = 0; i < _k ; ++i) {
-		distances[i] = distance(point, _clusters[i]->GetCentroid());
+		distances[i] = distance_squared(point, _clusters[i]->GetCentroid());
 	}
 
-	// print the distances
-	for (int i = 0; i < _k; ++i) {
-		std::cout << "Distance to cluster " << i << " = " << distances[i] << std::endl;
-	}
 
 	// find the k closest clusters
 	std::vector<int> indices = findKMinIndices(distances, k);

@@ -106,21 +106,13 @@ std::vector<int> findKMinIndices(const std::vector<float>& arr, int k) {
         indexedArray.push_back({arr[i], i});
     }
 
-    std::cout << "unSorted array: " << std::endl;
-     for (int i = 0; i < indexedArray.size(); ++i) {
-         std::cout << indexedArray[i].first << " " << indexedArray[i].second << std::endl;
-     }
+   
 
     // Sort the indexed array based on the values
     std::sort(indexedArray.begin(), indexedArray.end(), [](const auto& a, const auto& b) {
         return a.first < b.first; // sort by value in ascending order
     });
 
-    // print the sorted array
-    std::cout << "Sorted array: " << std::endl;
-     for (int i = 0; i < indexedArray.size(); ++i) {
-         std::cout << indexedArray[i].first << " " << indexedArray[i].second << std::endl;
-     }
 
     // Extract the indices of the k smallest elements
     std::vector<int> minIndices;
