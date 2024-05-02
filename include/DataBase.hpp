@@ -56,10 +56,11 @@ public:
      * @param data_points The vector of data points.
      */
      DataBase(const char* filename);
+     DataBase() {};
      
      /**
      * @brief Destroys the DataBase object.
-     */
+     */;
      ~DataBase();
     
      /**

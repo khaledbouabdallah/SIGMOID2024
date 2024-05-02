@@ -23,7 +23,7 @@
 
 // Todo : Switch from std::array to float*
 
-std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k, uint64_t seed) {
+std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t k, uint64_t seed) {
 	assert(k > 0);
 	assert(data.size() > 0);
 	using input_size_t = typename std::array<float, 100>::size_type;
@@ -35,7 +35,7 @@ std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k,
 	// Select first mean at random from the set
 	{
 		std::uniform_int_distribution<input_size_t> uniform_generator(0, data.size() - 1);
-		means.push_back(data[uniform_generator(rand_engine)]);
+		means.push_back(data[uniform_generator(rand_engine)].GetData());
 	}
 
 	std::cout << "random_plusplus here1" << std::endl;
@@ -53,14 +53,14 @@ std::vector<float*> random_plusplus(const std::vector<float*>& data, uint32_t k,
     	std::cout << count  <<" closest_distance Execution time: " << duration.count() / 1000 << " ms" << std::endl;
 		start = std::chrono::high_resolution_clock::now();
 		// Pick a random point weighted by the distance from existing means
-		// TODO: This might convert floating point weights to ints, distorting the distribution for small weights
+		// This might convert floating point weights to ints, distorting the distribution for small weights
         #if !defined(_MSC_VER) || _MSC_VER >= 1900
         		std::discrete_distribution<input_size_t> generator(distances.begin(), distances.end());
         #else  // MSVC++ older than 14.0
         		input_size_t i = 0;
         		std::discrete_distribution<input_size_t> generator(distances.size(), 0.0, 0.0, [&distances, &i](double) { return distances[i++]; });
         #endif
-        		means.push_back(data[generator(rand_engine)]);
+        		means.push_back(data[generator(rand_engine)].GetData());
 
 		end = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
@@ -95,13 +95,13 @@ float distance(float* point_a, float* point_b) {
 Calculate the smallest distance between each of the data points and any of the input means.
 */
 std::vector<float> closest_distance(
-	const std::vector<float*>& means, const std::vector<float*>& data) {
+	const std::vector<float*>& means, const std::vector<DataPoint>& data) {
 	std::vector<float> distances;
 	distances.reserve(data.size());
 	for (auto& d : data) {
-		float closest = distance_squared(d, means[0]);
+		float closest = distance_squared(d.GetData(), means[0]);
 		for (auto& m : means) {
-			float distance = distance_squared(d, m);
+			float distance = distance_squared(d.GetData(), m);
 			if (distance < closest)
 				closest = distance;
 		}
@@ -232,21 +232,22 @@ with the [kmeans++](https://en.wikipedia.org/wiki/K-means%2B%2B)
 used for initializing the means.
 
 */
-std::tuple<std::vector<float*>, std::vector<uint32_t>> kmeans_lloyd(
-	const std::vector<float*>& data, const clustering_parameters& parameters) {
-	assert(parameters.get_k() > 0); // k must be greater than zero
-	assert(data.size() >= parameters.get_k()); // there must be at least k data points
+ //std::tuple<std::vector<float*>, std::vector<uint32_t>>
+//const clustering_parameters& parameters) 
+ void Kmeans::fit(const std::vector<DataPoint>& data)
+	 {
+	
 	std::random_device rand_device;
-	uint64_t seed = parameters.has_random_seed() ? parameters.get_random_seed() : rand_device();
+	uint64_t seed = _has_random_seed ? _random_seed : rand_device();
 
-	std::cout << "min delta" << parameters.get_min_delta() << std::endl;
-	std::cout << "max iteration" << parameters.get_max_iteration() << std::endl;
-	std::cout << "has min delta" << parameters.has_min_delta() << std::endl;
-	std::cout << "min delta" << parameters.get_min_delta() << std::endl;
-	std::cout << "has random seed" << parameters.has_random_seed() << std::endl;
-	std::cout << "random seed" << parameters.get_random_seed() << std::endl;
+	std::cout << "min delta" << _min_delta << std::endl;
+	std::cout << "max iteration" << _max_iteration << std::endl;
+	std::cout << "has min delta" << _has_min_delta << std::endl;
+	std::cout << "min delta" << _min_delta << std::endl;
+	std::cout << "has random seed" << _has_random_seed << std::endl;
+	std::cout << "random seed" << _random_seed << std::endl;
 
-	std::vector<float*> means = random_plusplus(data, parameters.get_k(), seed);
+	std::vector<float*> means = random_plusplus(data, _k, seed);
 
 	std::cout << "kmeans++ init finished" << means.size() << std::endl;	
 
@@ -256,27 +257,55 @@ std::tuple<std::vector<float*>, std::vector<uint32_t>> kmeans_lloyd(
 
 
 
-	float min_delta = parameters.has_min_delta() ? parameters.get_min_delta() : 0.0000001;
+	float min_delta = _has_min_delta ? _min_delta : 0.0000001;
 
-	return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
+	
+
+
+
 
 	// Calculate new means until convergence is reached or we hit the maximum iteration count
-	uint64_t count = 0;
-	do {
-		clusters = calculate_clusters(data, means);
-		old_old_means = old_means;
-		old_means = means;
-		means = calculate_means(data, clusters, old_means, parameters.get_k());	
-		++count;
+// 	uint64_t count = 0;
+// 	do {
+// 		clusters = calculate_clusters(data, means);
+// 		old_old_means = old_means;
+// 		old_means = means;
+// 		means = calculate_means(data, clusters, old_means, _k);	
+// 		++count;
 
-		std::cout << "Iteration " << count << std::endl;
-		std::cout << "delta = " << sum(deltas(old_means, means)) << std::endl;
-		std::cout << "====================" << std::endl;
+// 		std::cout << "Iteration " << count << std::endl;
+// 		std::cout << "delta = " << sum(deltas(old_means, means)) << std::endl;
+// 		std::cout << "====================" << std::endl;
 
 		
-	} while (sum(deltas(old_means, means)) > min_delta
-		&& !(parameters.has_max_iteration() && count == parameters.get_max_iteration()));
+// 	} while (sum(deltas(old_means, means)) > min_delta
+// 		&& !(_has_max_iteration && count == _max_iteration));
+
+// 	for (int i = 0; i < means.size(); ++i) {
+// 		Cluster c = Cluster(i);
+// 		c.SetCentroid(means[i]);
+// 	}
+
+// 	for (auto& d : clusters) {
+// 		for (int i = 0; i < _k; ++i) {
+// 			if (d == i) {
+// 				_clusters[i].AddPoint(DataPoint());
+// 			}
+// 		}
+// 	}
 		
 
-	return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
+// 	return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
+// 
 }
+
+void Cluster::AddPoint(DataPoint& point) {
+	_points.push_back(point);
+	++_countPoints;
+}
+
+Cluster::~Cluster() {
+	delete[] _centroid;
+}
+
+Kmeans::~Kmeans() {}
