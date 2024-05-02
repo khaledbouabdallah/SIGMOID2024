@@ -88,14 +88,15 @@ class Cluster: public DataBase {
         int _id;
         int _countPoints;
         int* _categories;
-        // ?? =>
+        // ?? => timestamp begin and end ??
         int* _catstart;
         int* _catend;
-        // timestamp begin and end ??
+        
 
 	public:
 		inline Cluster(int id) : _id(id), _countPoints(0) {};
-		void AddPoint(DataPoint& point);
+		int GetId() { return _id;}
+		void AddPoint(const DataPoint& point);
 		void SetCentroid(float* centroid) { _centroid = centroid;}
 		float* GetCentroid() { return _centroid;}
 		int GetSize() { return _countPoints;}
@@ -111,7 +112,7 @@ class Kmeans
 private:
 
     int _k;
-    std::vector<Cluster> _clusters;
+    std::vector<Cluster*> _clusters;
 
     int _max_iteration;
 	bool _has_max_iteration;
@@ -126,18 +127,30 @@ private:
 
 public:
 
-    inline Kmeans(int k, int maxIter, float tolerance, int random_seed) : _k(k), _max_iteration(maxIter), _min_delta(tolerance), _random_seed(random_seed) {}
+    inline Kmeans(int k) : _k(k) {}
     void fit(const std::vector<DataPoint>& data);
     std::vector<Cluster> getClusters(float* point, int k);
 
 	int get_k() const { return _k; };
 	uint64_t get_random_seed() const { return _random_seed; };
-	uint64_t get_max_iteration() const { return _max_iteration; };
 	float get_min_delta() const { return _min_delta; };
 	bool has_random_seed() const { return _has_random_seed; };
 	bool has_max_iteration() const { return _has_max_iteration; };
+	uint64_t get_max_iteration() const { return _max_iteration; };
+	void set_max_iteration(uint64_t max_iter) {
+		_max_iteration = max_iter;
+		_has_max_iteration = true;
+	}
+	void set_min_delta(float min_delta) {
+		_min_delta = min_delta;
+		_has_min_delta = true;
+	}
+	void set_random_seed(uint64_t rand_seed) {
+		_random_seed = rand_seed;
+		_has_random_seed = true;
+	}
 	bool has_min_delta() const { return _has_min_delta; };
-	Cluster& getCluster(int i) { return _clusters[i];}
+	Cluster* getCluster(int i) { return _clusters[i];}
 
     ~Kmeans();
 

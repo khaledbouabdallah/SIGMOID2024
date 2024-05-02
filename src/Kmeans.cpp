@@ -38,8 +38,6 @@ std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t
 		means.push_back(data[uniform_generator(rand_engine)].GetData());
 	}
 
-	std::cout << "random_plusplus here1" << std::endl;
-
 	std::vector<float> distances;
 	distances.reserve(data.size());
 	
@@ -65,9 +63,7 @@ std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t
 		end = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     	std::cout << count  <<" the rest Execution time: " << duration.count() / 1000 << " ms " << std::endl;
-		std::cout << "====================" << std::endl;	
-
-		
+		std::cout << "====================" << std::endl;		
 	}
 	
 	return means;
@@ -133,10 +129,10 @@ uint32_t closest_mean( float* point, std::vector<float*> means) {
 Calculate the index of the mean each data point is closest to (euclidean distance).
 */
 std::vector<uint32_t> calculate_clusters(
-	const std::vector<float*>& data, const std::vector<float*>& means) {
+	const std::vector<DataPoint>& data, const std::vector<float*>& means) {
 	std::vector<uint32_t> clusters;
 	for (auto& point : data) {
-		clusters.push_back(closest_mean(point, means));
+		clusters.push_back(closest_mean(point.GetData(), means));
 	}
 	return clusters;
 }
@@ -146,7 +142,7 @@ std::vector<uint32_t> calculate_clusters(
 /*
 Calculate means based on data points and their cluster assignments.
 */
-std::vector<float*> calculate_means(const std::vector<float*>& data,
+std::vector<float*> calculate_means(const std::vector<DataPoint>& data,
 	const std::vector<uint32_t>& clusters,
 	const std::vector<float*>& old_means,
 	uint32_t k) {
@@ -164,7 +160,7 @@ std::vector<float*> calculate_means(const std::vector<float*>& data,
 		auto& mean = means[clusters[i]];
 		count[clusters[i]] += 1;
 		for (size_t j = 0; j < DATA_SIZE; ++j) {
-			mean[j] += data[i][j];
+			mean[j] += data[i].GetData()[j];
 		}
 	}
 	for (size_t i = 0; i < k; ++i) {
@@ -247,16 +243,19 @@ used for initializing the means.
 	std::cout << "has random seed" << _has_random_seed << std::endl;
 	std::cout << "random seed" << _random_seed << std::endl;
 
+	std::cout << "Starting Kmeans++ initialization" << std::endl;
+	auto start = std::chrono::high_resolution_clock::now();
 	std::vector<float*> means = random_plusplus(data, _k, seed);
+	auto end = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+	std::cout << "kmeans++ init finished with k= " << _k << " time: " << duration.count() / 1000 << " ms" << std::endl;
 
-	std::cout << "kmeans++ init finished" << means.size() << std::endl;	
+	// pick k random points as initial means from data manually
+
 
 	std::vector<float*> old_means;
-	std::vector<float*> old_old_means;
+	//std::vector<float*> old_old_means;
 	std::vector<uint32_t> clusters;
-
-
-
 	float min_delta = _has_min_delta ? _min_delta : 0.0000001;
 
 	
@@ -264,42 +263,69 @@ used for initializing the means.
 
 
 
-	// Calculate new means until convergence is reached or we hit the maximum iteration count
-// 	uint64_t count = 0;
-// 	do {
-// 		clusters = calculate_clusters(data, means);
-// 		old_old_means = old_means;
-// 		old_means = means;
-// 		means = calculate_means(data, clusters, old_means, _k);	
-// 		++count;
-
-// 		std::cout << "Iteration " << count << std::endl;
-// 		std::cout << "delta = " << sum(deltas(old_means, means)) << std::endl;
-// 		std::cout << "====================" << std::endl;
+	//Calculate new means until convergence is reached or we hit the maximum iteration count
+	
+	uint64_t count = 0;
+	do {
+		std::cout << "Kmeans Iteration " << count << std::endl;
+		auto start1 = std::chrono::high_resolution_clock::now();
+		clusters = calculate_clusters(data, means);
+		auto end1 = std::chrono::high_resolution_clock::now();
+		//old_old_means = old_means;
+		auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
+		std::cout << "calculate_clusters  finished with k= " << _k << " time: " << duration1.count() / 1000 << " ms" << std::endl;
+		old_means = means;
+		start1 = std::chrono::high_resolution_clock::now();
+		means = calculate_means(data, clusters, old_means, _k);	
+		end1 = std::chrono::high_resolution_clock::now();
+		duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
+		std::cout << "calculate_means finished with k= " << _k << " time: " << duration1.count() / 1000 << " ms" << std::endl;
+		++count;
+		 
+		std::cout << "delta = " << sum(deltas(old_means, means)) << std::endl;
+		std::cout << "====================" << std::endl;
 
 		
-// 	} while (sum(deltas(old_means, means)) > min_delta
-// 		&& !(_has_max_iteration && count == _max_iteration));
+	} while (sum(deltas(old_means, means)) > min_delta
+		&& !(_has_max_iteration && count == _max_iteration));
 
-// 	for (int i = 0; i < means.size(); ++i) {
-// 		Cluster c = Cluster(i);
-// 		c.SetCentroid(means[i]);
-// 	}
 
-// 	for (auto& d : clusters) {
-// 		for (int i = 0; i < _k; ++i) {
-// 			if (d == i) {
-// 				_clusters[i].AddPoint(DataPoint());
-// 			}
-// 		}
-// 	}
+
+	std::cout << "Kmeans finished with k= " << _k << " and count= " << count << std::endl;
+
+
+	//  initialize cluster
+	// Bug!: double free detected in tcache 2
+	for (int i = 0; i < _k; ++i) {
+		// initialize cluster
+		Cluster *c = new Cluster(i);
+		c->SetCentroid(means[i]);
+		_clusters.push_back(c);
+	}
+
+	for (int j = 0; j < clusters.size(); ++j) {
+		for (int i = 0; i < _k; ++i) {
+			if (clusters[j] == i) {
+				_clusters[i]->AddPoint(data[j]);
+			}
+		}
+	}
+	
 		
+	// // free memory of old means, means and clusters
+	// for (auto& m : old_means) {
+	// 	delete[] m;
+	// }
+	// for (auto& m : means) {
+	// 	delete[] m;
+	// }
 
-// 	return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
-// 
+	
+	//return std::tuple<std::vector<float*>, std::vector<uint32_t>>(means, clusters);
+
 }
 
-void Cluster::AddPoint(DataPoint& point) {
+void Cluster::AddPoint(const DataPoint& point) {
 	_points.push_back(point);
 	++_countPoints;
 }

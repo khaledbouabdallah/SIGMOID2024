@@ -189,16 +189,20 @@ void test_kmeans() {
     const char* pointsInput = "../data/contest-data-release-1m.bin";
     DataBase db = DataBase(pointsInput);
     std::vector<DataPoint> data = db.GetPoints();
-
-   
-
-    //  clustering_parameters parameters(15);
-    //  parameters.set_random_seed(42);
- 
     
-    Kmeans kmeans = Kmeans(10, 50, 4.0, 42); // k , max iterations, min delta, random seed 
-
+    Kmeans kmeans = Kmeans(100); // k 
+    kmeans.set_max_iteration(300);
+    kmeans.set_min_delta(0.5);
+    kmeans.set_random_seed(42);
     kmeans.fit(data);
+
+    // print the result
+
+    for (int i= 0; i < kmeans.get_k(); i++) {
+
+        Cluster* cluster = kmeans.getCluster(i);
+        std::cout << "Cluster " << i << "with population = " << cluster->GetSize() << std::endl;
+    }
 
      //print_result_dkm(cluster_data);
 
