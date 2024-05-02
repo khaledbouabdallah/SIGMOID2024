@@ -39,13 +39,14 @@ std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t
 		means.push_back(data[uniform_generator(rand_engine)].GetData());
 	}
 
-	std::vector<float> distances;
-	distances.reserve(data.size());
 	
+	float * distances = new float[data.size()];
+	size_t num = data.size();
+;
 	for (uint32_t count = 1; count < k; ++count) {
 		// Calculate the distance to the closest mean for each data point
 		auto start = std::chrono::high_resolution_clock::now();
-		distances = closest_distance(means, data);
+		closest_distance(means, data,distances);
 		auto end = std::chrono::high_resolution_clock::now();
 		// Calculate the duration
     	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
@@ -54,12 +55,13 @@ std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t
 		// Pick a random point weighted by the distance from existing means
 		// This might convert floating point weights to ints, distorting the distribution for small weights
         #if !defined(_MSC_VER) || _MSC_VER >= 1900
-        		std::discrete_distribution<input_size_t> generator(distances.begin(), distances.end());
+        		std::discrete_distribution<input_size_t> generator(distances, &distances[num-1]);
+				//std::discrete_distribution<input_size_t> generator(distances.begin(), distances.end());
         #else  // MSVC++ older than 14.0
         		input_size_t i = 0;
         		std::discrete_distribution<input_size_t> generator(distances.size(), 0.0, 0.0, [&distances, &i](double) { return distances[i++]; });
-        #endif
-        		means.push_back(data[generator(rand_engine)].GetData());
+        #endif	
+				means.push_back(data[generator(rand_engine)].GetData());
 
 		end = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
@@ -88,25 +90,44 @@ float distance(float* point_a, float* point_b) {
 }
 
 
+// /*
+// Calculate the smallest distance between each of the data points and any of the input means.
+// */
+// std::vector<float> closest_distance(
+// 	const std::vector<float*>& means, const std::vector<DataPoint>& data) {
+// 	std::vector<float> distances;
+// 	distances.reserve(data.size());
+// 	for (auto& d : data) {
+// 		float closest = distance_squared(d.GetData(), means[0]);
+// 		for (auto& m : means) {
+// 			float distance = distance_squared(d.GetData(), m);
+// 			if (distance < closest)
+// 				closest = distance;
+// 		}
+// 		distances.push_back(closest);
+// 	}
+// 	return distances;
+// }
+
+
 /*
 Calculate the smallest distance between each of the data points and any of the input means.
 */
-std::vector<float> closest_distance(
-	const std::vector<float*>& means, const std::vector<DataPoint>& data) {
-	std::vector<float> distances;
-	distances.reserve(data.size());
-	for (auto& d : data) {
-		float closest = distance_squared(d.GetData(), means[0]);
+void closest_distance(
+	const std::vector<float*>& means, const std::vector<DataPoint>& data, float* distances) {
+	
+	#pragma omp parallel for
+	for (int i = 0; i < data.size(); ++i) {
+		float closest = distance_squared(data[i].GetData(), means[0]);
 		for (auto& m : means) {
-			float distance = distance_squared(d.GetData(), m);
+			float distance = distance_squared(data[i].GetData(), m);
 			if (distance < closest)
 				closest = distance;
 		}
-		distances.push_back(closest);
-	}
-	return distances;
-}
+		distances[i] =closest;
 
+	}	
+}
 
 
 uint32_t closest_mean( float* point, std::vector<float*> means) {

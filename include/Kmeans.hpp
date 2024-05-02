@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _KMEANS_H
 #define _KMEANS_H
 
@@ -59,8 +60,8 @@ float distance_squared(float* point_a, float* point_b);
 
 float distance(float* point_a, float* point_b);
 
-//void closest_distance(const std::vector<float*>& means, const std::vector<DataPoint>& data, float* distances);
-std::vector<float> closest_distance(const std::vector<float*>& means, const std::vector<DataPoint>& data);
+void closest_distance(const std::vector<float*>& means, const std::vector<DataPoint>& data, float* distances);
+//std::vector<float> closest_distance(const std::vector<float*>& means, const std::vector<DataPoint>& data);
 
 uint32_t closest_mean( float* point, std::vector<float*> means);
 

@@ -190,14 +190,13 @@ void test_kmeans() {
     DataBase db = DataBase(pointsInput);
     std::vector<DataPoint> data = db.GetPoints();
     
-    Kmeans kmeans = Kmeans(30); // k 
-    kmeans.set_max_iteration(100);
+    Kmeans kmeans = Kmeans(50); // k 
+    kmeans.set_max_iteration(50);
     kmeans.set_min_delta(0.5);
     kmeans.set_random_seed(42);
     kmeans.fit(data);
 
     // print the result
-
     int total = 0;
     for (int i= 0; i < kmeans.get_k(); i++) {
         std::cout << "====================" << std::endl;
@@ -212,14 +211,8 @@ void test_kmeans() {
             std::cout << centroid[i] << " ";
         }
         std::cout << std::endl;
-        
-        
     }
-
     std::cout << "Total = " << total << std::endl;
-
-    int x = 583;
-
     for (int i = 0; i < 10000; i++) {
         DataPoint point = db.GetPoint(i);
         float *data_point = point.GetData();
@@ -237,12 +230,7 @@ void test_kmeans() {
         // }
         assert(inVector(cluster_data[0]->GetPoints() ,i) == true);
 
-    
     }
-
-     //print_result_dkm(cluster_data);
-
-	
 }
 
 volatile int done = 0;
