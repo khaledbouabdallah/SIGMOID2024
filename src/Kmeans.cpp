@@ -13,6 +13,7 @@
 #include <Kmeans.hpp>
 #include <globals.hpp>
 #include <chrono>
+#include <Utils.hpp>
 
 // Todo std::array to float*
 // Todo handle Datapoint class
@@ -306,7 +307,7 @@ used for initializing the means.
 	for (int j = 0; j < clusters.size(); ++j) {
 		for (int i = 0; i < _k; ++i) {
 			if (clusters[j] == i) {
-				_clusters[i]->AddPoint(data[j]);
+				_clusters[i]->AddPoint(j);
 			}
 		}
 	}
@@ -325,11 +326,37 @@ used for initializing the means.
 
 }
 
-void Cluster::AddPoint(const DataPoint& point) {
-	_points.push_back(point);
-	++_countPoints;
-}
 
+std::vector<Cluster*> Kmeans::getClusters(float* point, int k) {
+
+	std::vector<Cluster*> clusters_to_return; 
+	
+	// calculate the distance between the point and the centroids of the clusters
+	std::vector<float> distances = std::vector<float>(_k);
+
+
+
+	for (int i = 0; i < _k ; ++i) {
+		distances[i] = distance(point, _clusters[i]->GetCentroid());
+	}
+
+	// print the distances
+	for (int i = 0; i < _k; ++i) {
+		std::cout << "Distance to cluster " << i << " = " << distances[i] << std::endl;
+	}
+
+	// find the k closest clusters
+	std::vector<int> indices = findKMinIndices(distances, k);
+
+
+	// return the clusters
+	for (int i = 0; i < k; ++i) {
+		clusters_to_return.push_back(_clusters[indices[i]]);
+	}
+
+	return clusters_to_return;
+}
+	
 Cluster::~Cluster() {
 	delete[] _centroid;
 }

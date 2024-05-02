@@ -59,6 +59,7 @@ float distance_squared(float* point_a, float* point_b);
 
 float distance(float* point_a, float* point_b);
 
+//void closest_distance(const std::vector<float*>& means, const std::vector<DataPoint>& data, float* distances);
 std::vector<float> closest_distance(const std::vector<float*>& means, const std::vector<DataPoint>& data);
 
 uint32_t closest_mean( float* point, std::vector<float*> means);
@@ -83,7 +84,7 @@ bool deltas_below_limit(const std::vector<float>& deltas, float min_delta);
 class Cluster: public DataBase {
 
     private:
-        std::vector<DataPoint> _points;
+        std::vector<int> _points;
         float* _centroid;
         int _id;
         int _countPoints;
@@ -96,11 +97,11 @@ class Cluster: public DataBase {
 	public:
 		inline Cluster(int id) : _id(id), _countPoints(0) {};
 		int GetId() { return _id;}
-		void AddPoint(const DataPoint& point);
+		void AddPoint(int index_point) { _points.push_back(index_point); _countPoints++;}
 		void SetCentroid(float* centroid) { _centroid = centroid;}
 		float* GetCentroid() { return _centroid;}
 		int GetSize() { return _countPoints;}
-		DataPoint& GetPoint(int i) { return _points[i];}
+		std::vector<int> GetPoints() { return _points;}
 		~Cluster();
 
 };
@@ -129,7 +130,7 @@ public:
 
     inline Kmeans(int k) : _k(k) {}
     void fit(const std::vector<DataPoint>& data);
-    std::vector<Cluster> getClusters(float* point, int k);
+    std::vector<Cluster*> getClusters(float* point, int k);
 
 	int get_k() const { return _k; };
 	uint64_t get_random_seed() const { return _random_seed; };

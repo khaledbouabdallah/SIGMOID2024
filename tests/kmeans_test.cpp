@@ -8,7 +8,7 @@
 #include <cassert>
 #include <algorithm>
 //#include <vector>
-//#include "Utils.hpp"
+#include "Utils.hpp"
 
 void print_result_dkm(std::tuple<std::vector<float*>, std::vector<uint32_t>>& result) {
 	std::cout << "centers: ";
@@ -185,23 +185,63 @@ void test_distance() {
 
 void test_kmeans() {
     
-    //const char* pointsInput = "../dummy-data.bin";
-    const char* pointsInput = "../data/contest-data-release-1m.bin";
+    const char* pointsInput = "../dummy-data.bin";
+    //const char* pointsInput = "../data/contest-data-release-1m.bin";
     DataBase db = DataBase(pointsInput);
     std::vector<DataPoint> data = db.GetPoints();
     
     Kmeans kmeans = Kmeans(100); // k 
-    kmeans.set_max_iteration(300);
+    kmeans.set_max_iteration(100);
     kmeans.set_min_delta(0.5);
     kmeans.set_random_seed(42);
     kmeans.fit(data);
 
     // print the result
 
+    int total = 0;
     for (int i= 0; i < kmeans.get_k(); i++) {
-
+        std::cout << "====================" << std::endl;
+        
         Cluster* cluster = kmeans.getCluster(i);
+        std::cout << "Cluster " << cluster->GetId() << std::endl;
         std::cout << "Cluster " << i << "with population = " << cluster->GetSize() << std::endl;
+        total += cluster->GetSize();
+        float * centroid = cluster->GetCentroid();
+        // print first 10 elements
+        for (int i = 0; i < 10; i++) {
+            std::cout << centroid[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        
+    }
+
+    std::cout << "Total = " << total << std::endl;
+
+    int x = 583;
+
+    for (int i = 0; i < 1; i++) {
+        i = x;
+        DataPoint point = db.GetPoint(i);
+        float *data_point = point.GetData();
+        // std:cout << "*******************" << std::endl;
+        
+        std::vector<Cluster*> cluster_data = kmeans.getClusters(data_point, 1);
+        // for (int i = 0; i < cluster_data.size(); i++) {
+        //     Cluster* cluster = cluster_data[i];
+        //     // std::cout << "Cluster " << cluster->GetId() << " with population = " << cluster->GetSize() << std::endl;
+        // }
+        int cluster_id = cluster_data[0]->GetId();
+        // std::cout << "Data point " << i << "in cluster"<< cluster_id << std::endl;
+        if (inVector(cluster_data[0]->GetPoints() ,i) == false) {
+            std::cout << "Data point " << i << "not in cluster"<< cluster_id << std::endl;
+        }
+
+        for (int j = 0 ; j < 100; j++) {
+            if (inVector(kmeans.getCluster(j)->GetPoints() ,i) == true) {
+                std::cout << "zaeaze " << j << std::endl; 
+            }
+        }
     }
 
      //print_result_dkm(cluster_data);

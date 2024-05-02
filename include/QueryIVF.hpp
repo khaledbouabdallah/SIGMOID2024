@@ -7,11 +7,13 @@
 class QueryIVF: public Query {
      
 private:
-     Kmeans& _kmeans;
+     Kmeans* _kmeans;
      int _nprob;
 
 public:
-     QueryIVF(std::ifstream& ifs, const DataBase& db,  Kmeans& kmeans, int nprob);
+
+     QueryIVF(std::ifstream& ifs, const DataBase& db);
+    
      ~QueryIVF();
      
      virtual void run (int& switchquery); 
@@ -20,6 +22,9 @@ public:
 
      int inline getNProb() const {return _nprob;}
 
+     Kmeans*  getKmeans() {return _kmeans;}
+
+     void inline setKmeans(Kmeans* kmeans) {_kmeans = kmeans;}
 
 };
 

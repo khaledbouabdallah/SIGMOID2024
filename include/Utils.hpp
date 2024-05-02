@@ -19,4 +19,9 @@ void normalizeData(float* data, int size, float mean, float stdev);
 
 std::vector<float> getBreakPoints(int numSegments, float mean, float stddev);
 
+std::vector<int> findKMinIndices(const std::vector<float>& arr, int k);
+
 #endif
+
+// check index is in vector of indices
+bool inVector(const std::vector<int>& vec, int index);
