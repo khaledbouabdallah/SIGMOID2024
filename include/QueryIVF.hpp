@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _QUERYIVF_H
 #define _QUERYIVF_H
 

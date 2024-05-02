@@ -1,4 +1,4 @@
-//#pragma once
+
 
 #include <iostream>
 #include <algorithm>
@@ -40,7 +40,7 @@ std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t
 
 	std::vector<float> distances;
 	distances.reserve(data.size());
-	
+	#pragma omp parallel for
 	for (uint32_t count = 1; count < k; ++count) {
 		// Calculate the distance to the closest mean for each data point
 		auto start = std::chrono::high_resolution_clock::now();
@@ -75,6 +75,7 @@ Calculate the square of the distance between two points.
 */
 float distance_squared(float* point_a, float* point_b) {
 	float d_squared = 0;
+	#pragma omp parallel for
 	for (int i = 0; i < DATA_SIZE; ++i) {
 		d_squared += (point_a[i] - point_b[i]) * (point_a[i] - point_b[i]);
 	}
@@ -94,6 +95,7 @@ std::vector<float> closest_distance(
 	const std::vector<float*>& means, const std::vector<DataPoint>& data) {
 	std::vector<float> distances;
 	distances.reserve(data.size());
+	#pragma omp parallel for
 	for (auto& d : data) {
 		float closest = distance_squared(d.GetData(), means[0]);
 		for (auto& m : means) {
@@ -113,6 +115,7 @@ uint32_t closest_mean( float* point, std::vector<float*> means) {
 	float smallest_distance = distance_squared(point, means[0]);
 	uint32_t index = 0;
 	float distance;
+	#pragma omp parallel for
 	for (uint32_t i = 1; i < means.size(); ++i) {
 		distance = distance_squared(point, means[i]);
 		if (distance < smallest_distance) {
@@ -131,6 +134,8 @@ Calculate the index of the mean each data point is closest to (euclidean distanc
 std::vector<uint32_t> calculate_clusters(
 	const std::vector<DataPoint>& data, const std::vector<float*>& means) {
 	std::vector<uint32_t> clusters;
+	#pragma omp parallel for
+	#pragma omp parallel for
 	for (auto& point : data) {
 		clusters.push_back(closest_mean(point.GetData(), means));
 	}
@@ -147,7 +152,7 @@ std::vector<float*> calculate_means(const std::vector<DataPoint>& data,
 	const std::vector<float*>& old_means,
 	uint32_t k) {
 	std::vector<float*> means(k);
-
+	#pragma omp parallel for
 	for (size_t i = 0; i < k; ++i) {
 		means[i] = new float[DATA_SIZE];
 		for (size_t j = 0; j < DATA_SIZE; ++j) {
@@ -156,6 +161,7 @@ std::vector<float*> calculate_means(const std::vector<DataPoint>& data,
 	}
 
 	std::vector<float> count(k, float());
+	#pragma omp parallel for
 	for (size_t i = 0; i < std::min(clusters.size(), data.size()); ++i) {
 		auto& mean = means[clusters[i]];
 		count[clusters[i]] += 1;
@@ -163,6 +169,7 @@ std::vector<float*> calculate_means(const std::vector<DataPoint>& data,
 			mean[j] += data[i].GetData()[j];
 		}
 	}
+	#pragma omp parallel for
 	for (size_t i = 0; i < k; ++i) {
 		if (count[i] == 0) {
 			means[i] = old_means[i];
@@ -266,6 +273,8 @@ used for initializing the means.
 	//Calculate new means until convergence is reached or we hit the maximum iteration count
 	
 	uint64_t count = 0;
+	#pragma omp parallel
+	{
 	do {
 		std::cout << "Kmeans Iteration " << count << std::endl;
 		auto start1 = std::chrono::high_resolution_clock::now();
@@ -287,7 +296,7 @@ used for initializing the means.
 
 		
 	} while (sum(deltas(old_means, means)) > min_delta
-		&& !(_has_max_iteration && count == _max_iteration));
+		&& !(_has_max_iteration && count == _max_iteration));}
 
 
 
@@ -296,13 +305,14 @@ used for initializing the means.
 
 	//  initialize cluster
 	// Bug!: double free detected in tcache 2
+	#pragma omp parallel for
 	for (int i = 0; i < _k; ++i) {
 		// initialize cluster
 		Cluster *c = new Cluster(i);
 		c->SetCentroid(means[i]);
 		_clusters.push_back(c);
 	}
-
+#pragma omp parallel for
 	for (int j = 0; j < clusters.size(); ++j) {
 		for (int i = 0; i < _k; ++i) {
 			if (clusters[j] == i) {
