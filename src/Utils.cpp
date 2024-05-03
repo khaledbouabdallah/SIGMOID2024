@@ -108,8 +108,8 @@ std::vector<int> findKMinIndices(const std::vector<float>& arr, int k) {
 
    
 
-    // Sort the indexed array based on the values
-    std::sort(indexedArray.begin(), indexedArray.end(), [](const auto& a, const auto& b) {
+   // Sort the indexed array based on the values
+    std::sort(indexedArray.begin(), indexedArray.end(), [](const std::pair<float, int>& a, const std::pair<float, int>& b) {
         return a.first < b.first; // sort by value in ascending order
     });
 

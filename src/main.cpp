@@ -17,10 +17,11 @@
 #include "IndexSAXTrie.hpp"
 #include "QuerySAXLookaround.hpp"
 #include "Kmeans.hpp"
+#include "QueryIVF.hpp"
 
 using namespace std;
 
-//#define RECALL
+#define RECALL
 
 void readIndices(ifstream& ifs, vector<int>&indices){    
      for (int i = 0; i < DATA_SIZE; ++i){
@@ -108,8 +109,8 @@ int main() {
      //const char* queriesInput = "../data/contest-queries-release-1m.bin";
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
-     int runType = 1; //0 = normal, 1 = multi-thread
-     int queryType = 1; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range, 5 = sax filter only
+     int runType = 0; //0 = normal, 1 = multi-thread
+     int queryType = 7; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range, 5 = sax filter only
      //6 = range SAX lookaround
      
      const char* ansoutput = "output.bin";
@@ -148,23 +149,31 @@ int main() {
      
      cout<<"reading queries"<<endl;
      QuerySet qset = QuerySet(queriesInput, db, queryType);
-     cout<<"computing sax stuff"<<endl;
-     qset.ComputeSAXStuff();
-     
-     IndexSAXTrie index(db);
-      index.BuildIndex();
-     if (queryType == 6) {     
-          index.BuildIndex();
+
+     if (queryType == 7) {
           int qcount = qset.GetQueryCount();
           Query** queries = qset.GetQueries();
           for (int i = 0; i<qcount; ++i)
-               ((QuerySAXLookaround*)queries[i])->SetIndex(&index);
+               ((QueryIVF*)queries[i])->setKmeans(&kmeans);
      }
+
+    //  cout<<"computing sax stuff"<<endl;
+    //  qset.ComputeSAXStuff();
+     
+    //  IndexSAXTrie index(db);
+    //   index.BuildIndex();
+    //  if (queryType == 6) {     
+    //       index.BuildIndex();
+    //       int qcount = qset.GetQueryCount();
+    //       Query** queries = qset.GetQueries();
+    //       for (int i = 0; i<qcount; ++i)
+    //            ((QuerySAXLookaround*)queries[i])->SetIndex(&index);
+    //  }
           
      
     
 
-#ifndef RECALL
+
      Query** queries = qset.GetQueries();
      int nq = qset.GetQueryCount();
      
@@ -181,11 +190,12 @@ int main() {
           runManager.run();
           qset.WriteOutput(ansoutput);   
      }
-#else
-     float rec = GetRecall(db, qset, "output.bin", "../data/dummy-output-reference.bin");
-     cout<<rec<<endl;
-#endif
-     
+ 
+     #ifdef RECALL
+        float rec = GetRecall(db, qset, "output.bin", "data/dummy-output-reference.bin");
+        cout<<"recall: "<<rec<<endl;
+    #endif
+
      return 0;
 }
 
