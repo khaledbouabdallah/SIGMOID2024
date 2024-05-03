@@ -318,6 +318,8 @@ used for initializing the means.
 
 	//Calculate new means until convergence is reached or we hit the maximum iteration count
 	
+	float sum_time_clusters = 0.0;
+	float sum_time_means = 0.0;
 	uint64_t count = 0;
 	do {
 		if (_verbose_level > 1) {
@@ -328,6 +330,7 @@ used for initializing the means.
 		auto end1 = std::chrono::high_resolution_clock::now();
 		//old_old_means = old_means;
 		auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
+		sum_time_clusters  += duration1.count() / 1000;
 		if (_verbose_level > 1) {
 			std::cout << "calculate_clusters  finished with k= " << _k << " time: " << duration1.count() / 1000 << " ms" << std::endl;
 		}
@@ -336,6 +339,7 @@ used for initializing the means.
 		means = calculate_means(data, clusters, old_means, _k);	
 		end1 = std::chrono::high_resolution_clock::now();
 		duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
+		sum_time_means  += duration1.count() / 1000;
 		if (_verbose_level > 1) {
 			std::cout << "calculate_means finished with k= " << _k << " time: " << duration1.count() / 1000 << " ms" << std::endl;
 		}
@@ -358,8 +362,10 @@ used for initializing the means.
 	end = std::chrono::high_resolution_clock::now();
 	duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 	if (_verbose_level > 0) {
-		std::cout << "kmeans iter part finished in: " << duration.count() / 1000 << " ms ---";
+		std::cout << "kmeans iter part finished in: " << duration.count() / 1000 << " s ---";
 		std::cout<< " in " << count << " iteration" << std::endl;
+		std::cout << "calculate_clusters average run: " << sum_time_clusters/(count+1) << " ms" << std::endl;
+		std::cout << "calculate_means average run: " << sum_time_means/(count+1) << " ms" << std::endl;	
 	}
 
 	//  initialize cluster

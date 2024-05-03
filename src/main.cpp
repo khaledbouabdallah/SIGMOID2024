@@ -141,7 +141,7 @@ int main() {
     cout << "running kmeans" << endl;
     Kmeans kmeans = Kmeans(100); // k 
     kmeans.set_max_iteration(300);
-    kmeans.set_min_delta(0.5);
+    kmeans.set_min_delta(0.01);
     kmeans.set_random_seed(1);
     kmeans.set_verbose_level(2);  // 0 = no output, 1 = some output, 2 = all output
     kmeans.fit(db.GetPoints(), "random"); // "kmeans++" or "random
