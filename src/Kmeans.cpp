@@ -217,7 +217,7 @@ uint32_t closest_mean(float *point, std::vector<float *> means)
 /*
 Calculate the index of the mean each data point is closest to (euclidean distance).
 */
-{
+
 
 	struct ThreadArgs
 	{
@@ -270,7 +270,7 @@ Calculate the index of the mean each data point is closest to (euclidean distanc
 
 		return clusters;
 	}
-}
+
 
 // std::vector<uint32_t> calculate_clusters(
 // 	const std::vector<DataPoint>& data, const std::vector<float*>& means) {
