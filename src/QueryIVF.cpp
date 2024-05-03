@@ -31,20 +31,12 @@ void QueryIVF::run (int& switchquery){
             count ++;
             if (!IsValid(p)) continue;
             float dist = getDistance(p.GetData(), _data);
-<<<<<<< Updated upstream
             _answer.CheckAndAdd(i,dist);
-        }
-        }
-=======
-            
-            
-            _answer.CheckAndAdd(i,dist);
-        }
-     
+        }    
 }
 
 std::cout << "count " << count << std::endl;
 std::cout << "count c " << count_c << std::endl;
->>>>>>> Stashed changes
 _isFinished = 1;
+
 }
