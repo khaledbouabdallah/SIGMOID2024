@@ -14,6 +14,7 @@
 #include "../include/SortUtils.hpp"
 #include "../include/Utils.hpp"
 #include "../include/globals.hpp"
+#include "../include/QueryIVF.hpp"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db
                case 4: _queries[i] = new QueryRangeSAXFilter(ifs, db); break;
                case 5: _queries[i] = new QueryRangeSAXOnly(ifs, db); break;
                case 6: _queries[i] = new QuerySAXLookaround(ifs, db); break;
+               case 7: _queries[i] = new QueryIVF(ifs, db); break;
           }
      }
      

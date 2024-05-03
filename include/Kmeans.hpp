@@ -103,6 +103,7 @@ class Cluster: public DataBase {
 		float* GetCentroid() { return _centroid;}
 		int GetSize() { return _countPoints;}
 		std::vector<int> GetPoints() { return _points;}
+		int getPoint(int i) { return _points[i];}
 		~Cluster();
 
 };

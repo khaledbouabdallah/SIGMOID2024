@@ -23,7 +23,7 @@ void QueryIVF::run (int& switchquery){
     for (int i = 0; i< clusters.size(); ++i) {
         Cluster& c = *clusters[i];
         for (int j = 0; j< c.GetSize(); ++j) {
-            const DataPoint& p = c.GetPoint(j);
+            const DataPoint& p = _db.GetPoint(c.getPoint(j));
             if (!IsValid(p)) continue;
             float dist = getDistance(p.GetData(), _data);
             
