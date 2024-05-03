@@ -7,6 +7,7 @@
 #include "DataPoint.hpp"
 #include "DataBase.hpp"
 #include <string>
+#include <set>
 
 // for testing
 // class clustering_parameters {
@@ -89,25 +90,27 @@ private:
 	float *_centroid;
 	int _id;
 	int _countPoints;
-	int *_categories;
-	// ?? => timestamp begin and end ??
-	int *_catstart;
-	int *_catend;
+
+	std::set<int> _categories;
+	int *_tsStart;
+	int *_tsEnd;
 
 public:
 	inline Cluster(int id) : _id(id), _countPoints(0){};
 	int GetId() { return _id; }
-	void AddPoint(int index_point)
-	{
-		_points.push_back(index_point);
-		_countPoints++;
-	}
+	void AddPoint(int index_point);
 	void SetCentroid(float *centroid) { _centroid = centroid; }
 	float *GetCentroid() { return _centroid; }
 	int GetSize() { return _countPoints; }
 	std::vector<int> GetPoints() { return _points; }
 	int getPoint(int i) { return _points[i]; }
 	~Cluster();
+	int *GetTSStart() { return _tsStart; }
+	int *GetTSEnd() { return _tsEnd; }
+	void SetTSStart(int *tsStart) { _tsStart = tsStart; }
+	void SetTSEnd(int *tsEnd) { _tsEnd = tsEnd; }
+	void AddCategory(int cat) { _categories.insert(cat); }
+	std::set<int>& GetCategories() { return _categories; }
 };
 
 class Kmeans
@@ -128,7 +131,7 @@ private:
 
 public:
 	inline Kmeans(int k) : _k(k) {}
-	void fit(const std::vector<DataPoint> &data, std::string initialization);
+	void fit(std::vector<DataPoint> &data, std::string initialization);
 	std::vector<Cluster *> getClusters(float *point, int k);
 
 	int get_k() const { return _k; };

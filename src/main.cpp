@@ -21,7 +21,7 @@
 
 using namespace std;
 
-#define RECALL
+//#define RECALL
 
 void readIndices(ifstream &ifs, vector<int> &indices)
 {
@@ -105,14 +105,14 @@ void timesup(int sig)
 
 int main()
 {
-     // const char* pointsInput = "dummy-data.bin";
+     const char* pointsInput = "dummy-data.bin";
      // const char* pointsInput = "../data/dummy-data.bin";
-     const char *pointsInput = "data/contest-data-release-1m.bin";
+     //const char *pointsInput = "data/contest-data-release-1m.bin";
      // const char* pointsInput = "../data/contest-data-release-10m.bin";
 
-     // const char* queriesInput = "dummy-queries.bin";
+     const char* queriesInput = "dummy-queries.bin";
      // const char* queriesInput = "../data/dummy-queries.bin";
-     const char *queriesInput = "data/contest-queries-release-1m.bin";
+     //const char *queriesInput = "data/contest-queries-release-1m.bin";
      // const char* queriesInput = "../data/Public-4M-queries.bin";
 
      int runType = 1;   // 0 = normal, 1 = multi-thread
@@ -125,47 +125,28 @@ int main()
      // const char* ansoutput = ".../data/relbig-output-current.bin";
 
      // const char* true_path = "data/dummy-output-reference.bin";
-     const char *true_path = "data/rellsmall-output-reference.bin";
+     //const char *true_path = "data/rellsmall-output-reference.bin";
 
      done = 0;
      signal(SIGALRM, timesup);
      alarm(TIMETORUN);
 
-<<<<<<< HEAD
-     
-    cout << "running kmeans" << endl;
-    Kmeans kmeans = Kmeans(100); // k 
-    kmeans.set_max_iteration(300);
-    kmeans.set_min_delta(0.01);
-    kmeans.set_random_seed(1);
-    kmeans.set_verbose_level(2);  // 0 = no output, 1 = some output, 2 = all output
-    kmeans.fit(db.GetPoints(), "random"); // "kmeans++" or "random
-    
-    cout<<"reading queries"<<endl;
-    QuerySet qset = QuerySet(queriesInput, db, queryType);
-    if (queryType == 7) {
-         int qcount = qset.GetQueryCount();
-         Query** queries = qset.GetQueries();
-         for (int i = 0; i<qcount; ++i) {
-              ((QueryIVF*)queries[i])->setKmeans(&kmeans);
-              ((QueryIVF*)queries[i])->setNProb(4);
-              }
-=======
+
      cout << "reading points" << endl;
      DataBase db = DataBase(pointsInput);
-     cout << "sorting by cat and ts" << endl;
-     db.SortByCatAndTS();
-     cout << "processing categories" << endl;
-     db.ProcessCategories();
-     cout << "sorting by ts" << endl;
-     db.SortByTS();
+     // cout << "sorting by cat and ts" << endl;
+     // db.SortByCatAndTS();
+     // cout << "processing categories" << endl;
+     // db.ProcessCategories();
+     // cout << "sorting by ts" << endl;
+     // db.SortByTS();
      // cout<<"computing sax stuff"<<endl;
      // db.ComputeSAXStuff();
 
      cout << "running kmeans" << endl;
-     Kmeans kmeans = Kmeans(100); // k
-     kmeans.set_max_iteration(300);
-     kmeans.set_min_delta(0.5);
+     Kmeans kmeans = Kmeans(1024); // k
+     kmeans.set_max_iteration(30);
+     kmeans.set_min_delta(0.1);
      kmeans.set_random_seed(1);
      kmeans.set_verbose_level(2);          // 0 = no output, 1 = some output, 2 = all output
      kmeans.fit(db.GetPoints(), "random"); // "kmeans++" or "random
@@ -177,25 +158,12 @@ int main()
           int qcount = qset.GetQueryCount();
           Query **queries = qset.GetQueries();
           for (int i = 0; i < qcount; ++i)
-          {
+          {      
                ((QueryIVF *)queries[i])->setKmeans(&kmeans);
-               ((QueryIVF *)queries[i])->setNProb(4);
+               ((QueryIVF *)queries[i])->setNProb(6);
           }
->>>>>>> 72168143c19787f165c627d2a8a07ea4d7ae6c07
+
      }
-
-     //  cout<<"computing sax stuff"<<endl;
-     //  qset.ComputeSAXStuff();
-
-     //  IndexSAXTrie index(db);
-     //   index.BuildIndex();
-     //  if (queryType == 6) {
-     //       index.BuildIndex();
-     //       int qcount = qset.GetQueryCount();
-     //       Query** queries = qset.GetQueries();
-     //       for (int i = 0; i<qcount; ++i)
-     //            ((QuerySAXLookaround*)queries[i])->SetIndex(&index);
-     //  }
 
      Query **queries = qset.GetQueries();
      int nq = qset.GetQueryCount();

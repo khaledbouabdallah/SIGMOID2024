@@ -169,12 +169,6 @@ uint32_t closest_mean(float *point, std::vector<float *> means)
 	return index;
 }
 
-// todo
-/*
-Calculate the index of the mean each data point is closest to (euclidean distance).
-*/
-{
-
 	struct ThreadArgs
 	{
 		const std::vector<DataPoint> *data;
@@ -199,7 +193,7 @@ Calculate the index of the mean each data point is closest to (euclidean distanc
 		std::vector<uint32_t> clusters(data.size());
 
 		// Define the number of threads (adjust this as needed)
-		const int num_threads = 16;
+		const int num_threads = 128;
 		pthread_t threads[num_threads];
 		ThreadArgs thread_args[num_threads];
 
@@ -226,7 +220,7 @@ Calculate the index of the mean each data point is closest to (euclidean distanc
 
 		return clusters;
 	}
-}
+
 
 // std::vector<uint32_t> calculate_clusters(
 // 	const std::vector<DataPoint>& data, const std::vector<float*>& means) {
@@ -344,7 +338,7 @@ used for initializing the means.
 */
 // std::tuple<std::vector<float*>, std::vector<uint32_t>>
 // const clustering_parameters& parameters)
-void Kmeans::fit(const std::vector<DataPoint> &data, std::string initialization)
+void Kmeans::fit(std::vector<DataPoint> &data, std::string initialization)
 {
 
 	std::random_device rand_device;
@@ -381,7 +375,7 @@ void Kmeans::fit(const std::vector<DataPoint> &data, std::string initialization)
 	std::vector<float *> old_means;
 	// std::vector<float*> old_old_means;
 	std::vector<uint32_t> clusters;
-	float min_delta = _has_min_delta ? _min_delta : 0.0000001;
+	float min_delta = _has_min_delta ? _min_delta : 0.0001;
 	float delta = 0.0;
 
 	start = std::chrono::high_resolution_clock::now();
@@ -459,6 +453,16 @@ void Kmeans::fit(const std::vector<DataPoint> &data, std::string initialization)
 		}
 	}
 
+	// print population of each cluster
+	if (_verbose_level > 0)
+	{
+		for (int i = 0; i < _k; ++i)
+		{
+			std::cout << "Cluster " << i << " has " << _clusters[i]->GetSize() / 1000 << "k points";
+		}
+		std::cout << std::endl;
+	}
+
 	auto end_glob = std::chrono::high_resolution_clock::now();
 	auto duration_glob = std::chrono::duration_cast<std::chrono::microseconds>(end_glob - start_glob);
 	if (_verbose_level > 0)
@@ -474,6 +478,8 @@ void Kmeans::fit(const std::vector<DataPoint> &data, std::string initialization)
 	// 	delete[] m;
 	// }
 }
+
+Kmeans::~Kmeans() {}
 
 std::vector<Cluster *> Kmeans::getClusters(float *point, int k)
 {
@@ -504,9 +510,15 @@ std::vector<Cluster *> Kmeans::getClusters(float *point, int k)
 	return clusters_to_return;
 }
 
+void Cluster::AddPoint(int index_point)
+	{
+		_points.push_back(index_point);
+		_countPoints++;
+	}
+
 Cluster::~Cluster()
 {
 	delete[] _centroid;
 }
 
-Kmeans::~Kmeans() {}
+

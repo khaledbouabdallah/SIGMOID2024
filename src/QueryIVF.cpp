@@ -17,17 +17,43 @@ void QueryIVF::run (int& switchquery){
 
     // find n cluster that are closest to the query
     std::vector<Cluster*> clusters = _kmeans->getClusters(_data, _nprob);
+
+    // // change nprob on class of query switch case
+    // // TODO: switch case for nprob 
+    // switch (_type)
+    // {
+    // case 0: _nprob = 1;
+    //     break;
+    // case 1: _nprob = 2;
+    //     break;
+    // case 2: _nprob = 4;
+    //     break;
+    // case 3: _nprob = 8;
+    //     break;
+    // default:
+    //     break;
+    // }
+    
     
     // for each cluster, find the closest point
     // =============> 
-    int count = 0;
-    int count_c = 0;
+
     for (int i = 0; i< clusters.size(); ++i) {
+
         Cluster& c = *clusters[i];
-        count_c += c.GetSize();
+
+        
+
+        // Todo: check if the cluster is valid
+        // if not, continue
+
+
+        // Todo: Range search in the cluster
+        
+
         for (int j = 0; j< c.GetSize(); ++j) {
             const DataPoint& p = _db.GetPoint(c.getPoint(j));
-            count ++;
+            //const DataPoint& p = c._datapoints[j];
             if (!IsValid(p)) continue;
             float dist = getDistance(p.GetData(), _data);
             _answer.CheckAndAdd(c.getPoint(j),dist);
