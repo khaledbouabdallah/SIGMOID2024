@@ -90,10 +90,18 @@ private:
 	float *_centroid;
 	int _id;
 	int _countPoints;
-
 	std::set<int> _categories;
 	int *_tsStart;
 	int *_tsEnd;
+
+	//int *_categories;
+
+	//indices of points sorted by category then TS
+     int* _sortedIndByCatAndTS;
+      
+     //indices of point sorted solely by TS
+     int* _sortedIndByTS;
+
 
 public:
 	inline Cluster(int id) : _id(id), _countPoints(0){};
@@ -111,6 +119,12 @@ public:
 	void SetTSEnd(int *tsEnd) { _tsEnd = tsEnd; }
 	void AddCategory(int cat) { _categories.insert(cat); }
 	std::set<int>& GetCategories() { return _categories; }
+	//here we feed the category and the ts limits (may be -1 ! )
+	//and we get as output a vector of indices to sort, as well as a range (start and end)
+     void getSearchRange(const DataBase& db, int cat, float tsl, float tlr, int*&indices, int& start, int&end);
+     
+     void MakeAndSortIndices(DataBase& db);
+
 };
 
 class Kmeans

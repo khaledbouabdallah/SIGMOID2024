@@ -25,6 +25,10 @@ int GetFirstPositionGETS(float ts, int* indices, const vector<DataPoint>& points
      
 int GetLastPositionLETS(float ts, int* indices, const vector<DataPoint>& points, int start, int end);
 
+int GetFirstPositionCategory(int cat, int* indices, const vector<DataPoint>& points, int start, int end);
+     
+int GetLastPositionCategory(int cat, int* indices, const vector<DataPoint>& points, int start, int end);
+
 void SiftIndices(int* indices, Query** queries, int i, int n, int (*funccomp)(Query*, Query*));
      
 void SortIndices(int* indices, Query** queries, int nPoints, int (*funccomp)(Query*, Query*));

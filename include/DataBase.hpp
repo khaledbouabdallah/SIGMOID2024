@@ -67,7 +67,7 @@ public:
      * @brief Gets the vector of data points.
      * @return The vector of data points.
      */
-     std::vector<DataPoint>& GetPoints();
+     const std::vector<DataPoint>& GetPoints() const;
      
      /**
      * @brief Gets a data point from the database at the specified index.

@@ -44,23 +44,30 @@ void QueryIVF::run (int& switchquery){
     for (int i = 0; i< clusters.size(); ++i) {
 
         Cluster& c = *clusters[i];
-
-
-
-        // Todo: check if the cluster is valid
-        // if not, continue
-
-
-        // Todo: Range search in the cluster
+        count_c += c.GetSize();
         
-
+        /*
         for (int j = 0; j< c.GetSize(); ++j) {
             const DataPoint& p = _db.GetPoint(c.getPoint(j));
             //const DataPoint& p = c._datapoints[j];
             if (!IsValid(p)) continue;
             float dist = getDistance(p.GetData(), _data);
             _answer.CheckAndAdd(c.getPoint(j),dist);
-        }    
+        } 
+        */
+        
+        int* indices;
+        int start, end;
+        c.getSearchRange(_db, _c, _tsl, _tsr, indices, start, end);        
+
+        if (start == -1) continue; //no answers in this cluster
+        for (int j = start; j<end; ++j) {
+            const DataPoint& p = _db.GetPoint(indices[j]);
+            count ++;
+            float dist = getDistance(p.GetData(), _data);
+            _answer.CheckAndAdd(indices[j],dist);
+        } 
+            
     }
 
 _isFinished = 1;

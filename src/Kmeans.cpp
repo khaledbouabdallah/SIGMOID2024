@@ -15,6 +15,7 @@
 #include <chrono>
 #include <Utils.hpp>
 #include <string>
+#include "SortUtils.hpp"
 
 // Todo std::array to float*
 // Todo handle Datapoint class
@@ -22,6 +23,55 @@
 // TODO follow Kmeans hpp signature
 
 // Todo : Switch from std::array to float*
+
+void Cluster::MakeAndSortIndices(DataBase& db) {
+     //first, make indices arrays
+     _countPoints = _points.size();
+     _sortedIndByCatAndTS = new int[_countPoints];
+     _sortedIndByTS = new int[_countPoints];
+     for (int i = 0; i<_countPoints; ++i)
+          _sortedIndByCatAndTS[i] = _sortedIndByTS[i] = _points[i];
+          
+     //then sort
+     SortIndices(_sortedIndByCatAndTS, db.GetPoints(), _countPoints, CompareByCatAndTS);
+     SortIndices(_sortedIndByTS, db.GetPoints(), _countPoints, CompareByTS);
+}
+
+void Cluster::getSearchRange(const DataBase& db, int cat, float tsl, float tsr, int*&indices, int& start, int&end) {
+     int first = 0;
+     int last = _countPoints;
+     start = 0;
+     end = _countPoints;
+
+     if (cat != -1) {
+          indices = _sortedIndByCatAndTS;
+          first = GetFirstPositionCategory(cat, indices, db.GetPoints(),0,_countPoints);
+          if (first >= _countPoints || db.GetPoint(indices[first]).GetC() != cat) {
+               start = end = -1; //no result here
+               return;
+          }  
+          last = GetLastPositionCategory(cat, indices, db.GetPoints(),0,_countPoints)+1; //this should be valid, else there is a bug !!! : p$
+          start = first;
+          end = last;
+     }
+     else indices = _sortedIndByTS;
+     if (tsl != -1) {
+          start = GetFirstPositionGETS(tsl, indices, db.GetPoints(), first, last);
+          
+          if (start >= _countPoints) { //no result here
+               start = end = -1;
+               return;
+          }
+    }
+    if (tsr != -1) {
+          end = GetLastPositionLETS(tsr, indices, db.GetPoints(), first, last);
+          if (end < 0) { //no result here
+               start = end = -1;
+               return;
+          }
+          end++;
+    }     
+}
 
 std::vector<float *> random_simple(const std::vector<DataPoint> &data, uint32_t k, uint64_t seed)
 {
@@ -168,6 +218,7 @@ uint32_t closest_mean(float *point, std::vector<float *> means)
 	}
 	return index;
 }
+
 
 	struct ThreadArgs
 	{
@@ -521,4 +572,6 @@ Cluster::~Cluster()
 	delete[] _centroid;
 }
 
+
+Kmeans::~Kmeans() {}
 

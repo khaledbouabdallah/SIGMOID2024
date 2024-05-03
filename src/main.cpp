@@ -56,10 +56,13 @@ float GetRecall(DataBase &db, QuerySet &qset, const char *filecheck, const char 
      Query **queries = qset.GetQueries();
      int nq = qset.GetQueryCount();
 
+    
+     
      float rec = 0;
 
      for (int i = 0; i < nq; ++i)
      {
+          //cout<<i<<endl;
           int countgood = 0;
 
           vector<int> indicescheck;
@@ -78,15 +81,17 @@ float GetRecall(DataBase &db, QuerySet &qset, const char *filecheck, const char 
                if (crtdist > maxdistref)
                     maxdistref = crtdist;
           }
-          // cout<<maxdistref<<endl;
+          
 
           for (int ind : indicescheck)
           {
+               //cout<<ind<<endl;
                const DataPoint &p = db.GetPoint(ind);
                float crtdist = getDistance(queries[i]->GetData(), p.GetData());
                if (crtdist <= maxdistref)
                     countgood++;
           }
+          //cout<<"here"<<endl;
           rec += (float)countgood / (float)DATA_SIZE;
      }
      rec /= nq;
@@ -105,17 +110,17 @@ void timesup(int sig)
 
 int main()
 {
-     //const char* pointsInput = "dummy-data.bin";
+      const char* pointsInput = "data/dummy-data.bin";
      // const char* pointsInput = "../data/dummy-data.bin";
-     const char *pointsInput = "data/contest-data-release-1m.bin";
+     //const char *pointsInput = "data/contest-data-release-1m.bin";
      // const char* pointsInput = "../data/contest-data-release-10m.bin";
 
-     //const char* queriesInput = "dummy-queries.bin";
+      const char* queriesInput = "data/dummy-queries.bin";
      // const char* queriesInput = "../data/dummy-queries.bin";
-     const char *queriesInput = "data/contest-queries-release-1m.bin";
+     //const char *queriesInput = "data/contest-queries-release-1m.bin";
      // const char* queriesInput = "../data/Public-4M-queries.bin";
 
-     int runType = 1;   // 0 = normal, 1 = multi-thread
+     int runType = 0;   // 0 = normal, 1 = multi-thread
      int queryType = 7; // 0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range, 5 = sax filter only
      // 6 = range SAX lookaround
 
@@ -124,8 +129,8 @@ int main()
      // const char* ansoutput = "../data/relsmall-output-current.bin";
      // const char* ansoutput = ".../data/relbig-output-current.bin";
 
-     // const char* true_path = "data/dummy-output-reference.bin";
-     const char *true_path = "data/rellsmall-output-reference.bin";
+     const char* true_path = "data/dummy-output-reference.bin";
+     // const char *true_path = "data/rellsmall-output-reference.bin";
 
      done = 0;
      signal(SIGALRM, timesup);
@@ -134,12 +139,12 @@ int main()
 
      cout << "reading points" << endl;
      DataBase db = DataBase(pointsInput);
-     // cout << "sorting by cat and ts" << endl;
-     // db.SortByCatAndTS();
-     // cout << "processing categories" << endl;
-     // db.ProcessCategories();
-     // cout << "sorting by ts" << endl;
-     // db.SortByTS();
+     //cout << "sorting by cat and ts" << endl;
+     //db.SortByCatAndTS();
+     //cout << "processing categories" << endl;
+     //db.ProcessCategories();
+     //cout << "sorting by ts" << endl;
+     //db.SortByTS();
      // cout<<"computing sax stuff"<<endl;
      // db.ComputeSAXStuff();
 
@@ -150,6 +155,10 @@ int main()
      kmeans.set_random_seed(1);
      kmeans.set_verbose_level(2);          // 0 = no output, 1 = some output, 2 = all output
      kmeans.fit(db.GetPoints(), "random"); // "kmeans++" or "random
+     
+     cout<<"sorting clusters data"<<endl;
+     for (int i = 0; i< kmeans.get_k(); ++i)
+          kmeans.getCluster(i)->MakeAndSortIndices(db);
 
      cout << "reading queries" << endl;
      QuerySet qset = QuerySet(queriesInput, db, queryType);
