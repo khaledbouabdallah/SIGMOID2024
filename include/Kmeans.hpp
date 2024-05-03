@@ -114,7 +114,7 @@ public:
 	
 	//here we feed the category and the ts limits (may be -1 ! )
 	//and we get as output a vector of indices to sort, as well as a range (start and end)
-     void getSearchRange(const DataBase& db, int cat, int tsl, int tlr, int*&indices, int& start, int&end);
+     void getSearchRange(const DataBase& db, int cat, float tsl, float tlr, int*&indices, int& start, int&end);
      
      void MakeAndSortIndices(DataBase& db);
 };

@@ -3,6 +3,7 @@
 #include "../include/DataPoint.hpp"
 #include "../include/Query.hpp"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -123,7 +124,7 @@ int GetLastPositionLETS(float ts, int* indices, const vector<DataPoint>& points,
      
 }
 
-int GetFirstPositionCategory(int cat, int* indices, const vector<DataPoint>& points, int start, int end){
+int GetFirstPositionCategory(int cat, int* indices, const vector<DataPoint>& points, int start, int end){    
       while (start<end) {
           int mid = (start+end)/2;
           if (cat>points[indices[mid]].GetC()) 
@@ -134,7 +135,6 @@ int GetFirstPositionCategory(int cat, int* indices, const vector<DataPoint>& poi
      
    
      int toreturn = end;
-
      return toreturn;
 }
      

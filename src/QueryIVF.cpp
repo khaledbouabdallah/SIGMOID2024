@@ -38,15 +38,9 @@ void QueryIVF::run (int& switchquery){
         
         int* indices;
         int start, end;
-        c.getSearchRange(_db, _c, _tsl, _tsr, indices, start, end);
+        c.getSearchRange(_db, _c, _tsl, _tsr, indices, start, end);        
+
         if (start == -1) continue; //no answers in this cluster
-        //cout<<start<<" "<<end<<" "<<c.GetSize()<<endl;
-        
-        if (start<0 || start>end || end>c.GetSize()){
-          //cout<<"big error "<<_c<<" "<<_tsl<<" "<<_tsr<<endl;
-          
-        }
-        
         for (int j = start; j<end; ++j) {
             const DataPoint& p = _db.GetPoint(indices[j]);
             count ++;

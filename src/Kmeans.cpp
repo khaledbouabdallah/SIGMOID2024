@@ -37,30 +37,34 @@ void Cluster::MakeAndSortIndices(DataBase& db) {
      SortIndices(_sortedIndByTS, db.GetPoints(), _countPoints, CompareByTS);
 }
 
-void Cluster::getSearchRange(const DataBase& db, int cat, int tsl, int tsr, int*&indices, int& start, int&end) {
+void Cluster::getSearchRange(const DataBase& db, int cat, float tsl, float tsr, int*&indices, int& start, int&end) {
      int first = 0;
      int last = _countPoints;
      start = 0;
      end = _countPoints;
+
      if (cat != -1) {
           indices = _sortedIndByCatAndTS;
           first = GetFirstPositionCategory(cat, indices, db.GetPoints(),0,_countPoints);
-          if (first >= _countPoints || db.GetPoint(first).GetC() != cat) {
+          if (first >= _countPoints || db.GetPoint(indices[first]).GetC() != cat) {
                start = end = -1; //no result here
                return;
           }  
-          last = GetLastPositionCategory(cat, indices, db.GetPoints(),0,_countPoints)+1; //this should be valid, else there is a bug !!! : p
+          last = GetLastPositionCategory(cat, indices, db.GetPoints(),0,_countPoints)+1; //this should be valid, else there is a bug !!! : p$
+          start = first;
+          end = last;
      }
      else indices = _sortedIndByTS;
      if (tsl != -1) {
           start = GetFirstPositionGETS(tsl, indices, db.GetPoints(), first, last);
+          
           if (start >= _countPoints) { //no result here
                start = end = -1;
                return;
           }
     }
     if (tsr != -1) {
-          end = GetLastPositionLETS(tsr, indices, db.GetPoints(), start, last);
+          end = GetLastPositionLETS(tsr, indices, db.GetPoints(), first, last);
           if (end < 0) { //no result here
                start = end = -1;
                return;
