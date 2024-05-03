@@ -31,7 +31,7 @@ void QueryIVF::run (int& switchquery){
             count ++;
             if (!IsValid(p)) continue;
             float dist = getDistance(p.GetData(), _data);
-            _answer.CheckAndAdd(i,dist);
+            _answer.CheckAndAdd(c.getPoint(j),dist);
         }    
 }
 
