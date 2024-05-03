@@ -32,7 +32,6 @@ DataBase::DataBase(const char* filename):_catstart(NULL), _catend(NULL), _catego
           _sortedIndByTS[i] = _sortedIndNormal[i] = _sortedIndByCatAndTS[i] = i; 
 }
 
-
 DataBase::~DataBase() {
      //cleanup indices
      delete[] _sortedIndByCatAndTS;
@@ -50,7 +49,6 @@ std::vector<DataPoint>& DataBase::GetPoints(){
     return _data_points;
 }
 
-
 const DataPoint& DataBase::GetPoint(int index) const {
     return _data_points[index];
 }
@@ -58,7 +56,6 @@ const DataPoint& DataBase::GetPoint(int index) const {
 int DataBase::GetSize() const {
     return _countPoints;
 }
-
 
 void DataBase::ProcessCategories() {
      //count categories, so as to allocate properly the arrays
@@ -99,16 +96,13 @@ void DataBase::SortByTS() {
      SortIndices(_sortedIndByTS, _data_points, _countPoints, CompareByTS);
 }
 
-
 int* DataBase::GetIndicesSortedByCatAndTS() const {
      return _sortedIndByCatAndTS;
 }
 
-   
 int* DataBase::GetNormalIndices() const {
      return _sortedIndNormal;
 }
-     
      
 int* DataBase::GetIndicesSortedByTS() const {
      return _sortedIndByTS;
@@ -134,7 +128,6 @@ void DataBase::GetCatRange(int cat, int& start, int& end) const {
      end = _catend[indcat]+1;
 }
      
-
 void DataBase::GetTSRange(float lts, float rts, int& start, int& end) const {
      start = GetFirstPositionGETS(lts, _sortedIndByTS, _data_points, 0, _countPoints);    
      end = GetLastPositionLETS(rts, _sortedIndByTS,  _data_points, 0, _countPoints)+1; 
@@ -206,12 +199,6 @@ void DataBase::ComputeGlobalStd() {
      _globalStd = sqrt(_globalStd / ((float)(_countPoints*DATA_SIZE)));
 }
 
-
-
-
-
-
-
 void DataBase::ComputeMeans() {
 
      _means = new float[DATA_SIZE];
@@ -241,8 +228,6 @@ void DataBase::ComputeStds() {
      }
 
 }
-
-
 
 void DataBase::NormalizeData_Axis1() {
 

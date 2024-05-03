@@ -15,24 +15,27 @@ QueryIVF::~QueryIVF(){
 
 void QueryIVF::run (int& switchquery){
 
-    // find n cluster that are closest to the query
-    std::vector<Cluster*> clusters = _kmeans->getClusters(_data, _nprob);
+    
 
     // // change nprob on class of query switch case
     // // TODO: switch case for nprob 
-    // switch (_type)
-    // {
-    // case 0: _nprob = 1;
-    //     break;
-    // case 1: _nprob = 2;
-    //     break;
-    // case 2: _nprob = 4;
-    //     break;
-    // case 3: _nprob = 8;
-    //     break;
-    // default:
-    //     break;
-    // }
+
+    switch (_type)
+    {
+    case 0: _nprob = 14;
+        break;
+    case 1: _nprob = 21;
+        break;
+    case 2: _nprob = 21;
+        break;
+    case 3: _nprob = 24;
+        break;
+    default:
+        break;
+    }
+
+    //find n cluster that are closest to the query
+    std::vector<Cluster*> clusters = _kmeans->getClusters(_data, _nprob);
     
     
     // for each cluster, find the closest point
@@ -42,7 +45,7 @@ void QueryIVF::run (int& switchquery){
 
         Cluster& c = *clusters[i];
 
-        
+
 
         // Todo: check if the cluster is valid
         // if not, continue

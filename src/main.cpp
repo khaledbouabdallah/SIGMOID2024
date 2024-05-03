@@ -21,7 +21,7 @@
 
 using namespace std;
 
-//#define RECALL
+#define RECALL
 
 void readIndices(ifstream &ifs, vector<int> &indices)
 {
@@ -105,14 +105,14 @@ void timesup(int sig)
 
 int main()
 {
-     const char* pointsInput = "dummy-data.bin";
+     //const char* pointsInput = "dummy-data.bin";
      // const char* pointsInput = "../data/dummy-data.bin";
-     //const char *pointsInput = "data/contest-data-release-1m.bin";
+     const char *pointsInput = "data/contest-data-release-1m.bin";
      // const char* pointsInput = "../data/contest-data-release-10m.bin";
 
-     const char* queriesInput = "dummy-queries.bin";
+     //const char* queriesInput = "dummy-queries.bin";
      // const char* queriesInput = "../data/dummy-queries.bin";
-     //const char *queriesInput = "data/contest-queries-release-1m.bin";
+     const char *queriesInput = "data/contest-queries-release-1m.bin";
      // const char* queriesInput = "../data/Public-4M-queries.bin";
 
      int runType = 1;   // 0 = normal, 1 = multi-thread
@@ -125,7 +125,7 @@ int main()
      // const char* ansoutput = ".../data/relbig-output-current.bin";
 
      // const char* true_path = "data/dummy-output-reference.bin";
-     //const char *true_path = "data/rellsmall-output-reference.bin";
+     const char *true_path = "data/rellsmall-output-reference.bin";
 
      done = 0;
      signal(SIGALRM, timesup);
