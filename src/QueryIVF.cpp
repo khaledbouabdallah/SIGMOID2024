@@ -26,10 +26,8 @@ void QueryIVF::run (int& switchquery){
             const DataPoint& p = _db.GetPoint(c.getPoint(j));
             if (!IsValid(p)) continue;
             float dist = getDistance(p.GetData(), _data);
-            
             _answer.CheckAndAdd(i,dist);
         }
-
-     _isFinished = 1;
-}
+        }
+_isFinished = 1;
 }
