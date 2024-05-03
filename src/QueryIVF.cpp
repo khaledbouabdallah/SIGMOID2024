@@ -16,7 +16,6 @@ QueryIVF::~QueryIVF(){
 void QueryIVF::run (int& switchquery){
 
     // find n cluster that are closest to the query
-    _nprob = 100;
     std::vector<Cluster*> clusters = _kmeans->getClusters(_data, _nprob);
     
     // for each cluster, find the closest point
@@ -33,10 +32,7 @@ void QueryIVF::run (int& switchquery){
             float dist = getDistance(p.GetData(), _data);
             _answer.CheckAndAdd(c.getPoint(j),dist);
         }    
-}
+    }
 
-std::cout << "count " << count << std::endl;
-std::cout << "count c " << count_c << std::endl;
 _isFinished = 1;
-
 }

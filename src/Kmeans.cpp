@@ -14,6 +14,7 @@
 #include <globals.hpp>
 #include <chrono>
 #include <Utils.hpp>
+#include <string>
 
 // Todo std::array to float*
 // Todo handle Datapoint class
@@ -24,7 +25,19 @@
 
 // Todo : Switch from std::array to float*
 
-std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t k, uint64_t seed) {
+std::vector<float*> random_simple(const std::vector<DataPoint>& data, uint32_t k, uint64_t seed) {
+	assert(k > 0);
+	assert(data.size() > 0);
+	std::vector<float*> means;
+	std::mt19937 rand_engine(seed);
+	std::uniform_int_distribution<size_t> uniform_generator(0, data.size() - 1);
+	for (uint32_t i = 0; i < k; ++i) {
+		means.push_back(data[uniform_generator(rand_engine)].GetData());
+	}
+	return means;
+}
+
+std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t k, uint64_t seed, const int verbose_level) {
 	assert(k > 0);
 	assert(data.size() > 0);
 	using input_size_t = typename std::array<float, 100>::size_type;
@@ -50,7 +63,9 @@ std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t
 		auto end = std::chrono::high_resolution_clock::now();
 		// Calculate the duration
     	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+		if (verbose_level > 1) {				
     	std::cout << count  <<" closest_distance Execution time: " << duration.count() / 1000 << " ms" << std::endl;
+		}
 		start = std::chrono::high_resolution_clock::now();
 		// Pick a random point weighted by the distance from existing means
 		// This might convert floating point weights to ints, distorting the distribution for small weights
@@ -65,8 +80,10 @@ std::vector<float*> random_plusplus(const std::vector<DataPoint>& data, uint32_t
 
 		end = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    	std::cout << count  <<" the rest Execution time: " << duration.count() / 1000 << " ms " << std::endl;
-		std::cout << "====================" << std::endl;		
+		if (verbose_level > 1) {
+			std::cout << count  <<" random_plusplus Execution time: " << duration.count() / 1000 << " ms" << std::endl;
+			std::cout << "====================" << std::endl;	
+		}			
 	}
 	
 	return means;
@@ -252,73 +269,98 @@ used for initializing the means.
 */
  //std::tuple<std::vector<float*>, std::vector<uint32_t>>
 //const clustering_parameters& parameters) 
- void Kmeans::fit(const std::vector<DataPoint>& data)
+ void Kmeans::fit(const std::vector<DataPoint>& data, std::string initialization)
 	 {
 	
 	std::random_device rand_device;
 	uint64_t seed = _has_random_seed ? _random_seed : rand_device();
 
-	std::cout << "min delta" << _min_delta << std::endl;
-	std::cout << "max iteration" << _max_iteration << std::endl;
-	std::cout << "has min delta" << _has_min_delta << std::endl;
-	std::cout << "min delta" << _min_delta << std::endl;
-	std::cout << "has random seed" << _has_random_seed << std::endl;
-	std::cout << "random seed" << _random_seed << std::endl;
 
-	std::cout << "Starting Kmeans++ initialization" << std::endl;
+	if (_verbose_level > 0) {
+		std::cout << "Starting Kmeans++ initialization" << std::endl;
+	}
+
+
+	auto start_glob = std::chrono::high_resolution_clock::now();
+
+
+	
 	auto start = std::chrono::high_resolution_clock::now();
-	std::vector<float*> means = random_plusplus(data, _k, seed);
+
+	std::vector<float*> means;
+	if (initialization == "kmeans++") {
+		 means = random_plusplus(data, _k, seed, _verbose_level);
+		  }
+	else {
+		 means = random_simple(data, _k, seed);
+	}
 	auto end = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	std::cout << "kmeans++ init finished with k= " << _k << " time: " << duration.count() / 1000 << " ms" << std::endl;
+	
 
-	// pick k random points as initial means from data manually
+	// here 
+
+	if (_verbose_level > 0) {
+		std::cout << "kmeans "<< initialization  <<  " init finished with k= " << _k << " time: " << duration.count() / 1000 << " ms" << std::endl;
+	}
+	
 
 
 	std::vector<float*> old_means;
 	//std::vector<float*> old_old_means;
 	std::vector<uint32_t> clusters;
 	float min_delta = _has_min_delta ? _min_delta : 0.0000001;
-
+	float delta = 0.0;
 	
 
-
-
+	
+	start = std::chrono::high_resolution_clock::now();
 
 	//Calculate new means until convergence is reached or we hit the maximum iteration count
 	
 	uint64_t count = 0;
 	do {
-		std::cout << "Kmeans Iteration " << count << std::endl;
+		if (_verbose_level > 1) {
+			std::cout << "Kmeans Iteration " << count << std::endl;
+		}
 		auto start1 = std::chrono::high_resolution_clock::now();
 		clusters = calculate_clusters(data, means);
 		auto end1 = std::chrono::high_resolution_clock::now();
 		//old_old_means = old_means;
 		auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
-		std::cout << "calculate_clusters  finished with k= " << _k << " time: " << duration1.count() / 1000 << " ms" << std::endl;
+		if (_verbose_level > 1) {
+			std::cout << "calculate_clusters  finished with k= " << _k << " time: " << duration1.count() / 1000 << " ms" << std::endl;
+		}
 		old_means = means;
 		start1 = std::chrono::high_resolution_clock::now();
 		means = calculate_means(data, clusters, old_means, _k);	
 		end1 = std::chrono::high_resolution_clock::now();
 		duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
-		std::cout << "calculate_means finished with k= " << _k << " time: " << duration1.count() / 1000 << " ms" << std::endl;
+		if (_verbose_level > 1) {
+			std::cout << "calculate_means finished with k= " << _k << " time: " << duration1.count() / 1000 << " ms" << std::endl;
+		}
 		++count;
-		 
-		std::cout << "delta = " << sum(deltas(old_means, means)) << std::endl;
-		std::cout << "====================" << std::endl;
 
+		delta = sum(deltas(old_means, means)) / _k;
+		 
+		if (_verbose_level > 1) {
+			std::cout << "delta = " << delta << std::endl;
+			std::cout << "====================" << std::endl;
+		}
 		
-	} while (sum(deltas(old_means, means)) > min_delta
+	} while (delta > min_delta
 		&& !(_has_max_iteration && count == _max_iteration));
 
 
 
 	clusters = calculate_clusters(data, means);
 
-
-	
-	std::cout << "Kmeans finished with k= " << _k << " and count= " << count << std::endl;
-
+	end = std::chrono::high_resolution_clock::now();
+	duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+	if (_verbose_level > 0) {
+		std::cout << "kmeans iter part finished in: " << duration.count() / 1000 << " ms ---";
+		std::cout<< " in " << count << " iteration" << std::endl;
+	}
 
 	//  initialize cluster
 	// Bug!: double free detected in tcache 2
@@ -337,6 +379,12 @@ used for initializing the means.
 		}
 	}
 
+	auto end_glob = std::chrono::high_resolution_clock::now();
+	auto duration_glob = std::chrono::duration_cast<std::chrono::microseconds>(end_glob - start_glob);
+	if (_verbose_level > 0) {
+		std::cout << "kmeans finished in total in: " << duration_glob.count() / 1000 << " ms" << std::endl;
+	}
+	
 	// // free memory of old means, means and clusters
 	// for (auto& m : old_means) {
 	// 	delete[] m;
@@ -365,6 +413,10 @@ std::vector<Cluster*> Kmeans::getClusters(float* point, int k) {
 
 	// find the k closest clusters
 	std::vector<int> indices = findKMinIndices(distances, k);
+
+	// todo keep track of the classes and timestamps max, min
+
+	// here
 
 
 	// return the clusters

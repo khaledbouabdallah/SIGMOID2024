@@ -7,6 +7,7 @@
 #include "globals.hpp"
 #include "DataPoint.hpp"
 #include "DataBase.hpp"
+#include <string>
 
 // for testing 
 // class clustering_parameters {
@@ -125,13 +126,14 @@ private:
 
 	float _min_delta;
 	bool _has_min_delta;
+	int _verbose_level;
 	
 
 
 public:
 
     inline Kmeans(int k) : _k(k) {}
-    void fit(const std::vector<DataPoint>& data);
+    void fit(const std::vector<DataPoint>& data, std::string initialization);
     std::vector<Cluster*> getClusters(float* point, int k);
 
 	int get_k() const { return _k; };
@@ -154,6 +156,8 @@ public:
 	}
 	bool has_min_delta() const { return _has_min_delta; };
 	Cluster* getCluster(int i) { return _clusters[i];}
+
+	void set_verbose_level(int level) { _verbose_level = level; }
 
     ~Kmeans();
 

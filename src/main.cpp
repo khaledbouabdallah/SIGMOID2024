@@ -99,17 +99,17 @@ void timesup (int sig){
 
 
 int main() {
-     const char* pointsInput = "dummy-data.bin";
+     //const char* pointsInput = "dummy-data.bin";
      //const char* pointsInput = "../data/dummy-data.bin";
-     //const char* pointsInput = "../data/contest-data-release-1m.bin";
+     const char* pointsInput = "data/contest-data-release-1m.bin";
      //const char* pointsInput = "../data/contest-data-release-10m.bin";
      
-     const char* queriesInput = "dummy-queries.bin";
+     //const char* queriesInput = "dummy-queries.bin";
      //const char* queriesInput = "../data/dummy-queries.bin";
-     //const char* queriesInput = "../data/contest-queries-release-1m.bin";
+     const char* queriesInput = "data/contest-queries-release-1m.bin";
      //const char* queriesInput = "../data/Public-4M-queries.bin";
      
-     int runType = 0; //0 = normal, 1 = multi-thread
+     int runType = 1; //0 = normal, 1 = multi-thread
      int queryType = 7; //0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range, 5 = sax filter only
      //6 = range SAX lookaround
      
@@ -117,6 +117,9 @@ int main() {
      //const char* ansoutput = "../data/dummy-output-current.bin";
      //const char* ansoutput = "../data/relsmall-output-current.bin";
      //const char* ansoutput = ".../data/relbig-output-current.bin";
+
+     //const char* true_path = "data/dummy-output-reference.bin";
+     const char* true_path = "data/rellsmall-output-reference.bin";
      
      
      done = 0;
@@ -131,30 +134,27 @@ int main() {
      db.ProcessCategories();
      cout<<"sorting by ts"<<endl;
      db.SortByTS();
-     cout<<"computing sax stuff"<<endl;
-     db.ComputeSAXStuff();
+     //cout<<"computing sax stuff"<<endl;
+     //db.ComputeSAXStuff();
 
      
     cout << "running kmeans" << endl;
     Kmeans kmeans = Kmeans(100); // k 
-    kmeans.set_max_iteration(100);
-    kmeans.set_min_delta(0.2);
-    kmeans.set_random_seed(42);
-    kmeans.fit(db.GetPoints());
-     
-
-     
-
+    kmeans.set_max_iteration(300);
+    kmeans.set_min_delta(0.5);
+    kmeans.set_random_seed(1);
+    kmeans.set_verbose_level(2);  // 0 = no output, 1 = some output, 2 = all output
+    kmeans.fit(db.GetPoints(), "random"); // "kmeans++" or "random
     
-     
-     cout<<"reading queries"<<endl;
-     QuerySet qset = QuerySet(queriesInput, db, queryType);
-
-     if (queryType == 7) {
-          int qcount = qset.GetQueryCount();
-          Query** queries = qset.GetQueries();
-          for (int i = 0; i<qcount; ++i)
-               ((QueryIVF*)queries[i])->setKmeans(&kmeans);
+    cout<<"reading queries"<<endl;
+    QuerySet qset = QuerySet(queriesInput, db, queryType);
+    if (queryType == 7) {
+         int qcount = qset.GetQueryCount();
+         Query** queries = qset.GetQueries();
+         for (int i = 0; i<qcount; ++i) {
+              ((QueryIVF*)queries[i])->setKmeans(&kmeans);
+              ((QueryIVF*)queries[i])->setNProb(4);
+              }
      }
 
     //  cout<<"computing sax stuff"<<endl;
@@ -192,7 +192,7 @@ int main() {
      }
  
      #ifdef RECALL
-        float rec = GetRecall(db, qset, "output.bin", "data/dummy-output-reference.bin");
+        float rec = GetRecall(db, qset, "output.bin", true_path);
         cout<<"recall: "<<rec<<endl;
     #endif
 
