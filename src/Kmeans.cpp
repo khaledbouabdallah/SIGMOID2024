@@ -26,6 +26,7 @@
 
 void Cluster::MakeAndSortIndices(DataBase& db) {
      //first, make indices arrays
+     _countPoints = _points.size();
      _sortedIndByCatAndTS = new int[_countPoints];
      _sortedIndByTS = new int[_countPoints];
      for (int i = 0; i<_countPoints; ++i)
@@ -36,7 +37,7 @@ void Cluster::MakeAndSortIndices(DataBase& db) {
      SortIndices(_sortedIndByTS, db.GetPoints(), _countPoints, CompareByTS);
 }
 
-void Cluster::getSearchRange(DataBase& db, int cat, int tsl, int tsr, int*&indices, int& start, int&end) {
+void Cluster::getSearchRange(const DataBase& db, int cat, int tsl, int tsr, int*&indices, int& start, int&end) {
      int first = 0;
      int last = _countPoints;
      start = 0;
@@ -64,6 +65,7 @@ void Cluster::getSearchRange(DataBase& db, int cat, int tsl, int tsr, int*&indic
                start = end = -1;
                return;
           }
+          end++;
     }     
 }
 

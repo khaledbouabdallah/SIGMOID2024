@@ -46,7 +46,7 @@ DataBase::~DataBase() {
           delete[] _catend;
 }
 
-std::vector<DataPoint>& DataBase::GetPoints(){
+const std::vector<DataPoint>& DataBase::GetPoints() const{
     return _data_points;
 }
 

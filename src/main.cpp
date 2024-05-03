@@ -56,10 +56,13 @@ float GetRecall(DataBase &db, QuerySet &qset, const char *filecheck, const char 
      Query **queries = qset.GetQueries();
      int nq = qset.GetQueryCount();
 
+    
+     
      float rec = 0;
 
      for (int i = 0; i < nq; ++i)
      {
+          //cout<<i<<endl;
           int countgood = 0;
 
           vector<int> indicescheck;
@@ -78,15 +81,17 @@ float GetRecall(DataBase &db, QuerySet &qset, const char *filecheck, const char 
                if (crtdist > maxdistref)
                     maxdistref = crtdist;
           }
-          // cout<<maxdistref<<endl;
+          
 
           for (int ind : indicescheck)
           {
+               //cout<<ind<<endl;
                const DataPoint &p = db.GetPoint(ind);
                float crtdist = getDistance(queries[i]->GetData(), p.GetData());
                if (crtdist <= maxdistref)
                     countgood++;
           }
+          //cout<<"here"<<endl;
           rec += (float)countgood / (float)DATA_SIZE;
      }
      rec /= nq;
@@ -115,7 +120,7 @@ int main()
      //const char *queriesInput = "data/contest-queries-release-1m.bin";
      // const char* queriesInput = "../data/Public-4M-queries.bin";
 
-     int runType = 1;   // 0 = normal, 1 = multi-thread
+     int runType = 0;   // 0 = normal, 1 = multi-thread
      int queryType = 7; // 0 = seq scan, 1 = seq scan range, 2 = seq scan incremental, 3 = seq scan range incremental, 4 = sax filter range, 5 = sax filter only
      // 6 = range SAX lookaround
 
