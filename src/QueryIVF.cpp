@@ -22,13 +22,13 @@ void QueryIVF::run (int& switchquery){
 
     switch (_type)
     {
-    case 0: _nprob = 14;
+    case 0: _nprob = 6; // 6
         break;
-    case 1: _nprob = 21;
+    case 1: _nprob = 7;
         break;
-    case 2: _nprob = 21;
+    case 2: _nprob = 7;
         break;
-    case 3: _nprob = 24;
+    case 3: _nprob = 10;
         break;
     default:
         break;
