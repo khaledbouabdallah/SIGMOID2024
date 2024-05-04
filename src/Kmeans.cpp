@@ -389,7 +389,7 @@ used for initializing the means.
 */
 // std::tuple<std::vector<float*>, std::vector<uint32_t>>
 // const clustering_parameters& parameters)
-void Kmeans::fit(std::vector<DataPoint> &data, std::string initialization)
+void Kmeans::fit(const std::vector<DataPoint> &data, std::string initialization)
 {
 
 	std::random_device rand_device;
@@ -494,12 +494,21 @@ void Kmeans::fit(std::vector<DataPoint> &data, std::string initialization)
 	}
 
 	for (int j = 0; j < clusters.size(); ++j)
-	{
+	{	
 		for (int i = 0; i < _k; ++i)
 		{
 			if (clusters[j] == i)
 			{
 				_clusters[i]->AddPoint(j);
+				_clusters[i]->AddCategory(data[j].GetC());
+				if (data[j].GetTS() < _clusters[i]->GetMinTS())
+				{
+					_clusters[i]->SetMinTS(data[j].GetTS());
+				}
+				if (data[j].GetTS() > _clusters[i]->GetMaxTS())
+				{
+					_clusters[i]->SetMaxTS(data[j].GetTS());
+				}
 			}
 		}
 	}
@@ -573,5 +582,4 @@ Cluster::~Cluster()
 }
 
 
-Kmeans::~Kmeans() {}
 

@@ -21,7 +21,7 @@ cd ..
 # Check if the build was successful
 if [ $? -eq 0 ]; then
     # Run the executable
-    ./"$EXECUTABLE" #> output.txt
+    time ./"$EXECUTABLE" #> output.txt
 else
     echo "Build failed. Exiting."
 fi

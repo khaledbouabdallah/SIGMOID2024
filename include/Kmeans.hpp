@@ -93,6 +93,8 @@ private:
 	std::set<int> _categories;
 	int *_tsStart;
 	int *_tsEnd;
+	float max_ts;
+	float min_ts;
 
 	//int *_categories;
 
@@ -106,6 +108,10 @@ private:
 public:
 	inline Cluster(int id) : _id(id), _countPoints(0){};
 	int GetId() { return _id; }
+	float GetMaxTS() { return max_ts; }
+	float GetMinTS() { return min_ts; }
+	void SetMaxTS(float ts) { max_ts = ts; }
+	void SetMinTS(float ts) { min_ts = ts; }
 	void AddPoint(int index_point);
 	void SetCentroid(float *centroid) { _centroid = centroid; }
 	float *GetCentroid() { return _centroid; }
@@ -145,7 +151,7 @@ private:
 
 public:
 	inline Kmeans(int k) : _k(k) {}
-	void fit(std::vector<DataPoint> &data, std::string initialization);
+	void fit(const std::vector<DataPoint> &data, std::string initialization);
 	std::vector<Cluster *> getClusters(float *point, int k);
 
 	int get_k() const { return _k; };

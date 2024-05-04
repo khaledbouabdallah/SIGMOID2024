@@ -36,15 +36,33 @@ void QueryIVF::run (int& switchquery){
 
     //find n cluster that are closest to the query
     std::vector<Cluster*> clusters = _kmeans->getClusters(_data, _nprob);
-    
-    
+
     // for each cluster, find the closest point
     // =============> 
+    int count = 0;
+    int count_c = 0;
+    int count_skipped = 0;
 
     for (int i = 0; i< clusters.size(); ++i) {
 
         Cluster& c = *clusters[i];
         count_c += c.GetSize();
+        
+
+        if (_tsl !=-1 && _tsl> c.GetMaxTS()) {
+            count_skipped += 1;
+            continue;
+        }
+
+        if (_tsr !=-1 && _tsr< c.GetMinTS()) {
+            count_skipped += 1;
+            continue;
+        }
+
+        if (_c !=-1 && c.GetCategories().find(_c) == c.GetCategories().end() ){
+            count_skipped += 1;
+            continue;
+        }
         
         /*
         for (int j = 0; j< c.GetSize(); ++j) {
@@ -70,5 +88,7 @@ void QueryIVF::run (int& switchquery){
             
     }
 
+    if (count_skipped > 0)
+        std::cout << " Skipped " << count_skipped << " clusters " << std::endl;
 _isFinished = 1;
 }
