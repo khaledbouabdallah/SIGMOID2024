@@ -263,7 +263,7 @@ std::vector<uint32_t> calculate_clusters(
 		pthread_create(&threads[i], nullptr, thread_function, &thread_args[i]);
 	}
 
-<<<<<<< HEAD
+
 	// Wait for all threads to finish
 	for (int i = 0; i < num_threads; ++i)
 	{
@@ -272,8 +272,7 @@ std::vector<uint32_t> calculate_clusters(
 
 	return clusters;
 }
-=======
->>>>>>> cf543faa036a3618e6638d75049d5697952ce1b9
+
 
 // std::vector<uint32_t> calculate_clusters(
 // 	const std::vector<DataPoint>& data, const std::vector<float*>& means) {
