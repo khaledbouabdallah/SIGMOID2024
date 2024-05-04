@@ -229,49 +229,51 @@ uint32_t closest_mean(float *point, std::vector<float *> means)
 		size_t end_index;
 	};
 
-	void *thread_function(void *arg)
+void *thread_function(void *arg)
+{
+	ThreadArgs *args = static_cast<ThreadArgs *>(arg);
+	for (size_t i = args->start_index; i < args->end_index; ++i)
 	{
-		ThreadArgs *args = static_cast<ThreadArgs *>(arg);
-		for (size_t i = args->start_index; i < args->end_index; ++i)
-		{
-			(*args->clusters)[i] = closest_mean((*args->data)[i].GetData(), *args->means);
-		}
-		return nullptr;
+		(*args->clusters)[i] = closest_mean((*args->data)[i].GetData(), *args->means);
 	}
-	std::vector<uint32_t> calculate_clusters(
-		const std::vector<DataPoint> &data, const std::vector<float *> &means)
-	{
-		std::vector<uint32_t> clusters(data.size());
+	return nullptr;
+}
+std::vector<uint32_t> calculate_clusters(
+	const std::vector<DataPoint> &data, const std::vector<float *> &means)
+{
+	std::vector<uint32_t> clusters(data.size());
 
 		// Define the number of threads (adjust this as needed)
 		const int num_threads = 128;
 		pthread_t threads[num_threads];
 		ThreadArgs thread_args[num_threads];
 
-		// Calculate the number of data points per thread
-		size_t points_per_thread = data.size() / num_threads;
+	// Calculate the number of data points per thread
+	size_t points_per_thread = data.size() / num_threads;
 
-		// Create and start the threads
-		for (int i = 0; i < num_threads; ++i)
-		{
-			thread_args[i].data = &data;
-			thread_args[i].means = &means;
-			thread_args[i].clusters = &clusters;
-			thread_args[i].start_index = i * points_per_thread;
-			thread_args[i].end_index = (i == num_threads - 1) ? data.size() : (i + 1) * points_per_thread;
+	// Create and start the threads
+	for (int i = 0; i < num_threads; ++i)
+	{
+		thread_args[i].data = &data;
+		thread_args[i].means = &means;
+		thread_args[i].clusters = &clusters;
+		thread_args[i].start_index = i * points_per_thread;
+		thread_args[i].end_index = (i == num_threads - 1) ? data.size() : (i + 1) * points_per_thread;
 
-			pthread_create(&threads[i], nullptr, thread_function, &thread_args[i]);
-		}
-
-		// Wait for all threads to finish
-		for (int i = 0; i < num_threads; ++i)
-		{
-			pthread_join(threads[i], nullptr);
-		}
-
-		return clusters;
+		pthread_create(&threads[i], nullptr, thread_function, &thread_args[i]);
 	}
 
+<<<<<<< HEAD
+	// Wait for all threads to finish
+	for (int i = 0; i < num_threads; ++i)
+	{
+		pthread_join(threads[i], nullptr);
+	}
+
+	return clusters;
+}
+=======
+>>>>>>> cf543faa036a3618e6638d75049d5697952ce1b9
 
 // std::vector<uint32_t> calculate_clusters(
 // 	const std::vector<DataPoint>& data, const std::vector<float*>& means) {
@@ -286,48 +288,141 @@ uint32_t closest_mean(float *point, std::vector<float *> means)
 /*
 Calculate means based on data points and their cluster assignments.
 */
+#include <pthread.h>
+
+// Define a struct to hold thread arguments
+struct ThreadArgs1
+{
+	const std::vector<DataPoint> *data;
+	const std::vector<uint32_t> *clusters;
+	std::vector<float *> *means;
+	float *count;
+	size_t start_index;
+	size_t end_index;
+};
+
+// Thread function to update means
+void *thread_function1(void *arg)
+{
+	ThreadArgs1 *args = static_cast<ThreadArgs1 *>(arg);
+	float *count = args->count;
+
+	for (size_t i = args->start_index; i < args->end_index; ++i)
+	{
+		auto &mean = (*args->means)[(*args->clusters)[i]];
+		auto &data_point = (*args->data)[i];
+		count[(*args->clusters)[i]] += 1.0f;
+
+		// Update mean with data point
+		for (size_t j = 0; j < DATA_SIZE; ++j)
+		{
+			mean[j] += data_point.GetData()[j];
+		}
+	}
+
+	return nullptr;
+}
+
+// Parallelized function to calculate means
 std::vector<float *> calculate_means(const std::vector<DataPoint> &data,
 									 const std::vector<uint32_t> &clusters,
 									 const std::vector<float *> &old_means,
-									 uint32_t k)
+									 uint32_t k,
+									 std::vector<float *> &means)
 {
-	std::vector<float *> means(k);
+	// Create an array of pthreads and thread arguments
+	// std::vector<float> count(k, 0.0f); // Initialize with zeros
+	float *count = new float[k];
 
+	// Initialize all elements of count to zero
 	for (size_t i = 0; i < k; ++i)
 	{
-		means[i] = new float[DATA_SIZE];
-		for (size_t j = 0; j < DATA_SIZE; ++j)
-		{
-			means[i][j] = 0;
-		}
+		count[i] = 0.0f;
+	}
+	// print count elements
+	// for (int i = 0; i < k; ++i)
+	// {
+	// 	std::cout << count[i] << " ";
+	// }
+
+	const int num_threads = 128; // Adjust as needed
+	pthread_t threads[num_threads];
+	ThreadArgs1 thread_args[num_threads];
+
+	// Calculate points per thread
+	size_t points_per_thread = data.size() / num_threads;
+
+	// Create and start threads
+	for (int i = 0; i < num_threads; ++i)
+	{
+		thread_args[i].data = &data;
+		thread_args[i].clusters = &clusters;
+		thread_args[i].start_index = i * points_per_thread;
+		thread_args[i].means = &means;
+		thread_args[i].count = count;
+		thread_args[i].end_index = (i == num_threads - 1) ? data.size() : (i + 1) * points_per_thread;
+		pthread_create(&threads[i], nullptr, thread_function1, &thread_args[i]);
 	}
 
-	std::vector<float> count(k, float());
-	for (size_t i = 0; i < std::min(clusters.size(), data.size()); ++i)
+	// Wait for threads to finish
+	for (int i = 0; i < num_threads; ++i)
 	{
-		auto &mean = means[clusters[i]];
-		count[clusters[i]] += 1;
-		for (size_t j = 0; j < DATA_SIZE; ++j)
-		{
-			mean[j] += data[i].GetData()[j];
-		}
+		pthread_join(threads[i], nullptr);
 	}
+
+	// Update means
 	for (size_t i = 0; i < k; ++i)
 	{
-		if (count[i] == 0)
-		{
-			means[i] = old_means[i];
-		}
-		else
+		auto &mean = means[i];
+		if (count[i] != 0)
 		{
 			for (size_t j = 0; j < DATA_SIZE; ++j)
 			{
-				means[i][j] /= count[i];
+				mean[j] /= count[i];
 			}
 		}
+		else
+		{
+			mean = old_means[i];
+		}
 	}
+
 	return means;
 }
+
+// std::vector<float *> calculate_means(const std::vector<DataPoint> &data,
+// 									 const std::vector<uint32_t> &clusters,
+// 									 const std::vector<float *> &old_means,
+// 									 uint32_t k,
+// 									 std::vector<float *> &means)
+// {
+
+// 	std::vector<float> count(k, float());
+// 	for (size_t i = 0; i < std::min(clusters.size(), data.size()); ++i)
+// 	{
+// 		auto &mean = means[clusters[i]];
+// 		count[clusters[i]] += 1;
+// 		for (size_t j = 0; j < DATA_SIZE; ++j)
+// 		{
+// 			mean[j] += data[i].GetData()[j];
+// 		}
+// 	}
+// 	for (size_t i = 0; i < k; ++i)
+// 	{
+// 		if (count[i] == 0)
+// 		{
+// 			means[i] = old_means[i];
+// 		}
+// 		else
+// 		{
+// 			for (size_t j = 0; j < DATA_SIZE; ++j)
+// 			{
+// 				means[i][j] /= count[i];
+// 			}
+// 		}
+// 	}
+// 	return means;
+// }
 
 // todo
 std::vector<float> deltas(
@@ -436,6 +531,12 @@ void Kmeans::fit(const std::vector<DataPoint> &data, std::string initialization)
 	float sum_time_clusters = 0.0;
 	float sum_time_means = 0.0;
 	uint64_t count = 0;
+	std::vector<float *> meansM(_k);
+
+	for (size_t i = 0; i < _k; ++i)
+	{
+		meansM[i] = new float[DATA_SIZE];
+	}
 	do
 	{
 		if (_verbose_level > 1)
@@ -453,7 +554,14 @@ void Kmeans::fit(const std::vector<DataPoint> &data, std::string initialization)
 		}
 		old_means = means;
 		start1 = std::chrono::high_resolution_clock::now();
-		means = calculate_means(data, clusters, old_means, _k);
+		for (size_t i = 0; i < _k; ++i)
+		{
+			for (size_t j = 0; j < DATA_SIZE; ++j)
+			{
+				meansM[i][j] = 0;
+			}
+		}
+		means = calculate_means(data, clusters, old_means, _k, meansM);
 		end1 = std::chrono::high_resolution_clock::now();
 		duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
 		sum_time_means  += duration1.count() / 1000;
@@ -469,7 +577,6 @@ void Kmeans::fit(const std::vector<DataPoint> &data, std::string initialization)
 			std::cout << "delta = " << delta << std::endl;
 			std::cout << "====================" << std::endl;
 		}
-
 	} while (delta > min_delta && !(_has_max_iteration && count == _max_iteration));
 
 	clusters = calculate_clusters(data, means);

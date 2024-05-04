@@ -69,10 +69,11 @@ uint32_t closest_mean(float *point, std::vector<float *> means);
 std::vector<uint32_t> calculate_clusters(
 	const std::vector<float *> &data, const std::vector<float *> &means);
 
-std::vector<float *> calculate_means(const std::vector<float *> &data,
+std::vector<float *> calculate_means(const std::vector<DataPoint> &data,
 									 const std::vector<uint32_t> &clusters,
 									 const std::vector<float *> &old_means,
-									 uint32_t k);
+									 uint32_t k,
+									 std::vector<float *> &means);
 
 std::vector<float> deltas(
 	const std::vector<float *> &old_means, const std::vector<float *> &means);
