@@ -1,8 +1,8 @@
-#include "QuerySeqScanRangeIncremental.hpp"
-#include "Utils.hpp"
-#include "DataPoint.hpp"
-#include "DataBase.hpp"
-#include "globals.hpp"
+#include "../include/QuerySeqScanRangeIncremental.hpp"
+#include "../include/Utils.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/globals.hpp"
 #include <iostream>
 
 using namespace std;

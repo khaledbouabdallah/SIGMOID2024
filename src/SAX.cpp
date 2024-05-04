@@ -1,7 +1,7 @@
 #include <vector>
-#include "SAX.hpp"
-#include "globals.hpp"
-#include "Utils.hpp"
+#include "../include/SAX.hpp"
+#include "../include/globals.hpp"
+#include "../include/Utils.hpp"
 #include <iostream>
 
 using std::vector;

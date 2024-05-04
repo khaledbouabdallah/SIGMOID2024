@@ -14,6 +14,9 @@ a.out
 output.bin
 dummy-data.bin
 dummy-queries.bin
+TER
+output.txt
 # Contest data 
 contest*.bin
 
+play.ipynb

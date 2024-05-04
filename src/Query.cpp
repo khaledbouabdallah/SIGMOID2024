@@ -1,11 +1,11 @@
-#include "Query.hpp"
+#include "../include/Query.hpp"
 
-#include "globals.hpp"
-#include "Utils.hpp"
+#include "../include/globals.hpp"
+#include "../include/Utils.hpp"
 #include <fstream>
 #include <iostream>
-#include "DataBase.hpp"
-#include "DataPoint.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/DataPoint.hpp"
 #include <vector>
 
 using namespace std;
@@ -64,7 +64,6 @@ void Query::InitAnswerWithRanges(){
           _answer.CheckAndAdd(_indices[crti],dist); 
       }
 }
-
 
 void Query::WriteOutput(ofstream& ofs) {
      _answer.FillMissing();

@@ -1,7 +1,7 @@
-#include "QuerySeqScanIncremental.hpp"
-#include "DataPoint.hpp"
-#include "DataBase.hpp"
-#include "Utils.hpp"
+#include "../include/QuerySeqScanIncremental.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/Utils.hpp"
 #include <iostream>
 
 QuerySeqScanIncremental::QuerySeqScanIncremental(std::ifstream& ifs, const DataBase& db) : Query(ifs,db), _nextPointIndice(0){

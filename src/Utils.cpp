@@ -1,9 +1,11 @@
-#include "Utils.hpp"
-#include "globals.hpp"
+#include "../include/Utils.hpp"
+#include "../include/globals.hpp"
 #include <cmath>
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <queue>
+#include <algorithm>
 
 using namespace std;
 
@@ -90,4 +92,41 @@ std::vector<float> getBreakPoints(int numSegments, float mean, float stddev) {
           //cout<<bp[i]<<endl;
     }
     return bp;
+}
+
+
+// Function to return indices of the k minimum elements in a float array
+std::vector<int> findKMinIndices(const std::vector<float>& arr, int k) {
+    // Create a vector of pairs (value, index) to maintain the original indices
+    std::vector<std::pair<float, int>> indexedArray;
+    indexedArray.reserve(arr.size());
+
+    // Fill the indexed array with (value, index) pairs
+    for (int i = 0; i < arr.size(); ++i) {
+        indexedArray.push_back({arr[i], i});
+    }
+
+   
+
+   // Sort the indexed array based on the values
+    std::sort(indexedArray.begin(), indexedArray.end(), [](const std::pair<float, int>& a, const std::pair<float, int>& b) {
+        return a.first < b.first; // sort by value in ascending order
+    });
+
+
+    // Extract the indices of the k smallest elements
+    std::vector<int> minIndices;
+    minIndices.reserve(k);
+
+    for (int i = 0; i < k; ++i) {
+        minIndices.push_back(indexedArray[i].second);
+    }
+
+    
+
+    return minIndices;
+}
+
+bool inVector(const std::vector<int>& vec, int index) {
+    return std::find(vec.begin(), vec.end(), index) != vec.end();
 }

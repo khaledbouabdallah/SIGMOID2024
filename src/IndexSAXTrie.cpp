@@ -1,6 +1,6 @@
-#include "IndexSAXTrie.hpp"
-#include "DataBase.hpp"
-#include "DataPoint.hpp"
+#include "../include/IndexSAXTrie.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/DataPoint.hpp"
 #include <iostream>
 
 using namespace std;

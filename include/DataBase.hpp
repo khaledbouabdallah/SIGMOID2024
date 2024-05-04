@@ -56,17 +56,18 @@ public:
      * @param data_points The vector of data points.
      */
      DataBase(const char* filename);
+     DataBase() {};
      
      /**
      * @brief Destroys the DataBase object.
-     */
+     */;
      ~DataBase();
     
      /**
      * @brief Gets the vector of data points.
      * @return The vector of data points.
      */
-     std::vector<DataPoint>& GetPoints();
+     const std::vector<DataPoint>& GetPoints() const;
      
      /**
      * @brief Gets a data point from the database at the specified index.

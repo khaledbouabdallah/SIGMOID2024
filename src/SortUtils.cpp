@@ -1,8 +1,9 @@
-#include "SortUtils.hpp"
-#include "DataBase.hpp"
-#include "DataPoint.hpp"
-#include "Query.hpp"
+#include "../include/SortUtils.hpp"
+#include "../include/DataBase.hpp"
+#include "../include/DataPoint.hpp"
+#include "../include/Query.hpp"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -121,6 +122,34 @@ int GetLastPositionLETS(float ts, int* indices, const vector<DataPoint>& points,
           cout<<"ERROR"<<" "<<i<<" "<<toreturn<<endl;*/
      return toreturn;
      
+}
+
+int GetFirstPositionCategory(int cat, int* indices, const vector<DataPoint>& points, int start, int end){    
+      while (start<end) {
+          int mid = (start+end)/2;
+          if (cat>points[indices[mid]].GetC()) 
+               start = mid+1;
+          else
+               end = mid;
+     }
+     
+   
+     int toreturn = end;
+     return toreturn;
+}
+     
+int GetLastPositionCategory(int cat, int* indices, const vector<DataPoint>& points, int start, int end){
+     while (start<end) {
+          int mid = (start+end)/2;
+          if (cat>=points[indices[mid]].GetC()) 
+               start = mid+1;
+          else
+               end = mid;
+     }
+          
+     int toreturn = start-1;
+
+     return toreturn;
 }
 
 void SiftIndices(int* indices, Query** queries, int i, int n, int (*funccomp)(Query*, Query*)){

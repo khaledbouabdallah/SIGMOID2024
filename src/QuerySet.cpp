@@ -1,19 +1,20 @@
-#include "QuerySet.hpp"
+#include "../include/QuerySet.hpp"
 #include <fstream>
 #include <iostream>
 #include "assert.h"
-#include "Query.hpp"
-#include "QuerySeqScan.hpp"
-#include "QuerySeqScanRange.hpp"
-#include "QuerySeqScanIncremental.hpp"
-#include "QuerySeqScanRangeIncremental.hpp"
-#include "QueryRangeSAXFilter.hpp"
-#include "QueryRangeSAXOnly.hpp"
-#include "QuerySAXLookaround.hpp"
-#include "SAX.hpp"
-#include "SortUtils.hpp"
-#include "Utils.hpp"
-#include "globals.hpp"
+#include "../include/Query.hpp"
+#include "../include/QuerySeqScan.hpp"
+#include "../include/QuerySeqScanRange.hpp"
+#include "../include/QuerySeqScanIncremental.hpp"
+#include "../include/QuerySeqScanRangeIncremental.hpp"
+#include "../include/QueryRangeSAXFilter.hpp"
+#include "../include/QueryRangeSAXOnly.hpp"
+#include "../include/QuerySAXLookaround.hpp"
+#include "../include/SAX.hpp"
+#include "../include/SortUtils.hpp"
+#include "../include/Utils.hpp"
+#include "../include/globals.hpp"
+#include "../include/QueryIVF.hpp"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ QuerySet::QuerySet(const char* filename, const DataBase& db, int queryType): _db
                case 4: _queries[i] = new QueryRangeSAXFilter(ifs, db); break;
                case 5: _queries[i] = new QueryRangeSAXOnly(ifs, db); break;
                case 6: _queries[i] = new QuerySAXLookaround(ifs, db); break;
+               case 7: _queries[i] = new QueryIVF(ifs, db); break;
           }
      }
      
