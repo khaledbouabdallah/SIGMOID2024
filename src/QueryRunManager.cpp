@@ -18,7 +18,7 @@ QueryRunManager::QueryRunManager(Query** queries, int* queryIndices, int countQu
      //increment is not compatible with query queue by array!!
      //should be checked
      	
-	cout<<"assign type: "<<qassignType<<endl;
+	//cout<<"assign type: "<<qassignType<<endl;
      
 	_threadData = new QueryThreadData[_countThreads];
 	remainingQueries = countQueries;
@@ -106,8 +106,8 @@ void QueryRunManager::run(){
      for (int  i = 0; i < _countThreads; ++i)
 		pthread_join(threads[i], NULL);
 		
-	cout<<"all joined"<<endl;
-	cout<<remainingQueries<<endl;
+	//cout<<"all joined"<<endl;
+	//cout<<remainingQueries<<endl;
 }
 
 void QueryRunManager::stop(){

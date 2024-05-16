@@ -20,19 +20,19 @@ void QueryIVF::run (int& switchquery){
     // // change nprob on class of query switch case
     // // TODO: switch case for nprob 
 
-    switch (_type)
-    {
-    case 0: _nprob = 6; // 6
-        break;
-    case 1: _nprob = 7;
-        break;
-    case 2: _nprob = 7;
-        break;
-    case 3: _nprob = 10;
-        break;
-    default:
-        break;
-    }
+    // switch (_type)
+    // {
+    // case 0: _nprob = 6; // 6
+    //     break;
+    // case 1: _nprob = 7;
+    //     break;
+    // case 2: _nprob = 7;
+    //     break;
+    // case 3: _nprob = 10;
+    //     break;
+    // default:
+    //     break;
+    // }
 
     //find n cluster that are closest to the query
     std::vector<Cluster*> clusters = _kmeans->getClusters(_data, _nprob);
@@ -88,7 +88,7 @@ void QueryIVF::run (int& switchquery){
             
     }
 
-    if (count_skipped > 0)
-        std::cout << " Skipped " << count_skipped << " clusters " << std::endl;
+    //if (count_skipped > 0)
+        //std::cout << " Skipped " << count_skipped << " clusters " << std::endl;
 _isFinished = 1;
 }
